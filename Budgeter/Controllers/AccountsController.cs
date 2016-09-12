@@ -67,6 +67,8 @@ namespace Budgeter.Controllers
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Not authorized" });
             }
+            account.UpdateAccountBalance();
+            account.UpdateReconciledAccountBalance();
             return View(account);
         }
 
@@ -175,6 +177,8 @@ namespace Budgeter.Controllers
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Not authorized" });
             }
+            account.UpdateAccountBalance();
+            account.UpdateReconciledAccountBalance();
             return View(account);
         }
 
@@ -227,6 +231,8 @@ namespace Budgeter.Controllers
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Not authorized" });
             }
+            account.UpdateAccountBalance();
+            account.UpdateReconciledAccountBalance();
             return View(account);
         }
 

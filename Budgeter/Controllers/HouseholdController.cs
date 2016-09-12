@@ -78,7 +78,7 @@ namespace Budgeter.Controllers
                 var hId = household.Id;
                 AssignUserToHousehold(uId, hId);
 
-                return RedirectToAction("Dashboard", "Home");
+                return RedirectToAction("Index", "Household");
             }
             return View(model);
         }
