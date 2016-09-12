@@ -1,0 +1,54 @@
+﻿@model Budgeter.Models.Account
+@{
+    ViewBag.Title = "Restore";
+}
+
+<div>
+    <h2>Restore Account</h2>
+    <h4>Are you sure you want to restore this deleted account?</h4>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Balance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Balance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReconciledBalance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReconciledBalance)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm("RestoreConfirmed", "Accounts", new { id = Model.Id }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Confirm Restore" class="btn btn-default" />
+
+        </div>
+    }
+</div>
+@Html.ActionLink("Back to Deleted Accounts", "DeletedAccounts")

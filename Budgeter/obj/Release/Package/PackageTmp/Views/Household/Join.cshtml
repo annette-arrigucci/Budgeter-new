@@ -1,0 +1,40 @@
+﻿@model Budgeter.Models.Household
+@{
+    ViewBag.Title = "Join";
+}
+
+<link href="~/Content/form-style.css" rel="stylesheet">
+
+<h2>Join Household</h2>
+<div>
+    <p>You have been invited to join the @Model.Name household. Enter the code for the household to join:</p>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="form-group">
+                <div class="row">
+                    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+                        @*<input data-val="true" data-val-length="The field Name must be a string with a minimum length of 3 and a maximum length of 160." data-val-length-max="160" data-val-length-min="3" data-val-required="The Name field is required." class="form-control" id="Name" name="Name" type="text" value="" />*@
+                        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4">
+                        <p><b>Note:</b> If you join this household you will be removed from any other households you are currently in.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Join Household" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+</div>

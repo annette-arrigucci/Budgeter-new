@@ -1,0 +1,78 @@
+﻿@model Budgeter.Models.Account
+
+@{
+    ViewBag.Title = "Details";
+}
+
+    <div>
+        <h2>Account</h2>
+        <hr />
+        <dl class="dl-horizontal">
+            <!--if this is a deleted account, display a status notice to the user-->
+            @if(Model.IsActive == false)
+            {
+                <dt>
+                    Status
+                </dt>
+                <dd>
+                    Deleted
+                </dd>
+            }
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Type)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Type)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Balance)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Balance)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ReconciledBalance)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ReconciledBalance)
+            </dd>
+    
+        </dl>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+        @Html.ActionLink("View Transactions", "Index", "Transactions", new { id = Model.Id }, new { @class = "btn btn-default" })
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class= "btn btn-default"})
+        <!--if this is a deleted account, give the user a link to restore the account-->
+        <!--otherwise give the user a link to delete the account-->
+        @if (Model.IsActive == false)
+        {
+            @Html.ActionLink("Restore", "Restore", new { id = Model.Id }, new { @class = "btn btn-default" })
+        }
+        else
+        {
+            @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-default" })
+        }  
+        </div>     
+    </div>
+@if (Model.IsActive == false)
+{
+    @Html.ActionLink("Back to Deleted Accounts", "DeletedAccounts")
+}
+else
+{
+    @Html.ActionLink("Back to Accounts", "Index")
+}
