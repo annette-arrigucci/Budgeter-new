@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Budgeter.Models.Account>
+
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Accounts</h2>
+    <p>
+        @Html.ActionLink("Add Account", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReconciledBalance)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("View Transactions", "Index", "Transactions", new { id = item.Id }, null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Balance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReconciledBalance)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |               
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+    }
+    
+    </table>
+
+<div>
+    @Html.ActionLink("Deleted Accounts", "DeletedAccounts","Accounts", null, null)
+</div>

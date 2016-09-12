@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Budgeter.Models.TransactionsIndexViewModel>
+@using Budgeter.Models
+
+<link href="~/Content/transaction-form-style.css" rel="stylesheet">
+
+@{
+    ViewBag.Title = "Index";
+}
+<h2>@ViewBag.AccountName</h2>
+<div class="container"></div>
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-8">   
+        <h4>
+            @*@Html.ActionLink("Create New", "Create")*@
+            Balance: @ViewBag.Balance
+            @Html.Raw(" | ")
+            Reconciled: @ViewBag.Reconciled
+        </h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+       @{ 
+           var createModel = new TransactionCreateViewModel();
+           createModel = ViewBag.CreateModel;
+       }
+        @Html.Partial("_CreateTransaction", createModel)
+    </div>
+
+    <div class="col-lg-8">
+    <table class="table">
+        <tr>
+            <th></th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.AccountId)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.DateSpent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.DateEntered)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReconciledAmount)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>*@
+
+            <th>
+                @Html.DisplayNameFor(model => model.EnteredBy)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.SpentById)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsReconciled)
+                </th>*@
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.AccountId)
+                    </td>*@
+                <td>
+                    @item.DateSpent.ToString("M/d/yyyy")
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.DateEntered)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReconciledAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnteredBy)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.SpentById)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsReconciled)
+                    </td>*@
+            </tr>
+        }
+        
+    </table>
+    <div class="row">
+        <div class="col-lg-4">
+            Starting balance: @ViewBag.StartingBalance
+        </div>
+    </div>
+    </div>
+</div>

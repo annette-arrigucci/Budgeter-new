@@ -11,8 +11,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     @using Microsoft.AspNet.Identity
     @*<title>AdminLTE 2 | Starter</title>*@
     <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/bootstrap.min.css")
+    @Styles.Render("~/dist/css/AdminLTE.min.css")
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/modernizr")   
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
