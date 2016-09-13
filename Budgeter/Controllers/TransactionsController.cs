@@ -134,19 +134,81 @@ namespace Budgeter.Controllers
             return RedirectToAction("Index", new { id = model.AccountId });
         }
 
+        public ActionResult GetView(int transactionId, string viewName)
+        {
+            object model = null;
+            if (viewName == "_EditTransaction")
+            {
+                if (transactionId == null)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+                }
+                Transaction transaction = db.Transactions.Find(transactionId);
+                if (transaction == null)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+                }
+                var tModel = new TransactionEditViewModel();
+                tModel.Id = transaction.Id;
+                tModel.AccountId = transaction.AccountId;
+                tModel.Description = transaction.Description;
+                tModel.DateSpent = transaction.DateSpent;
+                tModel.Amount = transaction.Amount;
+                tModel.Type = transaction.Type;
+                var categories = db.Categories.ToList();
+                tModel.CategoryList = new SelectList(categories, "Id", "Name", transaction.CategoryId);
+                var householdId = User.Identity.GetHouseholdId();
+                var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
+                tModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName", transaction.SpentById);
+                tModel.ReconciledAmount = transaction.ReconciledAmount;
+                tModel.EnteredById = transaction.EnteredById;
+                var user = db.Users.Find(transaction.EnteredById);
+                tModel.EnteredByName = user.DisplayName;
+                tModel.DateEntered = transaction.DateEntered;
+                model = tModel;
+            }
+            //if (viewName == "OrderDetails")
+            //{
+            //    using (NorthwindEntities db = new NorthwindEntities())
+            //    {
+            //        model = db.Orders.Where(o => o.CustomerID == customerID)
+            //                  .OrderBy(o => o.OrderID).ToList();
+            //    }
+            
+            return PartialView(viewName, model);
+        }
+
         // GET: Transactions/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
             }
             Transaction transaction = db.Transactions.Find(id);
             if (transaction == null)
             {
-                return HttpNotFound();
+                RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
             }
-            return View(transaction);
+            var tModel = new TransactionEditViewModel();
+            tModel.Id = transaction.Id;
+            tModel.AccountId = transaction.AccountId;
+            tModel.Description = transaction.Description;
+            tModel.DateSpent = transaction.DateSpent;
+            tModel.Amount = transaction.Amount;
+            tModel.Type = transaction.Type;
+            var categories = db.Categories.ToList();
+            tModel.CategoryList = new SelectList(categories, "Id", "Name", transaction.CategoryId);
+            var householdId = User.Identity.GetHouseholdId();
+            var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
+            tModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName",transaction.SpentById);
+            tModel.ReconciledAmount = transaction.ReconciledAmount;
+            tModel.EnteredById = transaction.EnteredById;
+            var user = db.Users.Find(transaction.EnteredById);
+            tModel.EnteredByName = user.DisplayName;
+            tModel.DateEntered = transaction.DateEntered;
+            
+            return PartialView("_EditTransaction", new { model = tModel });
         }
 
         // POST: Transactions/Edit/5
@@ -154,15 +216,46 @@ namespace Budgeter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AccountId,Description,DateEntered,DateSpent,Amount,Type,CategoryId,EnteredById,SpentById,IsReconciled,ReconciledAmount")] Transaction transaction)
+        public ActionResult Edit([Bind(Include = "Id,AccountId,Description,DateEntered,DateSpent,Amount,Type,SelectedCategory,EnteredById,SelectedUser,ReconciledAmount")] TransactionEditViewModel tevModel)
         {
             if (ModelState.IsValid)
             {
+                Transaction transaction = db.Transactions.Find(tevModel.Id);
+                if (transaction == null)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+                }
+                transaction.Id = tevModel.Id;
+                transaction.AccountId = tevModel.AccountId;
+                transaction.Description = tevModel.Description;
+                transaction.DateEntered = tevModel.DateEntered;
+                transaction.DateSpent = tevModel.DateSpent;
+                transaction.Amount = tevModel.Amount;
+                transaction.Type = tevModel.Type;
+                transaction.CategoryId = tevModel.SelectedCategory;
+                transaction.EnteredById = tevModel.EnteredById;
+                transaction.SpentById = tevModel.SelectedUser;
+                if (transaction.Amount == tevModel.ReconciledAmount)
+                {
+                    transaction.IsReconciled = true;
+                }
+                else transaction.IsReconciled = false;
+                transaction.ReconciledAmount = tevModel.ReconciledAmount;
+
+                //update the transaction in the database
                 db.Entry(transaction).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                var account = db.Accounts.Find(tevModel.AccountId);
+
+                //update the account balance in the database
+                account.UpdateAccountBalance();
+                //update the reconciled balance
+                account.UpdateReconciledAccountBalance();
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = tevModel.AccountId });
             }
-            return View(transaction);
+            return RedirectToAction("Index", new { id = tevModel.AccountId });
         }
 
         // GET: Transactions/Delete/5

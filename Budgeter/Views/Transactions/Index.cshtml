@@ -85,13 +85,12 @@
         {
             <tr>
                 <td>
-                    @{ 
-                        string idName = "transaction-" + item.Id;
-                    }
-                    <input type="hidden" value=@item.Id id=@idName>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
-                    @Html.ActionLink("Void", "Void", new { id = item.Id })
+                    @Html.ActionLink("Void", "Void", new { id = item.Id })*@
+                    <button class="edit btn btn-default" data-val=@item.Id>Edit</button>
+                    <button class="delete btn btn-default" data-val=@item.Id>Delete</button>
+                    <button class="void btn btn-default" data-val=@item.Id>Void</button>
                 </td>
                 @*<td>
                         @Html.DisplayFor(modelItem => item.AccountId)
@@ -138,3 +137,16 @@
     </div>
     </div>
 </div>
+@section scripts{
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".edit").click(function () {
+        $("#create-view-placeholder").hide();
+        var myId = $(this).data('val');
+        alert(myId);
+        var tId = parseInt(myId);
+        $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_EditTransaction" });
+    });
+});
+</script>
+}

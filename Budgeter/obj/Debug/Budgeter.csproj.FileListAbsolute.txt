@@ -84,6 +84,7 @@ C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\System.Reflection.Metadata
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\vbc.exe
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\VBCSCompiler.exe
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Budgeter.dll.config
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Budgeter.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Budgeter.pdb
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Antlr3.Runtime.dll
@@ -117,6 +118,8 @@ C:\Users\Me\projects\Budgeter-new\Budgeter\bin\System.Web.WebPages.Deployment.dl
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\System.Web.WebPages.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\System.Web.WebPages.Razor.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\WebGrease.dll
+C:\Users\Me\projects\Budgeter-new\Budgeter\bin\EntityFramework.xml
+C:\Users\Me\projects\Budgeter-new\Budgeter\bin\EntityFramework.SqlServer.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Newtonsoft.Json.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\System.Net.Http.Formatting.xml
@@ -128,8 +131,6 @@ C:\Users\Me\projects\Budgeter-new\Budgeter\bin\System.Web.WebPages.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\System.Web.WebPages.Deployment.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\System.Web.WebPages.Razor.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Antlr3.Runtime.pdb
-C:\Users\Me\projects\Budgeter-new\Budgeter\bin\EntityFramework.xml
-C:\Users\Me\projects\Budgeter-new\Budgeter\bin\EntityFramework.SqlServer.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.AspNet.Identity.Core.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.AspNet.Identity.Owin.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.AspNet.Identity.EntityFramework.xml
@@ -142,7 +143,6 @@ C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.Owin.Security.OAuth.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-C:\Users\Me\projects\Budgeter-new\Budgeter\obj\Debug\Budgeter.csprojResolveAssemblyReference.cache
 C:\Users\Me\projects\Budgeter-new\Budgeter\obj\Debug\Budgeter.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\obj\Debug\Budgeter.pdb
-C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Budgeter.dll.config
+C:\Users\Me\projects\Budgeter-new\Budgeter\obj\Debug\Budgeter.csprojResolveAssemblyReference.cache

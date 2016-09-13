@@ -1,15 +1,17 @@
 ﻿@model Budgeter.Models.TransactionEditViewModel
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Transactions", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Transaction</h4>
-        <hr />
+        <h4>Edit Transaction</h4>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.AccountId)
+        @Html.HiddenFor(model => model.EnteredById)
+        @Html.HiddenFor(model => model.DateEntered)
+
         @*<div class="form-group">
                 @Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -18,103 +20,134 @@
                 </div>
             </div>*@
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             <div class="row">
-                @Html.LabelFor(model => model.DateSpent, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             </div>
             <div class="row">
                 <div class="col-md-7 col-md-offset-1">
-                    @*@Html.EditorFor(model => model.DateSpent, new { htmlAttributes = new { @class = "form-control" } })*@
-                    <input class="form-control text-box single-line" data-val="true" data-val-date="The field DateSpent must be a date." data-val-required="The DateSpent field is required." id="DateSpent" name="DateSpent" value=@Model.DateSpent type="date" min="2016-01-01" max="2016-12-31" />
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+            <div class="form-group">
+                <div class="row">
+                    @Html.LabelFor(model => model.DateSpent, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+                </div>
+                <div class="row">
+                    <div class="col-md-7 col-md-offset-1">
+                        @*@Html.EditorFor(model => model.DateSpent, new { htmlAttributes = new { @class = "form-control" } })*@
+                        <input class="form-control text-box single-line" data-val="true" data-val-date="The field DateSpent must be a date." data-val-required="The DateSpent field is required." id="DateSpent" name="DateSpent" value=@Model.DateSpent type="date" min="2016-01-01" max="2016-12-31" />
+                        @Html.ValidationMessageFor(model => model.DateSpent, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.DateSpent, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DateSpent, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.DateSpent, "", new { @class = "text-danger" })
                 </div>
-            </div>
-        </div>
+            </div>*@
+            <div class="form-group">
+                <div class="row">
+                    @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+                </div>
+                 <div class="row">
+                    <div class="col-md-4 col-md-offset-1">
+                            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                    </div>
+                        @*</div>
+                <div class="form-group">*@
+                        @*@Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <div class="col-md-3 not-editable">
+                            @*@Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })*@
+                            @Model.Type
+                    </div>
+                 </div>
+           </div>
+                
 
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.DateSpent, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateSpent, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateSpent, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        <div class="row">
+                            @Html.LabelFor(model => model.ReconciledAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+                         </div>   
+                         <div class="row">
+                                <div class="col-md-7 col-md-offset-1">
+                                    @Html.EditorFor(model => model.ReconciledAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ReconciledAmount, "", new { @class = "text-danger" })
+                                </div>
+                         </div>
+                    </div>
+                    
+            <div class="form-group">
+                 <div class="row">
+                      @Html.LabelFor(model => model.SelectedCategory, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+                 </div>
+                  <div class="row">
+                    <div class="col-md-7 col-md-offset-1">
+                       @Html.DropDownListFor(model => model.SelectedCategory, Model.CategoryList, "-Select Category-", new { @class = "form-control" })
+                       @Html.ValidationMessageFor(model => model.SelectedCategory, "", new { @class = "text-danger" })
+                    </div>
+                  </div>
             </div>
-        </div>*@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+
+           <div class="form-group">
+               <div class="row">
+                    @Html.LabelFor(model => model.SelectedUser, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+               </div>
+               <div class="row">
+                    <div class="col-md-7 col-md-offset-1">
+                       @Html.DropDownListFor(model => model.SelectedUser, Model.HouseholdUsersList, "-Select User-", new { @class = "form-control" })
+                       @Html.ValidationMessageFor(model => model.SelectedUser, "", new { @class = "text-danger" })
+                    </div>
+               </div>
+           </div>
+
+                            @*<div class="form-group">
+                @Html.LabelFor(model => model.IsReconciled, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsReconciled)
+                        @Html.ValidationMessageFor(model => model.IsReconciled, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>*@
+
+          <div class="form-group">
+              <div class="row">
+                  @Html.LabelFor(model => model.EnteredByName, htmlAttributes: new { @class = "control-label col-md-2" })
+              </div>              
+              <div class="row">
+                  <div class="col-md-7 col-md-offset-1 not-editable">
+                    @Model.EnteredByName
+                                        @*@Html.EditorFor(model => model.EnteredByName, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @*@Html.ValidationMessageFor(model => model.EnteredBy, "", new { @class = "text-danger" })*@
+                   </div>
+              </div>
+          </div>
+
+            <div class="form-group">
+                <div class="row">
+                    @Html.LabelFor(model => model.DateEntered, htmlAttributes: new { @class = "control-label col-md-2" })
+                </div>
+                <div class="row">
+                    <div class="col-md-7 col-md-offset-1 not-editable">
+                        @Model.DateEntered
+                        @*@Html.EditorFor(model => model.DateEntered, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @*@Html.ValidationMessageFor(model => model.DateEntered, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
             </div>
-        @*</div>
-        <div class="form-group">*@
-            @*@Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            <div class="col-md-3">
-                @*@Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.RadioButtonFor(model => model.Type, "Expense")Expense
-                @Html.Raw("<br>")
-                @Html.RadioButtonFor(model => model.Type, "Income")Income
-                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CategoryId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.EnteredById, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EnteredById, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EnteredById, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.SpentById, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SpentById, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SpentById, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsReconciled, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsReconciled)
-                    @Html.ValidationMessageFor(model => model.IsReconciled, "", new { @class = "text-danger" })
+             
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                     <input type="submit" value="Save" class="btn btn-default" />
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.ReconciledAmount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ReconciledAmount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ReconciledAmount, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateEntered, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10 not-editable">
-                @Model.DateEntered
-                @*@Html.EditorFor(model => model.DateEntered, new { htmlAttributes = new { @class = "form-control" } })*@
-                @*@Html.ValidationMessageFor(model => model.DateEntered, "", new { @class = "text-danger" })*@
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+      }

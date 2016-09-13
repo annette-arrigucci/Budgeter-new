@@ -39,6 +39,9 @@ namespace Budgeter.Models
         public Decimal ReconciledAmount { get; set; }
         [Display(Name = "Entered by")]
         public string EnteredById { get; set; }
+        [Display(Name = "Entered by")]
+        public string EnteredByName { get; set; }
+        [Display(Name = "Date entered")]
         public DateTime DateEntered { get; set; }
     }
 }
