@@ -43,7 +43,7 @@ namespace Budgeter.Controllers
             createTransactionModel.CategoryList = new SelectList(categories,"Id","Name");
             var householdId = User.Identity.GetHouseholdId();
             var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
-            createTransactionModel.HouseholdUsersList = new SelectList(householdUsers,"Id","UserName");
+            createTransactionModel.HouseholdUsersList = new SelectList(householdUsers,"Id","DisplayName");
             //pass a model to create a new transaction through the ViewBag
             ViewBag.CreateModel = createTransactionModel;
 

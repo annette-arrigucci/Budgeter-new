@@ -26,6 +26,7 @@ namespace Budgeter.Models
         public string LastName { get; set; }
         [Display(Name = "Household")]
         public int? HouseholdId { get; set; }
+        public string DisplayName { get; set; }
 
         public virtual Household Household { get; set; }
 

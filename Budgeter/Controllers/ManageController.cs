@@ -140,6 +140,7 @@ namespace Budgeter.Controllers
             user.LastName = model.LastName;
             user.Email = model.Email;
             user.UserName = model.Email;
+            user.DisplayName = model.FirstName + " " + model.LastName;
 
             IdentityResult result = await UserManager.UpdateAsync(user);
 
