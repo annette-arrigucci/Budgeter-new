@@ -33,7 +33,12 @@
            var createModel = new TransactionCreateViewModel();
            createModel = ViewBag.CreateModel;
        }
-        @Html.Partial("_CreateTransaction", createModel)
+        <div id="create-view-placeholder">
+            @Html.Partial("_CreateTransaction", createModel)
+        </div>
+        <div id="edit-transaction-placeholder">
+
+        </div>
     </div>
 
     <div class="col-lg-8">
@@ -80,6 +85,10 @@
         {
             <tr>
                 <td>
+                    @{ 
+                        string idName = "transaction-" + item.Id;
+                    }
+                    <input type="hidden" value=@item.Id id=@idName>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
                     @Html.ActionLink("Void", "Void", new { id = item.Id })
