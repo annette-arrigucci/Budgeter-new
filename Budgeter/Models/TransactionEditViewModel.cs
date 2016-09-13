@@ -26,6 +26,8 @@ namespace Budgeter.Models
         [Required]
         public string Type { get; set; }
         [Display(Name = "Category")]
+        public int CategoryId { get; set; }
+        [Display(Name = "Category")]
         public SelectList CategoryList { get; set; }
         [Required(ErrorMessage = "No type selected")]
         [Display(Name = "Category")]

@@ -143,8 +143,6 @@
         $(".edit").click(function () {
         $("#create-view-placeholder").hide();
         var myId = $(this).data('val');
-        alert(myId);
-        var tId = parseInt(myId);
         $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_EditTransaction" });
     });
 });

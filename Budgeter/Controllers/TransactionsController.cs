@@ -156,7 +156,7 @@ namespace Budgeter.Controllers
                 tModel.Amount = transaction.Amount;
                 tModel.Type = transaction.Type;
                 var categories = db.Categories.ToList();
-                tModel.CategoryList = new SelectList(categories, "Id", "Name", transaction.CategoryId);
+                tModel.CategoryList = new SelectList(categories, "Id", "Name", transaction.CategoryId);              
                 var householdId = User.Identity.GetHouseholdId();
                 var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
                 tModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName", transaction.SpentById);
@@ -198,10 +198,12 @@ namespace Budgeter.Controllers
             tModel.Amount = transaction.Amount;
             tModel.Type = transaction.Type;
             var categories = db.Categories.ToList();
-            tModel.CategoryList = new SelectList(categories, "Id", "Name", transaction.CategoryId);
+            tModel.SelectedCategory = transaction.CategoryId;
+            tModel.CategoryList = new SelectList(categories, "Id", "Name", new { SelectedCategory = tModel.SelectedCategory });
             var householdId = User.Identity.GetHouseholdId();
             var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
-            tModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName",transaction.SpentById);
+            tModel.SelectedUser = transaction.SpentById;
+            tModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName", tModel.SelectedUser);
             tModel.ReconciledAmount = transaction.ReconciledAmount;
             tModel.EnteredById = transaction.EnteredById;
             var user = db.Users.Find(transaction.EnteredById);
