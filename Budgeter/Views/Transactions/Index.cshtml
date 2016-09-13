@@ -9,7 +9,16 @@
 <h2>@ViewBag.AccountName</h2>
 <div class="container"></div>
 <div class="row">
-    <div class="col-lg-4 col-lg-offset-8">   
+    <div class="col-lg-4">
+        <h4>
+            @*@Html.ActionLink("Create New", "Create")*@
+            @if (ViewBag.Balance < 0)
+            {
+                <span class="overdrawn">Warning: Your account is overdrawn</span>
+            }
+        </h4>
+    </div>
+    <div class="col-lg-4 col-lg-offset-4">   
         <h4>
             @*@Html.ActionLink("Create New", "Create")*@
             Balance: @ViewBag.Balance

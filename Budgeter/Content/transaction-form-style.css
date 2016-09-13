@@ -1,3 +1,6 @@
 ﻿.form-label {
     text-align: left !important;
 }
+.overdrawn {
+    color: #d33724 !important;
+}
