@@ -103,7 +103,8 @@
                     </td>*@
                 <td>
                     @*@Html.DisplayFor(modelItem => item.Description)*@
-                    @Html.ActionLink(item.Description, "Details", new { id = item.Id })
+                    @*@Html.ActionLink(item.Description, "Details", new { id = item.Id, @class= "details" })*@
+                    <a href="#" id="@item.Id" class="details">@item.Description</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Category)
@@ -141,10 +142,19 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $(".edit").click(function () {
-        $("#create-view-placeholder").hide();
-        var myId = $(this).data('val');
-        $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_EditTransaction" });
-    });
+            $("#create-view-placeholder").hide();
+            $("#edit-transaction-placeholder").empty();
+            var myId = $(this).data('val');
+            $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_EditTransaction" });
+        });
+
+        $(".details").click(function () {
+            $("#create-view-placeholder").hide();
+            $("#edit-transaction-placeholder").empty();
+            var myId = $(this).attr('id');
+            $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_TransactionDetails" });
+        });
+
 });
 </script>
 }

@@ -168,6 +168,34 @@ namespace Budgeter.Controllers
                 tModel.DateEntered = transaction.DateEntered;
                 model = tModel;
             }
+            else if(viewName == "_TransactionDetails" || viewName == "_DeleteTransaction" || viewName == "_VoidTransaction")
+            {
+                if (transactionId == null)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+                }
+                Transaction transaction = db.Transactions.Find(transactionId);
+                if (transaction == null)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+                }
+                var infoModel = new TransactionInfoViewModel();
+                infoModel.Id = transaction.Id;
+                infoModel.AccountId = transaction.AccountId;
+                infoModel.Description = transaction.Description;
+                infoModel.DateSpent = transaction.DateSpent;
+                infoModel.Amount = transaction.Amount;
+                infoModel.Type = transaction.Type;
+                var category = db.Categories.Find(transaction.CategoryId);
+                infoModel.Category = category.Name;
+                var user = db.Users.Find(transaction.SpentById);
+                infoModel.SpentByName = user.DisplayName;
+                infoModel.ReconciledAmount = transaction.ReconciledAmount;
+                var enteredBy = db.Users.Find(transaction.EnteredById);
+                infoModel.EnteredByName = enteredBy.DisplayName;
+                infoModel.DateEntered = transaction.DateEntered;
+                model = infoModel;
+            }
             //if (viewName == "OrderDetails")
             //{
             //    using (NorthwindEntities db = new NorthwindEntities())

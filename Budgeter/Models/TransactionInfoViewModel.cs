@@ -9,32 +9,26 @@ namespace Budgeter.Models
 {
     public class TransactionInfoViewModel
     {
-        [Required]
+        public int Id { get; set; }
         [Display(Name = "Account")]
         public int AccountId { get; set; }
-        [Required]
         [StringLength(300, MinimumLength = 3)]
         public string Description { get; set; }
-        [Required]
-        [DataType(DataType.Date)]
         [Display(Name = "Transaction date")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime DateSpent { get; set; }
-        [Required]
         public Decimal Amount { get; set; }
-        [Required]
         public string Type { get; set; }
         [Display(Name = "Category")]
-        public SelectList CategoryList { get; set; }
-        [Required(ErrorMessage = "No type selected")]
-        [Display(Name = "Category")]
-        public int SelectedCategory { get; set; }
+        public string Category { get; set; }
         [Display(Name = "Transaction by")]
-        public SelectList HouseholdUsersList { get; set; }
-        [Required(ErrorMessage = "No user selected")]
-        [Display(Name = "Transaction by")]
-        public string SelectedUser { get; set; }
+        public string SpentByName { get; set; }
         [Display(Name = "Reconciled amount")]
         public Decimal ReconciledAmount { get; set; }
+        [Display(Name = "Entered by")]
+        public string EnteredByName { get; set; }
+        [Display(Name = "Date entered")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime DateEntered { get; set; }
     }
 }
