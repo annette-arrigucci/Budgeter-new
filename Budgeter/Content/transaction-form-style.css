@@ -1,10 +1,6 @@
 ﻿.form-label {
     text-align: left !important;
 }
-.overdrawn {
-    color: #d33724 !important;
-}
-
-.confirm-delete {
+.overdrawn, .confirm-delete, .voided {
     color: #d33724 !important;
 }

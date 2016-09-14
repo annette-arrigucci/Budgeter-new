@@ -9,6 +9,22 @@
             @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger" })
         </div>
     </div>*@
+
+@if (Model.IsActive == false)
+
+{
+    <div class="form-group">
+        <div class="row">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "voided control-label col-md-4 col-md-offset-1 form-label" })
+        </div>
+        <div class="row">
+            <div class="col-md-7 col-md-offset-1 voided">
+                Voided
+            </div>
+        </div>
+    </div>
+}
+
 <div class="form-group">
     <div class="row">
         @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })

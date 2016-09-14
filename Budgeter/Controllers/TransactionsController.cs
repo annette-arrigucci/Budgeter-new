@@ -342,6 +342,10 @@ namespace Budgeter.Controllers
             if (ModelState.IsValid)
             {
                 Transaction transaction = db.Transactions.Find(id);
+                if(transaction.IsActive == false)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Transaction has already been voided" });
+                }
                 var account = db.Accounts.Find(transaction.AccountId);
                 if (account == null)
                 {

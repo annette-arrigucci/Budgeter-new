@@ -45,6 +45,7 @@ namespace Budgeter.Models
         public string EnteredByName { get; set; }
         [Display(Name = "Date entered")]
         public DateTime DateEntered { get; set; }
+        [Display(Name = "Status")]
         public bool IsActive { get; set; }
     }
 }
