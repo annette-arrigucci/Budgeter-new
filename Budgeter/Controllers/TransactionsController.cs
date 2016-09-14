@@ -177,6 +177,10 @@ namespace Budgeter.Controllers
         public ActionResult GetView(int transactionId, string viewName)
         {
             object model = null;
+            if(viewName == "_CreateTransaction")
+            {
+                //create the object here
+            }
             if (viewName == "_EditTransaction")
             {
                 if (transactionId == null)

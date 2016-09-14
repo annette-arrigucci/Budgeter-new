@@ -12,3 +12,7 @@
 a.icon-space:link, a.icon-space:visited {
    color: #333 !important;
 }
+
+table.dataTable tbody td {
+    background-color: #f9fafc !important;
+}
