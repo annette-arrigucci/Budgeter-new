@@ -88,9 +88,13 @@
                     @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
                     @Html.ActionLink("Void", "Void", new { id = item.Id })*@
-                    <button class="edit btn btn-default" data-val=@item.Id>Edit</button>
+                    @*<button class="edit btn btn-default" data-val=@item.Id>Edit</button>
                     <button class="delete btn btn-default" data-val=@item.Id>Delete</button>
-                    <button class="void btn btn-default" data-val=@item.Id>Void</button>
+                    <button class="void btn btn-default" data-val=@item.Id>Void</button>*@
+
+                    <a href="#" id="@item.Id" class="edit"><i class="fa fa-pencil"></i></a>
+                    <a href="#" id="@item.Id" class="void"><i class="fa fa-times"></i></a>
+                    <a href="#" id="@item.Id" class="delete"><i class="fa fa-trash"></i></a>
                 </td>
                 @*<td>
                         @Html.DisplayFor(modelItem => item.AccountId)
@@ -149,7 +153,7 @@
         $(".edit").click(function () {
             $("#create-view-placeholder").hide();
             $("#edit-transaction-placeholder").empty();
-            var myId = $(this).data('val');
+            var myId = $(this).attr('id');
             $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_EditTransaction" });
         });
 
@@ -163,14 +167,14 @@
         $(".delete").click(function () {
             $("#create-view-placeholder").hide();
             $("#edit-transaction-placeholder").empty();
-            var myId = $(this).data('val');
+            var myId = $(this).attr('id');
             $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_DeleteTransaction" });
         });
 
         $(".void").click(function () {
             $("#create-view-placeholder").hide();
             $("#edit-transaction-placeholder").empty();
-            var myId = $(this).data('val');
+            var myId = $(this).attr('id');
             $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_VoidTransaction" });
         });
 
