@@ -37,8 +37,8 @@ namespace Budgeter.Models
 
         public void UpdateAccountBalance()
         {
-            //find the transactions for this account
-            var transactions = db.Transactions.Where(x => x.AccountId == this.Id).ToList();
+            //find the transactions for this account - include only active (not voided) transactions
+            var transactions = db.Transactions.Where(x => x.AccountId == this.Id).Where(x => x.IsActive == true).ToList();
             var account = db.Accounts.Find(this.Id);
             Decimal total = 0;
             total += StartingBalance;
@@ -60,8 +60,8 @@ namespace Budgeter.Models
 
         public void UpdateReconciledAccountBalance()
         {
-            //find the transactions for this account
-            var transactions = db.Transactions.Where(x => x.AccountId == this.Id).ToList();
+            //find the transactions for this account - include only active (not voided) transactions
+            var transactions = db.Transactions.Where(x => x.AccountId == this.Id).Where(x => x.IsActive == true).ToList();
             var account = db.Accounts.Find(this.Id);
             //computing reconciled balance the same way we compute the regular balance
             Decimal recTotal = 0;

@@ -35,5 +35,6 @@ namespace Budgeter.Models
         public bool IsReconciled { get; set; }
         [Display(Name = "Reconciled Amount")]
         public Decimal ReconciledAmount { get; set; }
+        public bool IsActive { get; set; }
     }
 }

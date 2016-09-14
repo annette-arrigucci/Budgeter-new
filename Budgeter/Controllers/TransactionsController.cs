@@ -48,7 +48,7 @@ namespace Budgeter.Controllers
             ViewBag.CreateModel = createTransactionModel;
 
             //get all the transactions for this account
-            var transactions = db.Transactions.Where(x => x.AccountId == id).ToList();
+            var transactions = db.Transactions.Where(x => x.AccountId == account.Id).Where(y => y.IsActive == true).ToList();
             //transform the transactions so we can show them in the index page
             var transactionsToShow = new List<TransactionsIndexViewModel>();
             foreach(var t in transactions)
@@ -74,19 +74,19 @@ namespace Budgeter.Controllers
         }
 
         // GET: Transactions/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Transaction transaction = db.Transactions.Find(id);
-            if (transaction == null)
-            {
-                return HttpNotFound();
-            }
-            return View(transaction);
-        }
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Transaction transaction = db.Transactions.Find(id);
+        //    if (transaction == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(transaction);
+        //}
 
         // GET: Transactions/Create
         //public ActionResult Create()
@@ -113,6 +113,7 @@ namespace Budgeter.Controllers
                 transaction.CategoryId = model.SelectedCategory;
                 transaction.EnteredById = User.Identity.GetUserId();
                 transaction.SpentById = model.SelectedUser;
+                transaction.IsActive = true;
                 if (model.Amount == model.ReconciledAmount)
                 {
                     transaction.IsReconciled = true;
@@ -166,6 +167,7 @@ namespace Budgeter.Controllers
                 var user = db.Users.Find(transaction.EnteredById);
                 tModel.EnteredByName = user.DisplayName;
                 tModel.DateEntered = transaction.DateEntered;
+                tModel.IsActive = transaction.IsActive;
                 model = tModel;
             }
             else if(viewName == "_TransactionDetails" || viewName == "_DeleteTransaction" || viewName == "_VoidTransaction")
@@ -194,6 +196,7 @@ namespace Budgeter.Controllers
                 var enteredBy = db.Users.Find(transaction.EnteredById);
                 infoModel.EnteredByName = enteredBy.DisplayName;
                 infoModel.DateEntered = transaction.DateEntered;
+                infoModel.IsActive = transaction.IsActive;
                 model = infoModel;
             }
             //if (viewName == "OrderDetails")
@@ -247,7 +250,7 @@ namespace Budgeter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AccountId,Description,DateEntered,DateSpent,Amount,Type,SelectedCategory,EnteredById,SelectedUser,ReconciledAmount")] TransactionEditViewModel tevModel)
+        public ActionResult Edit([Bind(Include = "Id,AccountId,Description,DateEntered,DateSpent,Amount,Type,SelectedCategory,EnteredById,SelectedUser,ReconciledAmount,IsActive")] TransactionEditViewModel tevModel)
         {
             if (ModelState.IsValid)
             {
@@ -272,6 +275,7 @@ namespace Budgeter.Controllers
                 }
                 else transaction.IsReconciled = false;
                 transaction.ReconciledAmount = tevModel.ReconciledAmount;
+                transaction.IsActive = tevModel.IsActive;
 
                 //update the transaction in the database
                 db.Entry(transaction).State = EntityState.Modified;

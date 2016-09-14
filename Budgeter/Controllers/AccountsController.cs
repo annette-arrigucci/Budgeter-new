@@ -22,17 +22,18 @@ namespace Budgeter.Controllers
         {
             var hId = User.Identity.GetHouseholdId();
             //pass all the accounts that belong to my household and that are active (meaning not deleted)
-            var accountsList = db.Accounts.Where(m => m.HouseholdId == hId).ToList();
-            var activeAccountsList = accountsList.Where(x => x.IsActive == true).ToList();
-            //for each active account, update the account balance in the database
-            foreach(var a in activeAccountsList)
+            var accountsList = db.Accounts.Where(m => m.HouseholdId == hId).Where(x => x.IsActive == true).ToList();
+            //var activeAccountsList = accountsList.Where(x => x.IsActive == true).ToList();
+            //for each active account, update the account balance in the database, then add it to the list
+            var updatedAccountsList = new List<Account>();
+            foreach(var a in accountsList)
             {
                 a.UpdateAccountBalance();
                 a.UpdateReconciledAccountBalance();
+                updatedAccountsList.Add(a);
             }
-            //query again with the updated balances, send this to the Index view
-            var updatedAccounts = accountsList.Where(x => x.IsActive == true).ToList();
-            return View(updatedAccounts);
+            //send the list to the Index view
+            return View(updatedAccountsList);
         }
 
         [Authorize]

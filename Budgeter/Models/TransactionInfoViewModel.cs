@@ -30,5 +30,6 @@ namespace Budgeter.Models
         [Display(Name = "Date entered")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime DateEntered { get; set; }
+        public bool IsActive { get; set; }
     }
 }
