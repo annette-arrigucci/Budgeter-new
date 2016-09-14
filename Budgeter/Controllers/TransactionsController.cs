@@ -245,7 +245,7 @@ namespace Budgeter.Controllers
         //    return PartialView("_EditTransaction", new { model = tModel });
         //}
 
-        // POST: Transactions/Edit/5
+        // POST: Form posted in partial view
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -308,7 +308,7 @@ namespace Budgeter.Controllers
         //    return View(transaction);
         //}
 
-        // POST: Transactions/Delete/5
+        // POST: Form posted in partial view
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -332,6 +332,35 @@ namespace Budgeter.Controllers
                 return RedirectToAction("Index", new { id = account.Id });
             }
             return RedirectToAction("Index", "Errors", new { errorMessage = "Error in deleting transaction" });
+        }
+
+        // POST: Form posted in partial view
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult VoidConfirmed(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                Transaction transaction = db.Transactions.Find(id);
+                var account = db.Accounts.Find(transaction.AccountId);
+                if (account == null)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+                }
+
+                transaction.IsActive = false;
+                //update the transaction's status in the database
+                db.Entry(transaction).State = EntityState.Modified;
+                db.SaveChanges();
+
+                //update the account balance in the database
+                account.UpdateAccountBalance();
+                //update the reconciled balance
+                account.UpdateReconciledAccountBalance();
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = account.Id });
+            }
+            return RedirectToAction("Index", "Errors", new { errorMessage = "Error in voiding transaction" });
         }
 
         protected override void Dispose(bool disposing)
