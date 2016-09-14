@@ -209,7 +209,7 @@ namespace Budgeter.Controllers
                 tModel.IsActive = transaction.IsActive;
                 model = tModel;
             }
-            else if(viewName == "_TransactionDetails" || viewName == "_DeleteTransaction" || viewName == "_VoidTransaction")
+            else if(viewName == "_TransactionDetails" || viewName == "_DeleteTransaction" || viewName == "_VoidTransaction" || viewName == "_RestoreTransaction")
             {
                 if (transactionId == null)
                 {
@@ -392,6 +392,39 @@ namespace Budgeter.Controllers
                 }
 
                 transaction.IsActive = false;
+                //update the transaction's status in the database
+                db.Entry(transaction).State = EntityState.Modified;
+                db.SaveChanges();
+
+                //update the account balance in the database
+                account.UpdateAccountBalance();
+                //update the reconciled balance
+                account.UpdateReconciledAccountBalance();
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = account.Id });
+            }
+            return RedirectToAction("Index", "Errors", new { errorMessage = "Error in voiding transaction" });
+        }
+
+        // POST: Form posted in partial view
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RestoreConfirmed(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                Transaction transaction = db.Transactions.Find(id);
+                if (transaction.IsActive == true)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Transaction is already active" });
+                }
+                var account = db.Accounts.Find(transaction.AccountId);
+                if (account == null)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+                }
+
+                transaction.IsActive = true;
                 //update the transaction's status in the database
                 db.Entry(transaction).State = EntityState.Modified;
                 db.SaveChanges();

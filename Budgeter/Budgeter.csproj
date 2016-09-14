@@ -321,6 +321,7 @@
     <Content Include="Views\Shared\_DeleteTransaction.cshtml" />
     <Content Include="Views\Shared\_VoidTransaction.cshtml" />
     <Content Include="Views\Transactions\VoidedTransactions.cshtml" />
+    <Content Include="Views\Shared\_RestoreTransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
