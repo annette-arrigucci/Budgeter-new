@@ -291,29 +291,40 @@ namespace Budgeter.Controllers
         }
 
         // GET: Transactions/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Transaction transaction = db.Transactions.Find(id);
-            if (transaction == null)
-            {
-                return HttpNotFound();
-            }
-            return View(transaction);
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Transaction transaction = db.Transactions.Find(id);
+        //    if (transaction == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(transaction);
+        //}
 
         // POST: Transactions/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Transaction transaction = db.Transactions.Find(id);
+            var account = db.Accounts.Find(transaction.AccountId);
+            if (account == null)
+            {
+                RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+            }
             db.Transactions.Remove(transaction);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            //update the account balance in the database
+            account.UpdateAccountBalance();
+            //update the reconciled balance
+            account.UpdateReconciledAccountBalance();
+            db.SaveChanges();
+            return RedirectToAction("Index", new { id = account.Id });
         }
 
         protected override void Dispose(bool disposing)

@@ -155,6 +155,13 @@
             $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_TransactionDetails" });
         });
 
+        $(".delete").click(function () {
+            $("#create-view-placeholder").hide();
+            $("#edit-transaction-placeholder").empty();
+            var myId = $(this).attr('id');
+            $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_DeleteTransaction" });
+        });
+
 });
 </script>
 }

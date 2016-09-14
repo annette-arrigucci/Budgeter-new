@@ -318,6 +318,7 @@
     <Content Include="Views\Shared\_CreateTransaction.cshtml" />
     <Content Include="Views\Shared\_EditTransaction.cshtml" />
     <Content Include="Views\Shared\_TransactionDetails.cshtml" />
+    <Content Include="Views\Shared\_DeleteTransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
