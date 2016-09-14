@@ -136,6 +136,11 @@
             Starting balance: @ViewBag.StartingBalance
         </div>
     </div>
+        <div class="row">
+            <div class="col-lg-4">
+                @Html.ActionLink("Voided Transactions","VoidedTransactions", new { id = ViewBag.AccountId } )
+            </div>
+        </div>
     </div>
 </div>
 @section scripts{

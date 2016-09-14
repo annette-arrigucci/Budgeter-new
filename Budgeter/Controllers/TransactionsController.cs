@@ -73,6 +73,45 @@ namespace Budgeter.Controllers
             return View(transactionsToShow);
         }
 
+        [Authorize]
+        [AuthorizeHouseholdRequired]
+        public ActionResult VoidedTransactions(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+            }
+            Account account = db.Accounts.Find(id);
+            if (account == null)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+            }
+            //check if the user is authorized to view this account
+            var helper = new AccountUserHelper();
+            var user = User.Identity.GetUserId();
+            if (helper.CanUserAccessAccount(user, (int)id) == false)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Not authorized" });
+            }
+
+            //get all the voided transactions for this account
+            var transactions = db.Transactions.Where(x => x.AccountId == account.Id).Where(y => y.IsActive == false).ToList();
+            //transform the transactions so we can show them in the index page
+            var transactionsToShow = new List<TransactionsIndexViewModel>();
+            foreach (var t in transactions)
+            {
+                var transToShow = new TransactionsIndexViewModel(t);
+                transactionsToShow.Add(transToShow);
+            }
+
+            //pass the account Id to the model
+            ViewBag.AccountId = account.Id;
+            //get the account name and put it in the ViewBag
+            ViewBag.AccountName = account.Name;
+
+            return View(transactionsToShow);
+        }
+
         // GET: Transactions/Details/5
         //public ActionResult Details(int? id)
         //{
