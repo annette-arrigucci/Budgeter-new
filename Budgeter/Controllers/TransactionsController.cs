@@ -156,7 +156,8 @@ namespace Budgeter.Controllers
                 tModel.Amount = transaction.Amount;
                 tModel.Type = transaction.Type;
                 var categories = db.Categories.ToList();
-                tModel.CategoryList = new SelectList(categories, "Id", "Name", transaction.CategoryId);              
+                tModel.SelectedCategory = transaction.CategoryId;
+                tModel.CategoryList = new SelectList(categories, "Id", "Name", tModel.SelectedCategory);              
                 var householdId = User.Identity.GetHouseholdId();
                 var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
                 tModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName", transaction.SpentById);
@@ -178,40 +179,40 @@ namespace Budgeter.Controllers
             return PartialView(viewName, model);
         }
 
-        // GET: Transactions/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
-            }
-            Transaction transaction = db.Transactions.Find(id);
-            if (transaction == null)
-            {
-                RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
-            }
-            var tModel = new TransactionEditViewModel();
-            tModel.Id = transaction.Id;
-            tModel.AccountId = transaction.AccountId;
-            tModel.Description = transaction.Description;
-            tModel.DateSpent = transaction.DateSpent;
-            tModel.Amount = transaction.Amount;
-            tModel.Type = transaction.Type;
-            var categories = db.Categories.ToList();
-            tModel.SelectedCategory = transaction.CategoryId;
-            tModel.CategoryList = new SelectList(categories, "Id", "Name", new { SelectedCategory = tModel.SelectedCategory });
-            var householdId = User.Identity.GetHouseholdId();
-            var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
-            tModel.SelectedUser = transaction.SpentById;
-            tModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName", tModel.SelectedUser);
-            tModel.ReconciledAmount = transaction.ReconciledAmount;
-            tModel.EnteredById = transaction.EnteredById;
-            var user = db.Users.Find(transaction.EnteredById);
-            tModel.EnteredByName = user.DisplayName;
-            tModel.DateEntered = transaction.DateEntered;
+        //// GET: Transactions/Edit/5
+        //public ActionResult Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+        //    }
+        //    Transaction transaction = db.Transactions.Find(id);
+        //    if (transaction == null)
+        //    {
+        //        RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+        //    }
+        //    var tModel = new TransactionEditViewModel();
+        //    tModel.Id = transaction.Id;
+        //    tModel.AccountId = transaction.AccountId;
+        //    tModel.Description = transaction.Description;
+        //    tModel.DateSpent = transaction.DateSpent;
+        //    tModel.Amount = transaction.Amount;
+        //    tModel.Type = transaction.Type;
+        //    var categories = db.Categories.ToList();
+        //    tModel.SelectedCategory = transaction.CategoryId;
+        //    tModel.CategoryList = new SelectList(categories, "Id", "Name", new { SelectedCategory = tModel.SelectedCategory });
+        //    var householdId = User.Identity.GetHouseholdId();
+        //    var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
+        //    tModel.SelectedUser = transaction.SpentById;
+        //    tModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName", tModel.SelectedUser);
+        //    tModel.ReconciledAmount = transaction.ReconciledAmount;
+        //    tModel.EnteredById = transaction.EnteredById;
+        //    var user = db.Users.Find(transaction.EnteredById);
+        //    tModel.EnteredByName = user.DisplayName;
+        //    tModel.DateEntered = transaction.DateEntered;
             
-            return PartialView("_EditTransaction", new { model = tModel });
-        }
+        //    return PartialView("_EditTransaction", new { model = tModel });
+        //}
 
         // POST: Transactions/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
