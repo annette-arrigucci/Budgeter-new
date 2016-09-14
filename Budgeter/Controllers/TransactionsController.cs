@@ -257,7 +257,8 @@ namespace Budgeter.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index", new { id = tevModel.AccountId });
             }
-            return RedirectToAction("Index", new { id = tevModel.AccountId });
+            //this returns ONLY the partial view - but it does preserve the data - maybe just redirect to an error page?
+            return RedirectToAction("GetView", new { transactionId = tevModel.Id, viewName = "_EditTransaction" });
         }
 
         // GET: Transactions/Delete/5
