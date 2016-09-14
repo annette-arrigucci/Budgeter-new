@@ -158,7 +158,7 @@
         $(".delete").click(function () {
             $("#create-view-placeholder").hide();
             $("#edit-transaction-placeholder").empty();
-            var myId = $(this).attr('id');
+            var myId = $(this).data('val');
             $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_DeleteTransaction" });
         });
 

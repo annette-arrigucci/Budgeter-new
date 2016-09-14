@@ -286,8 +286,7 @@ namespace Budgeter.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index", new { id = tevModel.AccountId });
             }
-            //this returns ONLY the partial view - but it does preserve the data - maybe just redirect to an error page?
-            return RedirectToAction("GetView", new { transactionId = tevModel.Id, viewName = "_EditTransaction" });
+            return RedirectToAction("Index", "Errors", new { errorMessage = "Error in editing transaction" });
         }
 
         // GET: Transactions/Delete/5
@@ -310,21 +309,25 @@ namespace Budgeter.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Transaction transaction = db.Transactions.Find(id);
-            var account = db.Accounts.Find(transaction.AccountId);
-            if (account == null)
+            if (ModelState.IsValid)
             {
-                RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
-            }
-            db.Transactions.Remove(transaction);
-            db.SaveChanges();
+                Transaction transaction = db.Transactions.Find(id);
+                var account = db.Accounts.Find(transaction.AccountId);
+                if (account == null)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+                }
+                db.Transactions.Remove(transaction);
+                db.SaveChanges();
 
-            //update the account balance in the database
-            account.UpdateAccountBalance();
-            //update the reconciled balance
-            account.UpdateReconciledAccountBalance();
-            db.SaveChanges();
-            return RedirectToAction("Index", new { id = account.Id });
+                //update the account balance in the database
+                account.UpdateAccountBalance();
+                //update the reconciled balance
+                account.UpdateReconciledAccountBalance();
+                db.SaveChanges();
+                return RedirectToAction("Index", new { id = account.Id });
+            }
+            return RedirectToAction("Index", "Errors", new { errorMessage = "Error in deleting transaction" });
         }
 
         protected override void Dispose(bool disposing)
