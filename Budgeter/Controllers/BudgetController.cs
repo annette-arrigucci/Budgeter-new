@@ -112,8 +112,8 @@ namespace Budgeter.Controllers
             {
                 foreach(var i in selectedIncomeCategories)
                 {
-                    //if the user isn't already assigned to this category, assign them
-                    if(!db.CategoryHouseholds.Any(x => x.CategoryId == i))
+                    //if the household isn't already assigned to this category, assign them
+                    if(!db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).Any(x => x.CategoryId == i))
                     {
                         var catHold = new CategoryHousehold { CategoryId = i, HouseholdId = model.HouseholdId };
                     }
@@ -133,41 +133,37 @@ namespace Budgeter.Controllers
             {
                 foreach (var e in selectedExpenseCategories)
                 {
-                    //if the user isn't already assigned to this category, assign them
-                    if (!db.CategoryHouseholds.Any(x => x.CategoryId == e))
+                    //if the household isn't already assigned to this category, assign them
+                    if (!db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).Any(x => x.CategoryId == e))
                     {
                         var catHold = new CategoryHousehold { CategoryId = e, HouseholdId = model.HouseholdId };
                     }
                 }
             }
 
-            var categoriesToEdit = new EditCategoriesViewModel();
-            categoriesToEdit.HouseholdId = householdId;
-            var hholdCategories = db.CategoryHouseholds.Where(x => x.HouseholdId == householdId).ToList();
-            var incomeCategories = new List<CategoryCheckBox>();
-            var expenseCategories = new List<CategoryCheckBox>();
-            foreach (var h in hholdCategories)
+            //now look for income and expense categories to remove the user from - delete these entries from the CategoryHouseholds table
+            var incomeCategoriesToRemove = incomeCategories.Except(selectedExpenseCategories);
+            foreach (var m in incomeCategoriesToRemove)
             {
-                var cat = db.Categories.Find(h.CategoryId);
+                var assignment = db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).First(x => x.CategoryId == m);
+                if(assignment != null)
+                {
+                    db.CategoryHouseholds.Remove(assignment);
+                    db.SaveChanges();
+                }                            
+            }
 
-                var catCheck = new CategoryCheckBox
+            var expenseCategoriesToRemove = expenseCategories.Except(selectedExpenseCategories);
+            foreach(var m in expenseCategoriesToRemove)
+            {
+                var assignment = db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).First(x => x.CategoryId == m);
+                if (assignment != null)
                 {
-                    CategoryId = h.CategoryId,
-                    CategoryName = cat.Name,
-                    Checked = true
-                };
-                if (cat.Type == "Income")
-                {
-                    incomeCategories.Add(catCheck);
-                }
-                if (cat.Type == "Expense")
-                {
-                    expenseCategories.Add(catCheck);
+                    db.CategoryHouseholds.Remove(assignment);
+                    db.SaveChanges();
                 }
             }
-            categoriesToEdit.IncomeCategoriesToSelect = incomeCategories.ToArray();
-            categoriesToEdit.ExpenseCategoriesToSelect = expenseCategories.ToArray();
-            return View(categoriesToEdit);
+            return RedirectToAction("Dashboard","Home",null);       
         }
     }
 }
