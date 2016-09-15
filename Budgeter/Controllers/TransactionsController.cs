@@ -174,13 +174,26 @@ namespace Budgeter.Controllers
             return RedirectToAction("Index", new { id = model.AccountId });
         }
 
+        public ActionResult GetCreateView(int accountId)
+        {     
+            //create the object here
+            if (accountId == null)
+            {
+                RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+            }
+            var createTransactionModel = new TransactionCreateViewModel();
+            createTransactionModel.AccountId = accountId;
+            var categories = db.Categories.ToList();
+            createTransactionModel.CategoryList = new SelectList(categories, "Id", "Name");
+            var householdId = User.Identity.GetHouseholdId();
+            var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
+            createTransactionModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName");
+            return PartialView("_CreateTransaction", createTransactionModel);
+        }
+
         public ActionResult GetView(int transactionId, string viewName)
         {
             object model = null;
-            if(viewName == "_CreateTransaction")
-            {
-                //create the object here
-            }
             if (viewName == "_EditTransaction")
             {
                 if (transactionId == null)

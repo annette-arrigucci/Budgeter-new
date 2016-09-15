@@ -46,7 +46,7 @@
     <div class="col-lg-9">
         <br />
         <p>
-            <a href="#" class="create">Create Transaction</a>
+            <a href="#" class="create" id="@ViewBag.AccountId">Create Transaction</a>
         </p>
         <br />
     <table id="transactions-table" class="table">
@@ -190,10 +190,11 @@
         });
 
         $(".create").click(function () {
+            $("#create-view-placeholder").show();
             $("#create-view-placeholder").empty();
-            //$("#edit-transaction-placeholder").empty();
+            $("#edit-transaction-placeholder").empty();
             var myId = $(this).attr('id');
-            $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_VoidTransaction" });
+            $("#create-view-placeholder").load("/Transactions/GetCreateView", { accountId: myId });
         });
 
 });
