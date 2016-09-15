@@ -12,6 +12,8 @@ namespace Budgeter.Models
         [Required]
         [StringLength(160, MinimumLength=3)]
         public string Name { get; set; }
+        public string Type { get; set; }
+        public bool IsDefault { get; set; }
 
         public Category()
         {
