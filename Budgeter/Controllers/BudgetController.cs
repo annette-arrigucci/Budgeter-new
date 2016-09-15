@@ -21,15 +21,19 @@ namespace Budgeter.Controllers
         [Authorize]
         [AuthorizeHouseholdRequired]
         //GET: Budget/EditCategories/5
-        public ActionResult EditCategories(int householdId)
+        public ActionResult EditCategories(int? id)
         {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+            }
             //check that user is in the household and can view this page
-            if(!(User.Identity.GetHouseholdId() == householdId)){
+            if (!(User.Identity.GetHouseholdId() == id)){
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Not authorized" });
             }
             var categoriesToEdit = new EditCategoriesViewModel();
-            categoriesToEdit.HouseholdId = householdId;
-            var hholdCategories = db.CategoryHouseholds.Where(x => x.HouseholdId == householdId).ToList();
+            categoriesToEdit.HouseholdId = (int)id;
+            var hholdCategories = db.CategoryHouseholds.Where(x => x.HouseholdId == id).ToList();
             var incomeCategories = new List<CategoryCheckBox>();
             var expenseCategories = new List<CategoryCheckBox>();
             foreach (var h in hholdCategories)
@@ -95,7 +99,7 @@ namespace Budgeter.Controllers
             {
                 if (model.ExpenseCategoriesToSelect[i].Checked == true)
                 {
-                    selectedIncomeCategories.Add(model.IncomeCategoriesToSelect[i].CategoryId);
+                    selectedExpenseCategories.Add(model.ExpenseCategoriesToSelect[i].CategoryId);
                 }
             }
 
@@ -103,7 +107,7 @@ namespace Budgeter.Controllers
             {
                 foreach(var i in incomeCategories)
                 {
-                    CategoryHousehold assignment = db.CategoryHouseholds.FirstOrDefault(x => x.CategoryId == i);
+                    CategoryHousehold assignment = db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).FirstOrDefault(x => x.CategoryId == i);
                     db.CategoryHouseholds.Remove(assignment);
                     db.SaveChanges();
                 }
@@ -116,6 +120,8 @@ namespace Budgeter.Controllers
                     if(!db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).Any(x => x.CategoryId == i))
                     {
                         var catHold = new CategoryHousehold { CategoryId = i, HouseholdId = model.HouseholdId };
+                        db.CategoryHouseholds.Add(catHold);
+                        db.SaveChanges();
                     }
                 }
             }
@@ -124,7 +130,7 @@ namespace Budgeter.Controllers
             {
                 foreach (var e in expenseCategories)
                 {
-                    CategoryHousehold assignment = db.CategoryHouseholds.FirstOrDefault(x => x.CategoryId == e);
+                    CategoryHousehold assignment = db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).FirstOrDefault(x => x.CategoryId == e);
                     db.CategoryHouseholds.Remove(assignment);
                     db.SaveChanges();
                 }
@@ -137,6 +143,8 @@ namespace Budgeter.Controllers
                     if (!db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).Any(x => x.CategoryId == e))
                     {
                         var catHold = new CategoryHousehold { CategoryId = e, HouseholdId = model.HouseholdId };
+                        db.CategoryHouseholds.Add(catHold);
+                        db.SaveChanges();
                     }
                 }
             }
