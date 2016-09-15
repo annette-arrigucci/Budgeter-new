@@ -76,6 +76,15 @@ namespace Budgeter.Controllers
                 
                 var household = db.Households.First(x => x.Name.Equals(model.Name));
                 var hId = household.Id;
+                //assign household default categories - users can adjust these later
+                //get default categories, create assignment in CategoriesHousehold table
+                var defaultCategories = db.Categories.Where(x => x.IsDefault == true).ToList();
+                foreach(var c in defaultCategories)
+                {
+                    var categoryAssign = new CategoryHousehold { CategoryId = c.Id, HouseholdId = hId };
+                    db.CategoryHouseholds.Add(categoryAssign);
+                    db.SaveChanges();
+                }
                 AssignUserToHousehold(uId, hId);
 
                 return RedirectToAction("Index", "Household");

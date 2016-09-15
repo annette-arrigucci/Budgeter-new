@@ -165,7 +165,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             var userInfo = new UserInfoViewModel(userId);
                             var uName = userInfo.DisplayName;
                             var uEmail = userInfo.Email;
-                            var uHHold = userInfo.HouseholdName;
+                            if (User.Identity.IsInHousehold())
+                            {
+                                var uHHold = userInfo.HouseholdName;
+                            }
+
                         <li class="dropdown user user-menu">
                             <!-- Menu Toggle Button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -189,8 +193,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <li class="user-body">
                                     <div class="row">
                                         <div class="col-xs-12 text-center">
-                                            Household: @uHHold
-                                        </div>
+                                            @if (User.Identity.IsInHousehold()){
+                                                @Html.Raw("Household: ")@userInfo.HouseholdName
+                                            }
+                                            else {
+                                                @Html.Raw("Household: None assigned")
+                                            }
+                                        </div >
                                @*<div class="col-xs-4 text-center">
                                     <a href="#">Followers</a>
                                 </div>
@@ -200,7 +209,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="col-xs-4 text-center">
                                     <a href="#">Friends</a>
                                 </div>*@
-                                        </div>
+                                   </div>
                                     <!-- /.row -->
                                 </li>
                                 <!-- Menu Footer-->

@@ -26,8 +26,11 @@ namespace Budgeter.Models
             Email = user.Email;
             DisplayName = user.DisplayName;
             UserId = uId;
-            var household = db.Households.Find(user.HouseholdId);
-            HouseholdName = household.Name;
+            if(user.HouseholdId != null)
+            {
+                var household = db.Households.Find(user.HouseholdId);
+                HouseholdName = household.Name;
+            }         
         }
     }
 }
