@@ -206,6 +206,7 @@
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\CategoryCheckBox.cs" />
     <Compile Include="Models\CategoryHousehold.cs" />
+    <Compile Include="Models\CategoryHouseholdHelper.cs" />
     <Compile Include="Models\CreateAccountViewModel.cs" />
     <Compile Include="Models\EditCategoriesViewModel.cs" />
     <Compile Include="Models\EmailViewModel.cs" />

@@ -21,6 +21,7 @@
                     <p>
                         @Html.CheckBoxFor(m => Model.IncomeCategoriesToSelect[i].Checked)
                         @Html.HiddenFor(m => Model.IncomeCategoriesToSelect[i].CategoryName)
+                        @Html.HiddenFor(m => Model.IncomeCategoriesToSelect[i].CategoryId)
                         @Html.DisplayFor(m => Model.IncomeCategoriesToSelect[i].CategoryName)
                     </p>
                 }
@@ -35,6 +36,7 @@
                     <p>
                         @Html.CheckBoxFor(m => Model.ExpenseCategoriesToSelect[i].Checked)
                         @Html.HiddenFor(m => Model.ExpenseCategoriesToSelect[i].CategoryName)
+                        @Html.HiddenFor(m => Model.ExpenseCategoriesToSelect[i].CategoryId)
                         @Html.DisplayFor(m => Model.ExpenseCategoriesToSelect[i].CategoryName)
                     </p>
                 }

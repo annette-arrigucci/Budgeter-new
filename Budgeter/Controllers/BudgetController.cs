@@ -65,6 +65,8 @@ namespace Budgeter.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditCategories([Bind(Include = "HouseholdId, IncomeCategoriesToSelect, ExpenseCategoriesToSelect")] EditCategoriesViewModel model)
         {
+            var helper = new CategoryHouseholdHelper();
+            
             //building lists of all income and expense categories for this household
             var hholdCategories = db.CategoryHouseholds.Where(x => x.HouseholdId == model.HouseholdId).ToList();
             var incomeCategories = new List<int>();
@@ -107,9 +109,7 @@ namespace Budgeter.Controllers
             {
                 foreach(var i in incomeCategories)
                 {
-                    CategoryHousehold assignment = db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).FirstOrDefault(x => x.CategoryId == i);
-                    db.CategoryHouseholds.Remove(assignment);
-                    db.SaveChanges();
+                    helper.RemoveAssignment(model.HouseholdId, i);
                 }
             }
             else
@@ -117,12 +117,7 @@ namespace Budgeter.Controllers
                 foreach(var i in selectedIncomeCategories)
                 {
                     //if the household isn't already assigned to this category, assign them
-                    if(!db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).Any(x => x.CategoryId == i))
-                    {
-                        var catHold = new CategoryHousehold { CategoryId = i, HouseholdId = model.HouseholdId };
-                        db.CategoryHouseholds.Add(catHold);
-                        db.SaveChanges();
-                    }
+                    helper.AddAssignment(model.HouseholdId, i);
                 }
             }
 
@@ -130,46 +125,28 @@ namespace Budgeter.Controllers
             {
                 foreach (var e in expenseCategories)
                 {
-                    CategoryHousehold assignment = db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).FirstOrDefault(x => x.CategoryId == e);
-                    db.CategoryHouseholds.Remove(assignment);
-                    db.SaveChanges();
+                    helper.RemoveAssignment(model.HouseholdId, e);
                 }
             }
             else
             {
                 foreach (var e in selectedExpenseCategories)
                 {
-                    //if the household isn't already assigned to this category, assign them
-                    if (!db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).Any(x => x.CategoryId == e))
-                    {
-                        var catHold = new CategoryHousehold { CategoryId = e, HouseholdId = model.HouseholdId };
-                        db.CategoryHouseholds.Add(catHold);
-                        db.SaveChanges();
-                    }
+                    helper.AddAssignment(model.HouseholdId, e);
                 }
             }
 
             //now look for income and expense categories to remove the user from - delete these entries from the CategoryHouseholds table
-            var incomeCategoriesToRemove = incomeCategories.Except(selectedExpenseCategories);
+            var incomeCategoriesToRemove = incomeCategories.Except(selectedIncomeCategories);
             foreach (var m in incomeCategoriesToRemove)
             {
-                var assignment = db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).First(x => x.CategoryId == m);
-                if(assignment != null)
-                {
-                    db.CategoryHouseholds.Remove(assignment);
-                    db.SaveChanges();
-                }                            
+                helper.RemoveAssignment(model.HouseholdId, m);
             }
 
             var expenseCategoriesToRemove = expenseCategories.Except(selectedExpenseCategories);
             foreach(var m in expenseCategoriesToRemove)
             {
-                var assignment = db.CategoryHouseholds.Where(y => y.HouseholdId == model.HouseholdId).First(x => x.CategoryId == m);
-                if (assignment != null)
-                {
-                    db.CategoryHouseholds.Remove(assignment);
-                    db.SaveChanges();
-                }
+                helper.RemoveAssignment(model.HouseholdId, m);
             }
             return RedirectToAction("Dashboard","Home",null);       
         }
