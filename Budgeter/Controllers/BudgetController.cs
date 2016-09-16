@@ -156,5 +156,67 @@ namespace Budgeter.Controllers
             }
             return RedirectToAction("Dashboard","Home",null);       
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddIncomeCategory(int householdId, string categoryName)
+        {
+            if (householdId == null)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+            }
+            Household household = db.Households.Find(householdId);
+            if (household == null)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+            }
+            //if empty string, refresh the page
+            if (string.IsNullOrEmpty(categoryName))
+            {
+                return RedirectToAction("EditCategories", "Budget", new { id = householdId });
+            }
+            //call helper method to add the category
+            var helper = new CategoryHouseholdHelper();
+            helper.AddCategory(categoryName, "Income");
+
+            //add entry to assign the new category to the household
+            var success = helper.AddAssignment(householdId, categoryName);
+            if (success == false)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Category not able to be added" });
+            }
+            return RedirectToAction("EditCategories", "Budget", new { id = householdId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddExpenseCategory(int householdId, string categoryName)
+        {
+            if (householdId == null)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+            }
+            Household household = db.Households.Find(householdId);
+            if (household == null)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+            }
+            //if empty string, refresh the page
+            if (string.IsNullOrEmpty(categoryName))
+            {
+                return RedirectToAction("EditCategories", "Budget", new { id = householdId });
+            }
+            //call helper method to add the category
+            var helper = new CategoryHouseholdHelper();
+            helper.AddCategory(categoryName, "Expense");
+
+            //add entry to assign the new category to the household
+            var success = helper.AddAssignment(householdId, categoryName);
+            if(success == false)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Category not able to be added" });
+            }
+            return RedirectToAction("EditCategories", "Budget", new { id = householdId });
+        }
     }
 }

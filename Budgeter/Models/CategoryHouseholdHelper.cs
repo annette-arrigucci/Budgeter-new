@@ -35,5 +35,32 @@ namespace Budgeter.Models
                 db.SaveChanges();
             }
         }
+
+        public bool AddAssignment(int? householdId, string categoryName)
+        {
+            //find the Category that has this name in the database
+            var category = db.Categories.Where(x => x.Name == categoryName).First();
+            if (category == null)
+            {
+                return false;
+            }
+            var catHold = new CategoryHousehold { CategoryId = category.Id, HouseholdId = (int)householdId };
+            db.CategoryHouseholds.Add(catHold);
+            db.SaveChanges();
+            return true;
+        }
+
+        public void AddCategory(string categoryName, string type)
+        {
+            //check that a category with the same name doesn't already exist
+            var check = db.Categories.Where(c => c.Name == categoryName).Any();
+            //if not, add the category
+            if(check == false)
+            {
+                var category = new Category { Name = categoryName, IsDefault = false, Type = type };
+                db.Categories.Add(category);
+                db.SaveChanges();
+            }
+        }
     }
 }
