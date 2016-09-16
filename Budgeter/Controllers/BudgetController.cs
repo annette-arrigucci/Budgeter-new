@@ -11,9 +11,19 @@ namespace Budgeter.Controllers
     public class BudgetController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        
-        // GET: Budget
+
+        [Authorize]
+        [AuthorizeHouseholdRequired]
         public ActionResult Index()
+        {
+            ViewBag.HouseholdId = User.Identity.GetHouseholdId();
+            return View();
+        }
+
+        // POST: Budget
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create()
         {
             return View();
         }

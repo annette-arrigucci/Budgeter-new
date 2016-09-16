@@ -13,7 +13,7 @@ namespace Budgeter.Models
         public string Name { get; set; }
         [Required]
         [Display(Name = "Household")]
-        public string HouseholdId { get; set; }
+        public int HouseholdId { get; set; }
 
         public Budget()
         {

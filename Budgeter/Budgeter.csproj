@@ -239,6 +239,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="JQuery-UI\jquery-ui.min.css" />
+    <Content Include="JQuery-UI\jquery-ui.min.js" />
     <Content Include="Scripts\app.min.js" />
     <Content Include="private.config">
       <SubType>Designer</SubType>
@@ -247,6 +249,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="JQuery-UI\package.json" />
     <None Include="Properties\PublishProfiles\aarrigucci-budgeter.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -330,9 +333,12 @@
     <Content Include="Views\Budget\EditCategories.cshtml" />
     <Content Include="Views\Shared\_AddExpenseCategory.cshtml" />
     <Content Include="Views\Shared\_AddIncomeCategory.cshtml" />
+    <Content Include="Views\Budget\Index.cshtml" />
+    <Content Include="Views\Shared\_CreateBudget.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="JQuery-UI\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -1,0 +1,14 @@
+﻿@model Budgeter.Models.Budget
+
+<div>
+    @using (Html.BeginForm("Create", "Budget", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.HouseholdId)
+        <input class="text-box single-line" data-val="true" data-val-required="Name is required" id="date-picker" name="Name" type="text" value="" />
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Create Budget" class="btn btn-default" />
+        </div>
+    }
+</div>

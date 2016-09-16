@@ -18,8 +18,7 @@ namespace Budgeter.Models
         [Required]
         [Range(typeof(decimal), "0.00","1000000.00")]
         public Decimal Amount { get; set; }
-        [Range(0,365)]
-        [Display(Name = "Annual Frequency")]
-        public int AnnualFrequency { get; set; }
+        [Display(Name = "Repeats every month")]
+        public bool IsRepeating { get; set; }
     }
 }
