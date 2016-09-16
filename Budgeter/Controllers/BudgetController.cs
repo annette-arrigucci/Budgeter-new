@@ -154,7 +154,7 @@ namespace Budgeter.Controllers
             {
                 helper.RemoveAssignment(model.HouseholdId, m);
             }
-            return RedirectToAction("Dashboard","Home",null);       
+            return RedirectToAction("EditCategories", "Budget", new { id = model.HouseholdId });
         }
 
         [HttpPost]

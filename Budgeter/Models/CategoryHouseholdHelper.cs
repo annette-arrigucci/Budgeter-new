@@ -53,7 +53,7 @@ namespace Budgeter.Models
         public bool AddCategory(string categoryName, string type)
         {
             //check that it is a valid type
-            if(!type.Equals("Income") || !type.Equals("Expense"))
+            if(!((type=="Income") || (type == "Expense")))
             {
                 return false;
             }
