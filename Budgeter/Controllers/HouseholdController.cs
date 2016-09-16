@@ -61,7 +61,7 @@ namespace Budgeter.Controllers
         //POST: Households/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name")]Household model)
+        public async Task<ActionResult> Create([Bind(Include = "Name")]Household model)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,8 @@ namespace Budgeter.Controllers
                     db.CategoryHouseholds.Add(categoryAssign);
                     db.SaveChanges();
                 }
-                AssignUserToHousehold(uId, hId);
+                await AssignUserToHousehold(uId, hId);
+                await RefreshCookie(uId);
 
                 return RedirectToAction("Index", "Household");
             }

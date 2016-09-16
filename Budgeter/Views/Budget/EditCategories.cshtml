@@ -6,6 +6,7 @@
 }
 
 <h2>Edit Categories</h2>
+<hr />
 <div class="row">
     <div class="col-md-6">
         @using (Html.BeginForm())
@@ -14,7 +15,7 @@
             @Html.HiddenFor(model => model.HouseholdId)
 
             <div class="form-horizontal">
-                <hr />
+
 
                 @*using a checkbox list to set budget categories*@
 
@@ -58,10 +59,13 @@
     </div>
     <div class="col-md-6">
     @{ 
-        var expenseModel = new AddCategoryViewModel { HouseholdId = Model.HouseholdId, Type = "Expense" };
         var incomeModel = new AddCategoryViewModel { HouseholdId = Model.HouseholdId, Type = "Income" };
+        var expenseModel = new AddCategoryViewModel { HouseholdId = Model.HouseholdId, Type = "Expense" };
      }
-    @Html.Partial("_AddExpenseCategory", expenseModel)
-    @Html.Partial("_AddIncomeCategory", incomeModel)
-    </div>
+        
+            @Html.Partial("_AddIncomeCategory", incomeModel)
+            <br />
+            <br />
+            @Html.Partial("_AddExpenseCategory", expenseModel)                    
+  </div>
 </div>
