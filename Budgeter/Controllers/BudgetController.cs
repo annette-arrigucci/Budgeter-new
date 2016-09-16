@@ -89,19 +89,25 @@ namespace Budgeter.Controllers
             var selectedIncomeCategories = new List<int>();
             var selectedExpenseCategories = new List<int>();
 
-            for(int i=0; i < model.IncomeCategoriesToSelect.Length; i++)
+            if (model.IncomeCategoriesToSelect != null)
             {
-                if(model.IncomeCategoriesToSelect[i].Checked == true)
+                for (int i = 0; i < model.IncomeCategoriesToSelect.Length; i++)
                 {
-                    selectedIncomeCategories.Add(model.IncomeCategoriesToSelect[i].CategoryId);
+                    if (model.IncomeCategoriesToSelect[i].Checked == true)
+                    {
+                        selectedIncomeCategories.Add(model.IncomeCategoriesToSelect[i].CategoryId);
+                    }
                 }
             }
 
-            for (int i = 0; i < model.ExpenseCategoriesToSelect.Length; i++)
+            if (model.ExpenseCategoriesToSelect != null)
             {
-                if (model.ExpenseCategoriesToSelect[i].Checked == true)
+                for (int i = 0; i < model.ExpenseCategoriesToSelect.Length; i++)
                 {
-                    selectedExpenseCategories.Add(model.ExpenseCategoriesToSelect[i].CategoryId);
+                    if (model.ExpenseCategoriesToSelect[i].Checked == true)
+                    {
+                        selectedExpenseCategories.Add(model.ExpenseCategoriesToSelect[i].CategoryId);
+                    }
                 }
             }
 
