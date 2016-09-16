@@ -1,0 +1,13 @@
+﻿@model Budgeter.Models.AddCategoryViewModel
+
+@using (Html.BeginForm("AddCategory", "Budget", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.HouseholdId)
+    @Html.EditorFor(model => model.CategoryName)
+    @Html.HiddenFor(model => model.Type)
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Add Income Category" class="btn btn-default" />
+    </div>
+}

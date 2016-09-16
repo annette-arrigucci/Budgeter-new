@@ -1,4 +1,6 @@
 ﻿@model Budgeter.Models.EditCategoriesViewModel
+@using Budgeter.Models
+
 @{
     ViewBag.Title = "Edit Categories";
 }
@@ -55,17 +57,11 @@
         }
     </div>
     <div class="col-md-6">
-    @using (Html.BeginForm("Edit", "Transactions", FormMethod.Post))
-    {
-        <div class="form-actions no-color">
-            <input type="submit" value="Save" class="btn btn-default" />
-        </div>
-    }
-    @using (Html.BeginForm("Edit", "Transactions", FormMethod.Post))
-    {
-        <div class="form-actions no-color">
-            <input type="submit" value="Save" class="btn btn-default" />
-        </div>
-    }
+    @{ 
+        var expenseModel = new AddCategoryViewModel { HouseholdId = Model.HouseholdId, Type = "Expense" };
+        var incomeModel = new AddCategoryViewModel { HouseholdId = Model.HouseholdId, Type = "Income" };
+     }
+    @Html.Partial("_AddExpenseCategory", expenseModel)
+    @Html.Partial("_AddIncomeCategory", incomeModel)
     </div>
 </div>

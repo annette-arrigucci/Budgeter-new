@@ -159,64 +159,37 @@ namespace Budgeter.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddIncomeCategory(int householdId, string categoryName)
+        public ActionResult AddCategory(AddCategoryViewModel model)
         {
-            if (householdId == null)
+            if (model.HouseholdId == null)
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
             }
-            Household household = db.Households.Find(householdId);
+            Household household = db.Households.Find(model.HouseholdId);
             if (household == null)
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
             }
             //if empty string, refresh the page
-            if (string.IsNullOrEmpty(categoryName))
+            if (string.IsNullOrEmpty(model.CategoryName))
             {
-                return RedirectToAction("EditCategories", "Budget", new { id = householdId });
+                return RedirectToAction("EditCategories", "Budget", new { id = model.HouseholdId });
             }
             //call helper method to add the category
             var helper = new CategoryHouseholdHelper();
-            helper.AddCategory(categoryName, "Income");
+            var categorySuccess = helper.AddCategory(model.CategoryName, model.Type);
+            if (categorySuccess == false)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Category not able to be added" });
+            }
 
             //add entry to assign the new category to the household
-            var success = helper.AddAssignment(householdId, categoryName);
+            var success = helper.AddAssignment(model.HouseholdId, model.CategoryName);
             if (success == false)
             {
-                return RedirectToAction("Index", "Errors", new { errorMessage = "Category not able to be added" });
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Category entry not able to be added" });
             }
-            return RedirectToAction("EditCategories", "Budget", new { id = householdId });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddExpenseCategory(int householdId, string categoryName)
-        {
-            if (householdId == null)
-            {
-                return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
-            }
-            Household household = db.Households.Find(householdId);
-            if (household == null)
-            {
-                return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
-            }
-            //if empty string, refresh the page
-            if (string.IsNullOrEmpty(categoryName))
-            {
-                return RedirectToAction("EditCategories", "Budget", new { id = householdId });
-            }
-            //call helper method to add the category
-            var helper = new CategoryHouseholdHelper();
-            helper.AddCategory(categoryName, "Expense");
-
-            //add entry to assign the new category to the household
-            var success = helper.AddAssignment(householdId, categoryName);
-            if(success == false)
-            {
-                return RedirectToAction("Index", "Errors", new { errorMessage = "Category not able to be added" });
-            }
-            return RedirectToAction("EditCategories", "Budget", new { id = householdId });
+            return RedirectToAction("EditCategories", "Budget", new { id = model.HouseholdId });
         }
     }
 }

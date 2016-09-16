@@ -50,8 +50,13 @@ namespace Budgeter.Models
             return true;
         }
 
-        public void AddCategory(string categoryName, string type)
+        public bool AddCategory(string categoryName, string type)
         {
+            //check that it is a valid type
+            if(!type.Equals("Income") || !type.Equals("Expense"))
+            {
+                return false;
+            }
             //check that a category with the same name doesn't already exist
             var check = db.Categories.Where(c => c.Name == categoryName).Any();
             //if not, add the category
@@ -61,6 +66,7 @@ namespace Budgeter.Models
                 db.Categories.Add(category);
                 db.SaveChanges();
             }
+            return true;
         }
     }
 }
