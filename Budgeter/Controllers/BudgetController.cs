@@ -39,36 +39,55 @@ namespace Budgeter.Controllers
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "No name entered" });
             }
+            var budget = new Budget();
+            budget.HouseholdId = model.HouseholdId;
+            budget.Name = model.Name;
+
             string[] words = model.Name.Split(' ');
             var month = words[0];
             var monthInt = 0;
+            //convert month to an integer
             monthInt = ConvertMonthToInt(month);
+            //if conversion didn't happen, 0 is returned
             if(monthInt == 0)
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Error in entering budget month" });
             }
             else
             {
-                model.Month = monthInt;
+                budget.Month = monthInt;
             }
-            var yearInt = Int32.Parse(words[1]);
-            if(!(yearInt > 1) ||(yearInt < 9999))
+            var currentYear = DateTime.Now.Year;
+
+            if (!string.IsNullOrEmpty(words[1]))
+            {
+                var yearInt = Int32.Parse(words[1]);
+                //make sure a valid year was parsed
+                if (!(yearInt >= currentYear && yearInt <= (currentYear + 1)))
+                {
+                    return RedirectToAction("Index", "Errors", new { errorMessage = "Error in entering budget year" });
+                }
+                else
+                {
+                    budget.Year = yearInt;
+                }
+            }
+           else
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Error in entering budget year" });
             }
-            else
-            {
-                model.Year = yearInt;
-            }
-            
+                  
             //Regex rgx = new Regex(@"^((0[1-9])|(1[0 - 2]))\/(\d{4})$");
             //if (!rgx.IsMatch(model.Name))
             //{
             //    return RedirectToAction("Index", "Errors", new { errorMessage = "Budget name must be month and year" });
             //}
-            var budget = new Budget();
-            budget.HouseholdId = model.HouseholdId;
-            budget.Name = model.Name;
+            //if budget already exists for this month, don't create it again
+            if(db.Budgets.Where(x => x.Month == budget.Month).Where(x => x.Year == budget.Year).Any())
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Budget already exists for month" });
+            }
+              
             db.Budgets.Add(budget);
             db.SaveChanges();
 
