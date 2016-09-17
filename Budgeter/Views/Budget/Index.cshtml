@@ -18,15 +18,17 @@
     <!--found this code on StackOverflow-->
     <script>
         $(function () {
-            var d = new Date();
-            var month = d.getMonth();
-            var min = "-" + month + "m";
+            //var d = new Date();
+            //var month = d.getMonth();
+            //var min = "-" + month + "m";
             $('#datepicker').datepicker({
                 changeMonth: true,
                 changeYear: true,
                 showButtonPanel: true,
+                altFormat: 'mm/yy',
                 dateFormat: 'MM yy',
-                minDate: min,
+                constrainInput: true,
+                minDate: "-1m",
                 maxDate: "+1y",
                 onClose: function (dateText, inst) {
                     function isDonePressed() {
