@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Text.RegularExpressions;
 
 namespace Budgeter.Controllers
 {
@@ -23,9 +24,75 @@ namespace Budgeter.Controllers
         // POST: Budget
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create()
+        public ActionResult Create([Bind(Include = "HouseholdId, Name")] Budget model)
         {
-            return View();
+            if (model.HouseholdId == null)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
+            }
+            //check that user is in the household and can view this page
+            if (!(User.Identity.GetHouseholdId() == model.HouseholdId))
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Not authorized" });
+            }
+            if (string.IsNullOrEmpty(model.Name))
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "No name entered" });
+            }
+            string[] words = model.Name.Split(' ');
+            var month = words[0];
+            var monthInt = 0;
+            monthInt = ConvertMonthToInt(month);
+            if(monthInt == 0)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Error in entering budget month" });
+            }
+            else
+            {
+                model.Month = monthInt;
+            }
+            var yearInt = Int32.Parse(words[1]);
+            if(!(yearInt > 1) ||(yearInt < 9999))
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Error in entering budget year" });
+            }
+            else
+            {
+                model.Year = yearInt;
+            }
+            
+            //Regex rgx = new Regex(@"^((0[1-9])|(1[0 - 2]))\/(\d{4})$");
+            //if (!rgx.IsMatch(model.Name))
+            //{
+            //    return RedirectToAction("Index", "Errors", new { errorMessage = "Budget name must be month and year" });
+            //}
+            var budget = new Budget();
+            budget.HouseholdId = model.HouseholdId;
+            budget.Name = model.Name;
+            db.Budgets.Add(budget);
+            db.SaveChanges();
+
+            return RedirectToAction("Index","Budget");
+        }
+        
+        public int ConvertMonthToInt(string monthName)
+        {
+            switch (monthName)
+            {
+                case "January": return 1;
+                case "February": return 2;
+                case "March": return 3;
+                case "April": return 4;
+                case "May": return 5;
+                case "June": return 6;
+                case "July": return 7;
+                case "August": return 8;
+                case "September": return 9;
+                case "October": return 10;
+                case "November": return 11;
+                case "December": return 12;
+                default: return 0;
+            }
         }
 
         [Authorize]

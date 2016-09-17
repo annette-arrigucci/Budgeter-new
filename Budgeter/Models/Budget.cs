@@ -11,6 +11,8 @@ namespace Budgeter.Models
         public int Id { get; set; }
         [Required(ErrorMessage ="Name is required")]
         public string Name { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
         [Required]
         [Display(Name = "Household")]
         public int HouseholdId { get; set; }
