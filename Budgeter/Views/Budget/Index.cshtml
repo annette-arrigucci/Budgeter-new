@@ -3,6 +3,7 @@
     ViewBag.Title = "Index";
 }
 <link rel="stylesheet" href="~/JQuery-UI/jquery-ui.min.css">
+<link rel="stylesheet" href="~/Content/transaction-form-style.css">
 
 <h2>Select Budget</h2>
 <div class="row">
@@ -14,12 +15,31 @@
 
 @section Scripts{
     <script src="~/JQuery-UI/jquery-ui.min.js"></script>
+    <!--found this code on StackOverflow-->
     <script>
-    $(function() {
-		$( "#datepicker" ).datepicker({
-			changeMonth: true,
-			changeYear: true
-		});
-    } );
+        $(function () {
+            var d = new Date();
+            var month = d.getMonth();
+            var min = "-" + month + "m";
+            $('#datepicker').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+                dateFormat: 'MM yy',
+                minDate: min,
+                maxDate: "+1y",
+                onClose: function (dateText, inst) {
+                    function isDonePressed() {
+                        return ($('#ui-datepicker-div').html().indexOf('ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover') > -1);
+                    }
+                    if (isDonePressed()) {
+                        var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                        $(this).datepicker('setDate', new Date(year, month, 1));
+                        console.log('Done is pressed')
+                    }
+                }
+            });
+        });
     </script>
 }
