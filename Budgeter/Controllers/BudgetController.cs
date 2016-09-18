@@ -17,8 +17,10 @@ namespace Budgeter.Controllers
         [AuthorizeHouseholdRequired]
         public ActionResult Index()
         {
-            ViewBag.HouseholdId = User.Identity.GetHouseholdId();
-            return View();
+            var hId = User.Identity.GetHouseholdId();
+            ViewBag.HouseholdId = hId;
+            var budgets = db.Budgets.Where(x => x.HouseholdId == hId);
+            return View(budgets);
         }
 
         // POST: Budget
