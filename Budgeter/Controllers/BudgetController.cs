@@ -23,6 +23,56 @@ namespace Budgeter.Controllers
             return View(budgets);
         }
 
+        [Authorize]
+        [AuthorizeHouseholdRequired]
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Budget not found" });
+            }
+            Budget budget = db.Budgets.Find(id);
+            if (budget == null)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Budget not found" });
+            }
+            var budgetHousehold = budget.HouseholdId;
+            //check if the user is authorized to view this budget
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            if (user.HouseholdId != budgetHousehold)
+            {
+                return RedirectToAction("Index", "Errors", new { errorMessage = "Not authorized" });
+            }
+
+            //send the model to the view - create lists of the income and expense items
+            var indexModel = new BudgetItemsIndexViewModel();
+            var budgetItems = budget.BudgetItems.ToList();
+            var incomeItems = new List<BudgetItem>();
+            var expenseItems = new List<BudgetItem>();
+
+            foreach (var b in budgetItems)
+            {
+                var categoryId = b.CategoryId;
+                var category = db.Categories.Find(categoryId);
+                if(category.Type  == "Income")
+                {
+                    incomeItems.Add(b);
+                }
+                else if(category.Type == "Expense")
+                {
+                    expenseItems.Add(b);
+                }
+            }
+            indexModel.IncomeItems = incomeItems;
+            indexModel.ExpenseItems = expenseItems;
+            
+            //create the model for a new budget item here
+
+
+            return View(budgets);
+        }
+
         // POST: Budget
         [HttpPost]
         [ValidateAntiForgeryToken]
