@@ -68,5 +68,21 @@ namespace Budgeter.Models
             }
             return true;
         }
+        public List<Category> GetIncomeCategories(int id)
+        {
+            //var categoryEntries = db.CategoryHouseholds.Where(x => x.HouseholdId == id).ToList();
+            //var categories = new List<Category>();
+            //foreach(var c in categoryEntries)
+            //{
+            //    db.Categories.Find(c.CategoryId);
+            //}
+            var incomeCategories = db.Categories.Where(x => x.CategoryHouseholds.Any(y => y.HouseholdId == id)).Where(x => x.Type == "Income").ToList();
+            return incomeCategories;
+        }
+        public List<Category> GetExpenseCategories(int id)
+        {
+            var expenseCategories = db.Categories.Where(x => x.CategoryHouseholds.Any(y => y.HouseholdId == id)).Where(x => x.Type == "Expense").ToList();
+            return expenseCategories;
+        }
     }
 }

@@ -16,8 +16,14 @@ namespace Budgeter.Models
         [Display(Name = "Category")]
         public string[] ExpenseCategories { get; set; }
         [Required]
+        [Display(Name = "Type")]
+        public string Type { get; set; }
+        [Required]
         [Display(Name = "Category")]
         public string CategoryName { get; set; }
+        [Required]
+        [Display(Name = "Description")]
+        public string Description { get; set; }
         [Required]
         [Range(typeof(decimal), "0.00", "1000000.00")]
         public Decimal Amount { get; set; }

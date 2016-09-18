@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace Budgeter.Controllers
 {
-    public class BudgetController : Controller
+    public class BudgetsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -66,11 +66,31 @@ namespace Budgeter.Controllers
             }
             indexModel.IncomeItems = incomeItems;
             indexModel.ExpenseItems = expenseItems;
-            
+
             //create the model for a new budget item here
+            var createModel = new BudgetItemCreateViewModel();
+            var helper = new CategoryHouseholdHelper();
+            createModel.BudgetId = (int)id;
+            var expCategories = helper.GetExpenseCategories(budgetHousehold);
+            createModel.ExpenseCategories = new string[expCategories.Count];
+            int i = 0;
+            foreach(var exp in expCategories)
+            {
+                createModel.ExpenseCategories[i] = exp.Name;
+                i++;
+            }
+            var incCategories = helper.GetIncomeCategories(budgetHousehold);
+            createModel.IncomeCategories = new string[incCategories.Count];
+            int j = 0;
+            foreach (var inc in incCategories)
+            {
+                createModel.IncomeCategories[j] = inc.Name;
+                j++;
+            }
+            createModel.IsRepeating = false;
+            ViewBag.CreateModel = createModel;
 
-
-            return View(budgets);
+            return View(indexModel);
         }
 
         // POST: Budget

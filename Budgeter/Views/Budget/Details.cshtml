@@ -1,4 +1,5 @@
 ﻿@model Budgeter.Models.BudgetItemsIndexViewModel
+@using Budgeter.Models
 @{
     ViewBag.Title = "Details";
 }
@@ -19,18 +20,23 @@
         </div>
         <div class="col-lg-4">
             <div id="form-placeholder">
+                @{ 
+                    var createItemModel = new BudgetItemCreateViewModel();
+                    createItemModel = ViewBag.CreateModel;
+                }
+                @Html.Partial("_CreateBudgetItem", createItemModel)
            </div>
         </div>
     </div>
 </div>
 @section scripts{
     <script type="text/javascript">
-    $(document).ready(function () {
-        $(".delete").click(function () {
-            $("#restore-transaction-placeholder").empty();
-            var myId = $(this).attr('id');
-            $("#restore-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_RestoreTransaction" });
-        });
+    //$(document).ready(function () {
+    //    $(".delete").click(function () {
+    //        $("#restore-transaction-placeholder").empty();
+    //        var myId = $(this).attr('id');
+    //        $("#restore-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_RestoreTransaction" });
+    //    });
 });
     </script>
 }
