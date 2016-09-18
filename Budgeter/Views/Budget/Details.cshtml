@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+@model IEnumerable<Budgeter.Models.TransactionsIndexViewModel>
+@using Budgeter.Models
+<link href="~/Content/transaction-form-style.css" rel="stylesheet">
+@{
+    ViewBag.Title = "Voided Transactions";
+}
+<h2>Voided Transactions - @ViewBag.AccountName</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <table class="table">
+                <tr>
+                    <th></th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.AccountId)
+                        </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Category)
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.DateEntered)
+                        </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </th>               
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsRecurring)
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.SpentById)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsReconciled)
+                        </th>*@
+                </tr>
+                @foreach (var item in Model)
+            {
+                    <tr>
+                        <td>
+                            @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                                @Html.ActionLink("Void", "Void", new { id = item.Id })*@
+                            @*<button class="restore btn btn-default" data-val=@item.Id>Restore</button>*@
+                            @*<button class="delete btn btn-default" data-val=@item.Id>Delete</button>*@
+                            @*<button class="void btn btn-default" data-val=@item.Id>Void</button>*@
+                            <a href="#" id="@item.Id" class="delete">Delete</a>
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.AccountId)
+                            </td>*@
+                        
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Description)*@
+                            @Html.DisplayFor(modelItem => item.Description)
+                            @*<a href="#" id="@item.Id" class="details">@item.Description</a>*@
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsRecurring)
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+        <div class="col-lg-4">
+            <div id="form-placeholder">
+           </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $(".delete").click(function () {
+            $("#restore-transaction-placeholder").empty();
+            var myId = $(this).attr('id');
+            $("#restore-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_RestoreTransaction" });
+        });
+});
+    </script>
+}

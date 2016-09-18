@@ -335,6 +335,7 @@
     <Content Include="Views\Shared\_AddIncomeCategory.cshtml" />
     <Content Include="Views\Budget\Index.cshtml" />
     <Content Include="Views\Shared\_CreateBudget.cshtml" />
+    <Content Include="Views\Budget\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
