@@ -11,10 +11,6 @@ namespace Budgeter.Models
         public int Id { get; set; }
         [Display(Name = "Budget")]
         public int BudgetId { get; set; }
-        [Display(Name = "Category")]
-        public string[] IncomeCategories { get; set; }
-        [Display(Name = "Category")]
-        public string[] ExpenseCategories { get; set; }
         [Required]
         [Display(Name = "Type")]
         public string Type { get; set; }

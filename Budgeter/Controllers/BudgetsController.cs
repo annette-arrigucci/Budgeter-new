@@ -69,28 +69,71 @@ namespace Budgeter.Controllers
 
             //create the model for a new budget item here
             var createModel = new BudgetItemCreateViewModel();
-            var helper = new CategoryHouseholdHelper();
             createModel.BudgetId = (int)id;
-            var expCategories = helper.GetExpenseCategories(budgetHousehold);
-            createModel.ExpenseCategories = new string[expCategories.Count];
-            int i = 0;
-            foreach(var exp in expCategories)
-            {
-                createModel.ExpenseCategories[i] = exp.Name;
-                i++;
-            }
-            var incCategories = helper.GetIncomeCategories(budgetHousehold);
-            createModel.IncomeCategories = new string[incCategories.Count];
-            int j = 0;
-            foreach (var inc in incCategories)
-            {
-                createModel.IncomeCategories[j] = inc.Name;
-                j++;
-            }
+            //var helper = new CategoryHouseholdHelper();
+            //
+            //var expCategories = helper.GetExpenseCategories(budgetHousehold);
+            //createModel.ExpenseCategories = new string[expCategories.Count];
+            //int i = 0;
+            //foreach(var exp in expCategories)
+            //{
+            //    createModel.ExpenseCategories[i] = exp.Name;
+            //    i++;
+            //}
+            //var incCategories = helper.GetIncomeCategories(budgetHousehold);
+            //createModel.IncomeCategories = new string[incCategories.Count];
+            //int j = 0;
+            //foreach (var inc in incCategories)
+            //{
+            //    createModel.IncomeCategories[j] = inc.Name;
+            //    j++;
+            //}
             createModel.IsRepeating = false;
             ViewBag.CreateModel = createModel;
 
             return View(indexModel);
+        }
+
+        //return a JSON objects with this household's expense categories
+        public ActionResult ExpenseSearch(string term)
+        {
+            // Get tags from database
+            var helper = new CategoryHouseholdHelper();
+
+            var expCategories = helper.GetExpenseCategories((int)User.Identity.GetHouseholdId());
+            var tags = new string[expCategories.Count];
+            int i = 0;
+            foreach (var exp in expCategories)
+            {
+                tags[i] = exp.Name;
+                i++;
+            }
+            //string[] tags = { "ASP.NET", "WebForms",
+            //    "MVC", "jQuery", "ActionResult",
+            //    "MangoDB", "Java", "Windows" };
+            return this.Json(tags.Where(t => t.StartsWith(term)),
+                           JsonRequestBehavior.AllowGet);
+        }
+
+        //return a JSON objects with this household's income categories
+        public ActionResult IncomeSearch(string term)
+        {
+            // Get tags from database
+            var helper = new CategoryHouseholdHelper();
+
+            var incCategories = helper.GetExpenseCategories((int)User.Identity.GetHouseholdId());
+            var tags = new string[incCategories.Count];
+            int i = 0;
+            foreach (var inc in incCategories)
+            {
+                tags[i] = inc.Name;
+                i++;
+            }
+            //string[] tags = { "ASP.NET", "WebForms",
+            //    "MVC", "jQuery", "ActionResult",
+            //    "MangoDB", "Java", "Windows" };
+            return this.Json(tags.Where(t => t.StartsWith(term)),
+                           JsonRequestBehavior.AllowGet);
         }
 
         // POST: Budget

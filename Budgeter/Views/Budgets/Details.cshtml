@@ -33,17 +33,23 @@
 @section scripts{
     <script src="~/JQuery-UI/jquery-ui.min.js"></script>
     <script type="text/javascript">
-        $('#categoryselect').click(function() {
-            if($('#radio-income').is(':checked')) { alert("income checked"); }
+
+        @*$('#categoryselect').click(function() {
+            if ($('#radio-income').is(':checked'))
+            {
+                $("#categoryselect").autocomplete({
+                    source: '@Url.Action("IncomeSearch")'
+                });
+            }
         });
         $('#categoryselect').click(function () {
-            if ($('#radio-expense').is(':checked')) { alert("expense checked"); }
-        });
-    </script>
-    <script type="text/javascript">
-       $("#categoryselect").autocomplete({
-            source: [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ]
-        });
+            if ($('#radio-expense').is(':checked'))
+            {
+                $("#categoryselect").autocomplete({
+                    source: '@Url.Action("ExpenseSearch")'
+                });
+            }
+        });*@
 
     //$(document).ready(function () {
     //    $(".delete").click(function () {
