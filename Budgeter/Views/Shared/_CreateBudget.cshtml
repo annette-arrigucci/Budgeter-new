@@ -2,7 +2,7 @@
 
 <div>
     <h4>Create New</h4>
-    @using (Html.BeginForm("Create", "Budget", FormMethod.Post))
+    @using (Html.BeginForm("Create", "Budgets", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.HouseholdId)
@@ -20,3 +20,4 @@
             </div>     
         </div>
     }
+</div>

@@ -4,6 +4,7 @@
     ViewBag.Title = "Details";
 }
 
+<link rel="stylesheet" href="~/JQuery-UI/jquery-ui.min.css">
 <link href="~/Content/transaction-form-style.css" rel="stylesheet">
 
 <h2>@ViewBag.BudgetName</h2>
@@ -30,13 +31,25 @@
     </div>
 </div>
 @section scripts{
+    <script src="~/JQuery-UI/jquery-ui.min.js"></script>
     <script type="text/javascript">
+        $('#categoryselect').click(function() {
+            if($('#radio-income').is(':checked')) { alert("income checked"); }
+        });
+        $('#categoryselect').click(function () {
+            if ($('#radio-expense').is(':checked')) { alert("expense checked"); }
+        });
+    </script>
+    <script type="text/javascript">
+       $("#categoryselect").autocomplete({
+            source: [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ]
+        });
+
     //$(document).ready(function () {
     //    $(".delete").click(function () {
     //        $("#restore-transaction-placeholder").empty();
     //        var myId = $(this).attr('id');
     //        $("#restore-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_RestoreTransaction" });
     //    });
-});
-    </script>
+</script>
 }

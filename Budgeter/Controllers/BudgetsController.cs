@@ -155,7 +155,7 @@ namespace Budgeter.Controllers
             //    return RedirectToAction("Index", "Errors", new { errorMessage = "Budget name must be month and year" });
             //}
             //if budget already exists for this month, don't create it again
-            if(db.Budgets.Where(x => x.Month == budget.Month).Where(x => x.Year == budget.Year).Any())
+            if(db.Budgets.Where(x => x.HouseholdId == budget.HouseholdId).Where(x => x.Month == budget.Month).Where(x => x.Year == budget.Year).Any())
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Budget already exists for month" });
             }
@@ -163,7 +163,7 @@ namespace Budgeter.Controllers
             db.Budgets.Add(budget);
             db.SaveChanges();
 
-            return RedirectToAction("Index","Budget");
+            return RedirectToAction("Index","Budgets");
         }
         
         public int ConvertMonthToInt(string monthName)
@@ -322,7 +322,7 @@ namespace Budgeter.Controllers
             {
                 helper.RemoveAssignment(model.HouseholdId, m);
             }
-            return RedirectToAction("EditCategories", "Budget", new { id = model.HouseholdId });
+            return RedirectToAction("EditCategories", "Budgets", new { id = model.HouseholdId });
         }
 
         [HttpPost]
@@ -357,7 +357,7 @@ namespace Budgeter.Controllers
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Category entry not able to be added" });
             }
-            return RedirectToAction("EditCategories", "Budget", new { id = model.HouseholdId });
+            return RedirectToAction("EditCategories", "Budgets", new { id = model.HouseholdId });
         }
     }
 }

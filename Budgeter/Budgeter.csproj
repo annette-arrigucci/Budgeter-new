@@ -333,12 +333,12 @@
     <Content Include="Views\Shared\_VoidTransaction.cshtml" />
     <Content Include="Views\Transactions\VoidedTransactions.cshtml" />
     <Content Include="Views\Shared\_RestoreTransaction.cshtml" />
-    <Content Include="Views\Budget\EditCategories.cshtml" />
+    <Content Include="Views\Budgets\EditCategories.cshtml" />
     <Content Include="Views\Shared\_AddExpenseCategory.cshtml" />
     <Content Include="Views\Shared\_AddIncomeCategory.cshtml" />
-    <Content Include="Views\Budget\Index.cshtml" />
+    <Content Include="Views\Budgets\Index.cshtml" />
     <Content Include="Views\Shared\_CreateBudget.cshtml" />
-    <Content Include="Views\Budget\Details.cshtml" />
+    <Content Include="Views\Budgets\Details.cshtml" />
     <Content Include="Views\Shared\_CreateBudgetItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
