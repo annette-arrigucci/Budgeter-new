@@ -199,34 +199,53 @@
         });
 
         //limit date of transaction to one year past and three months in the future
-        $("#transaction-datepicker").datepicker({
-            dateFormat: "yy-mm-dd",
-            changeYear: true,
-            changeMonth: true,
-            minDate: "-1y",
-            maxDate: "+3m"
-        });
+        //$("#transaction-datepicker").datepicker({
+        //    dateFormat: "yy-mm-dd",
+        //    changeYear: true,
+        //    changeMonth: true,
+        //    minDate: "-1y",
+        //    maxDate: "+3m"
+        //});
 
-        $("#transaction-edit-datepicker").datepicker({
-            dateFormat: "yy-mm-dd",
-            changeYear: true,
-            changeMonth: true,
-            minDate: "-1y",
-            maxDate: "+3m"
-        });
+        //$("#transaction-edit-datepicker").datepicker({
+        //    dateFormat: "yy-mm-dd",
+        //    changeYear: true,
+        //    changeMonth: true,
+        //    minDate: "-1y",
+        //    maxDate: "+3m"
+        //});
 
-        $(document).ajaxStop(function () {
-            // debugger;
-            $("#transaction-datepicker").datepicker(
-                {
+        //$(document).ajaxStop(function () {
+        //    // debugger;
+        //    $("#transaction-datepicker").datepicker(
+        //        {
+        //            dateFormat: "yy-mm-dd",
+        //            changeYear: true,
+        //            changeMonth: true,
+        //            minDate: "-1y",
+        //            maxDate: "+3m"
+        //        });
+        //});
+
+            $(document).on('focus', '#transaction-datepicker', function () {
+                $(this).datepicker({
                     dateFormat: "yy-mm-dd",
                     changeYear: true,
                     changeMonth: true,
                     minDate: "-1y",
                     maxDate: "+3m"
                 });
-        });
+            });
 
+            $(document).on('focus', '#transaction-edit-datepicker', function () {
+                $(this).datepicker({
+                    dateFormat: "yy-mm-dd",
+                    changeYear: true,
+                    changeMonth: true,
+                    minDate: "-1y",
+                    maxDate: "+3m"
+                });
+            });
 });
 </script>
 }
