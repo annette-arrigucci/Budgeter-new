@@ -20,5 +20,11 @@ namespace Budgeter.Models
         public Decimal Amount { get; set; }
         [Display(Name = "Repeats every month")]
         public bool IsRepeating { get; set; }
+        [Required]
+        [Display(Name = "Type")]
+        public string Type { get; set; }
+        [Required]
+        [Display(Name = "Description")]
+        public string Description { get; set; }
     }
 }
