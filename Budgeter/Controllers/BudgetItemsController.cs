@@ -108,7 +108,7 @@ namespace Budgeter.Controllers
                 db.BudgetItems.Remove(budgetItem);
                 db.SaveChanges();
 
-                return RedirectToAction("Details", "Budget", new { id = budgetItem.BudgetId });
+                return RedirectToAction("Details", "Budgets", new { id = budgetItem.BudgetId });
             }
             return RedirectToAction("Index", "Errors", new { errorMessage = "Error in deleting budget item" });
         }

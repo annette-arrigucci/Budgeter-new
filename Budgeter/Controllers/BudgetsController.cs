@@ -50,6 +50,8 @@ namespace Budgeter.Controllers
             var budgetItems = budget.BudgetItems.ToList();
             var incomeItems = new List<BudgetItemViewModel>();
             var expenseItems = new List<BudgetItemViewModel>();
+            Decimal incomeItemsTotal = 0;
+            Decimal expenseItemsTotal = 0;
 
             foreach (var b in budgetItems)
             {
@@ -57,11 +59,13 @@ namespace Budgeter.Controllers
                 var category = db.Categories.Find(categoryId);
                 if(category.Type  == "Income")
                 {
+                    incomeItemsTotal += b.Amount;
                     var incItem = ConvertBudgetItemToDisplay(b);
                     incomeItems.Add(incItem);
                 }
                 else if(category.Type == "Expense")
                 {
+                    expenseItemsTotal += b.Amount;
                     var expItem = ConvertBudgetItemToDisplay(b);
                     expenseItems.Add(expItem);
                 }
@@ -72,28 +76,12 @@ namespace Budgeter.Controllers
             //create the model for a new budget item here
             var createModel = new BudgetItemViewModel();
             createModel.BudgetId = (int)id;
-            //var helper = new CategoryHouseholdHelper();
-            //
-            //var expCategories = helper.GetExpenseCategories(budgetHousehold);
-            //createModel.ExpenseCategories = new string[expCategories.Count];
-            //int i = 0;
-            //foreach(var exp in expCategories)
-            //{
-            //    createModel.ExpenseCategories[i] = exp.Name;
-            //    i++;
-            //}
-            //var incCategories = helper.GetIncomeCategories(budgetHousehold);
-            //createModel.IncomeCategories = new string[incCategories.Count];
-            //int j = 0;
-            //foreach (var inc in incCategories)
-            //{
-            //    createModel.IncomeCategories[j] = inc.Name;
-            //    j++;
-            //}
             createModel.IsRepeating = false;
             ViewBag.CreateModel = createModel;
             ViewBag.BudgetName = budget.Name;
             ViewBag.BudgetId = budget.Id;
+            ViewBag.ExpensesTotal = expenseItemsTotal;
+            ViewBag.IncomesTotal = incomeItemsTotal;
 
             return View(indexModel);
         }

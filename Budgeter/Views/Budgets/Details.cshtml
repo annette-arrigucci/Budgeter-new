@@ -9,6 +9,24 @@
 
 <h2>@ViewBag.BudgetName</h2>
 <div class="container">
+    <div class="row">   
+        <div class="col-lg-5">
+            <h4>
+                @*@Html.ActionLink("Create New", "Create")*@
+                Budget totals: Income @ViewBag.IncomesTotal            
+                @Html.Raw(" | ")
+                Expenses @ViewBag.ExpensesTotal
+            </h4>
+        </div>
+        <div class="col-lg-7">
+            <h4>
+                @if (ViewBag.ExpensesTotal > ViewBag.IncomesTotal)
+                {
+                    <span class="overdrawn">Warning: Budgeted expenses exceed income</span>
+                }
+            </h4>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-8">
             <br />
