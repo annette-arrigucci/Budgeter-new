@@ -121,7 +121,7 @@ namespace Budgeter.Controllers
             // Get tags from database
             var helper = new CategoryHouseholdHelper();
 
-            var incCategories = helper.GetExpenseCategories((int)User.Identity.GetHouseholdId());
+            var incCategories = helper.GetIncomeCategories((int)User.Identity.GetHouseholdId());
             var tags = new string[incCategories.Count];
             int i = 0;
             foreach (var inc in incCategories)
