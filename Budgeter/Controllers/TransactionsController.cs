@@ -146,7 +146,15 @@ namespace Budgeter.Controllers
                 transaction.AccountId = model.AccountId;
                 transaction.Description = model.Description;
                 transaction.DateEntered = DateTime.Now;
-                transaction.DateSpent = model.DateSpent;
+                //check if the date entered has a valid year - within one year before or after the transaction was recorded
+                if((model.DateSpent.Year < (transaction.DateEntered.Year - 1))||(model.DateSpent.Year > (transaction.DateEntered.Year + 1)))
+                {
+                    return RedirectToAction("Index", "Errors", new { errorMessage = "Error in recording transaction" });
+                }
+                else
+                {
+                    transaction.DateSpent = model.DateSpent;
+                }              
                 transaction.Amount = model.Amount;
                 transaction.Type = model.Type;
                 transaction.CategoryId = model.SelectedCategory;
@@ -171,7 +179,7 @@ namespace Budgeter.Controllers
                 account.UpdateReconciledAccountBalance();
                 return RedirectToAction("Index", new { id = model.AccountId });
             }
-            return RedirectToAction("Index", new { id = model.AccountId });
+            return RedirectToAction("Index", "Errors", new { errorMessage = "Error in recording transaction" });
         }
 
         public ActionResult GetCreateView(int accountId)

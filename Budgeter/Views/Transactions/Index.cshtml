@@ -2,8 +2,8 @@
 @using Budgeter.Models
 
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+<link rel="stylesheet" href="~/JQuery-UI/jquery-ui.min.css">
 <link href="~/Content/transaction-form-style.css" rel="stylesheet">
-
 
 @{
     ViewBag.Title = "Index";
@@ -156,10 +156,31 @@
 </div>
 @section scripts{
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+<script src="~/JQuery-UI/jquery-ui.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#transactions-table').DataTable();
+
+        //$("#datepicker").datepicker({
+        //    dateFormat: "yy-mm-dd",
+        //    changeYear: true,
+        //    showOn: "button",
+        //    minDate: "-1m",
+        //    maxDate: "+1y"
+        //}).css("display", "inline-block")
+        //.next("button").button({
+        //    icons: { primary: "ui-icon-calendar" },
+        //    label: "Select a date",
+        //    text: false
+        //})
+        $("#transaction-datepicker").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeYear: true,
+            changeMonth: true,
+            minDate: "-1y",
+            maxDate: "+3m"
+        });
 
         $(".edit").click(function () {
             $("#create-view-placeholder").hide();
