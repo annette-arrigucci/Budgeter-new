@@ -42,6 +42,7 @@
             </div>
             <div class="row">
                 <div class="col-md-8 col-md-offset-1">
+                    @*@Html.EditorFor(model => model.DateSpent, new { htmlAttributes = new { @class = "form-control", @id = "transaction-datepicker" } })*@
                     @*@Html.EditorFor(model => model.DateSpent, new { htmlAttributes = new { @class = "form-control" } })*@
                     @*<input class="form-control text-box single-line" data-val="true" data-val-date="The field DateSpent must be a date." data-val-required="The DateSpent field is required." id="DateSpent" name="DateSpent" value=@Model.DateSpent type="date" min="2016-01-01" max="2016-12-31" />*@
                     <input class="form-control text-box single-line" data-val="true" data-val-date="The field DateSpent must be a date." data-val-required="The DateSpent field is required." id="transaction-datepicker" name="DateSpent" />
