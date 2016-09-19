@@ -140,6 +140,18 @@
             }
         });
 
+        $(".delete").click(function () {
+            $("#form-placeholder").empty();
+            var myId = $(this).attr('id');
+            $("#form-placeholder").load("/BudgetItems/GetView", { id: myId, viewName: "_DeleteBudgetItem" });
+        });
+
+        $(".create").click(function () {
+            $("#form-placeholder").empty();
+            var myId = $(this).attr('id');
+            $("#form-placeholder").load("/BudgetItems/GetCreateView", { budgetId: myId });
+        });
+
     //$(document).ready(function () {
     //    $(".delete").click(function () {
     //        $("#restore-transaction-placeholder").empty();

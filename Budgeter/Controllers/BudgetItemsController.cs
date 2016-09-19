@@ -46,37 +46,71 @@ namespace Budgeter.Controllers
                 bItem.IsRepeating = model.IsRepeating;
                 db.BudgetItems.Add(bItem);
                 db.SaveChanges();
-
-                //    var transaction = new Transaction();
-                //    transaction.AccountId = model.AccountId;
-                //    transaction.Description = model.Description;
-                //    transaction.DateEntered = DateTime.Now;
-                //    transaction.DateSpent = model.DateSpent;
-                //    transaction.Amount = model.Amount;
-                //    transaction.Type = model.Type;
-                //    transaction.CategoryId = model.SelectedCategory;
-                //    transaction.EnteredById = User.Identity.GetUserId();
-                //    transaction.SpentById = model.SelectedUser;
-                //    transaction.IsActive = true;
-                //    if (model.Amount == model.ReconciledAmount)
-                //    {
-                //        transaction.IsReconciled = true;
-                //    }
-                //    else transaction.IsReconciled = false;
-                //    transaction.ReconciledAmount = model.ReconciledAmount;
-
-                //    db.Transactions.Add(transaction);
-                //    db.SaveChanges();
-
-                //    var account = db.Accounts.Find(model.AccountId);
-
-                //    //update the account balance
-                //    account.UpdateAccountBalance();
-                //    //update the reconciled balance
-                //    account.UpdateReconciledAccountBalance();
                 return RedirectToAction("Details", "Budgets", new { id = model.BudgetId });
             }
             return RedirectToAction("Details", "Budgets", new { id = model.BudgetId });
           }
+
+        public ActionResult GetCreateView(int budgetId)
+        {
+            //create the object here
+            if (budgetId == null)
+            {
+                RedirectToAction("Index", "Errors", new { errorMessage = "Budget not found" });
+            }
+            var createModel = new BudgetItemViewModel();
+            createModel.BudgetId = budgetId;
+            createModel.IsRepeating = false;
+           
+            return PartialView("_CreateBudgetItem", createModel);
+        }
+
+        public ActionResult GetView(int id, string viewName)
+        {
+            object model = null;
+            if (viewName == "_DeleteBudgetItem")
+            {
+                if (id == null)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Budget item not found" });
+                }
+                BudgetItem budgetItem = db.BudgetItems.Find(id);
+                if (budgetItem == null)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Budget item not found" });
+                }
+                var bModel = new BudgetItemViewModel();
+                bModel.Id = budgetItem.Id;
+                bModel.BudgetId = budgetItem.BudgetId;
+                bModel.Type = budgetItem.Type;
+                var category = db.Categories.Find(budgetItem.CategoryId);
+                bModel.CategoryName = category.Name;
+                bModel.Description = budgetItem.Description;
+                bModel.Amount = budgetItem.Amount;
+                bModel.IsRepeating = budgetItem.IsRepeating;
+                model = bModel;
+            }
+            return PartialView(viewName, model);
+        }
+
+        // POST: Form posted in partial view
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                BudgetItem budgetItem = db.BudgetItems.Find(id);
+                if (budgetItem == null)
+                {
+                    RedirectToAction("Index", "Errors", new { errorMessage = "Budget item not found" });
+                }
+                db.BudgetItems.Remove(budgetItem);
+                db.SaveChanges();
+
+                return RedirectToAction("Details", "Budget", new { id = budgetItem.BudgetId });
+            }
+            return RedirectToAction("Index", "Errors", new { errorMessage = "Error in deleting budget item" });
+        }
     }
 }
