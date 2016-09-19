@@ -149,7 +149,7 @@ namespace Budgeter.Controllers
                 //check if the date entered has a valid year - within one year before or after the transaction was recorded
                 if((model.DateSpent.Year < (transaction.DateEntered.Year - 1))||(model.DateSpent.Year > (transaction.DateEntered.Year + 1)))
                 {
-                    return RedirectToAction("Index", "Errors", new { errorMessage = "Error in recording transaction" });
+                    return RedirectToAction("Index", "Errors", new { errorMessage = "Transaction date out of range" });
                 }
                 else
                 {
@@ -327,6 +327,15 @@ namespace Budgeter.Controllers
                 transaction.AccountId = tevModel.AccountId;
                 transaction.Description = tevModel.Description;
                 transaction.DateEntered = tevModel.DateEntered;
+                //check if the date entered has a valid year - within one year before or after the transaction was recorded
+                if ((tevModel.DateSpent.Year < (transaction.DateEntered.Year - 1)) || (tevModel.DateSpent.Year > (transaction.DateEntered.Year + 1)))
+                {
+                    return RedirectToAction("Index", "Errors", new { errorMessage = "Transaction date out of range" });
+                }
+                else
+                {
+                    transaction.DateSpent = tevModel.DateSpent;
+                }
                 transaction.DateSpent = tevModel.DateSpent;
                 transaction.Amount = tevModel.Amount;
                 transaction.Type = tevModel.Type;
