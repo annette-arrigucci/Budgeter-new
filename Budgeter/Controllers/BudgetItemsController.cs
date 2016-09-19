@@ -53,16 +53,16 @@ namespace Budgeter.Controllers
 
         public ActionResult GetCreateView(int budgetId)
         {
-            //create the object here
             if (budgetId == null)
             {
                 RedirectToAction("Index", "Errors", new { errorMessage = "Budget not found" });
             }
-            var createModel = new BudgetItemViewModel();
-            createModel.BudgetId = budgetId;
-            createModel.IsRepeating = false;
-           
-            return PartialView("_CreateBudgetItem", createModel);
+            //var createModel = new BudgetItemViewModel();
+            //createModel.BudgetId = budgetId;
+            //createModel.IsRepeating = false;
+
+            //return PartialView("_CreateBudgetItem", createModel);
+            return View("Details", "Budgets", new { id = budgetId });
         }
 
         public ActionResult GetView(int id, string viewName)

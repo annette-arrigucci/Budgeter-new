@@ -31,7 +31,8 @@
         <div class="col-lg-8">
             <br />
             <p>
-                <a href="#" class="create" id="@ViewBag.BudgetId">Create Budget Item</a>
+                @*<a href="#" class="create" id="@ViewBag.BudgetId">Create Budget Item</a>*@
+                @Html.ActionLink("Create Budget Item", "Details", "Budgets", new { id = ViewBag.BudgetId }, null)
             </p>
             <br />
             <h4>Income</h4>
@@ -164,11 +165,11 @@
             $("#form-placeholder").load("/BudgetItems/GetView", { id: myId, viewName: "_DeleteBudgetItem" });
         });
 
-        $(".create").click(function () {
-            $("#form-placeholder").empty();
-            var myId = $(this).attr('id');
-            $("#form-placeholder").load("/BudgetItems/GetCreateView", { budgetId: myId });
-        });
+        //$(".create").click(function () {
+        //    $("#form-placeholder").empty();
+        //    var myId = $(this).attr('id');
+        //    $("#form-placeholder").load("/BudgetItems/GetCreateView", { budgetId: myId });
+        //});
 
     //$(document).ready(function () {
     //    $(".delete").click(function () {
