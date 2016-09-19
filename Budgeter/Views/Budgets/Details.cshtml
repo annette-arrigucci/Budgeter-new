@@ -11,10 +11,42 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8">
-            <table class="table">
-              
-
+            <h4>Income</h4>
+            @*<table class="table">
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => modelItem.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IncomeItems.Category)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IncomeItems.Amount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsRepeating)
+                    </th>
+                </tr>
+                @foreach (var item in Model.IncomeItems)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayNameFor(model => item.IsRepeating)
+                        </td>
+                    </tr>
+                }*@
             </table>
+            <h4>Expenses</h4>
             <table class="table">
 
             </table>

@@ -90,6 +90,7 @@ namespace Budgeter.Controllers
             //}
             createModel.IsRepeating = false;
             ViewBag.CreateModel = createModel;
+            ViewBag.BudgetName = budget.Name;
 
             return View(indexModel);
         }

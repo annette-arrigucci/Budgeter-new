@@ -1,6 +1,9 @@
 ﻿@model Budgeter.Models.EditCategoriesViewModel
 @using Budgeter.Models
 
+<link rel="stylesheet" href="~/Content/form-style.css">
+<link rel="stylesheet" href="~/Content/transaction-form-style.css">
+
 @{
     ViewBag.Title = "Edit Categories";
 }
@@ -64,6 +67,7 @@
      }
         
             @Html.Partial("_AddIncomeCategory", incomeModel)
+            <br />
             <br />
             <br />
             @Html.Partial("_AddExpenseCategory", expenseModel)                    

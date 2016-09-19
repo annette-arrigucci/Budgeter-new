@@ -1,4 +1,6 @@
 ﻿@model Budgeter.Models.BudgetItemCreateViewModel
+@using Budgeter.Models
+
 @using (Html.BeginForm("Create", "BudgetItems", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
@@ -33,11 +35,13 @@
                 <div class="form-group">
                     <div class="row">
                         @Html.Label("Category", htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+                        
                     </div>
                     <div class="row">
                         <div class="col-md-8 col-md-offset-1">
                             <input class="text-box single-line form-control" data-val="true" data-val-required="Category is required" id="categoryselect" name="CategoryName" type="text" value="" />
-                        </div>
+                            @Html.ActionLink("Edit Categories", "EditCategories", "Budgets", new { id = User.Identity.GetHouseholdId() }, null)
+                        </div>               
                     </div>
                 </div>
                 <div class="form-group">

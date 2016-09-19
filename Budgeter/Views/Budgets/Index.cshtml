@@ -6,52 +6,50 @@
 <link rel="stylesheet" href="~/JQuery-UI/jquery-ui.min.css">
 <link rel="stylesheet" href="~/Content/form-style.css">
 <link rel="stylesheet" href="~/Content/transaction-form-style.css">
-<div class="row">
-    <div class="col-md-4 col-md-offset-1">
-        <h2>Select Budget</h2>
+
+<h2>Select Budget</h2>
+<div class="container">
+    <div class="row">
+                <div class="col-md-4">
+                    @foreach (var item in Model)
+                    {
+                        <h4>@Html.ActionLink(item.Name, "Details", "Budgets", new { id = item.Id }, null)</h4>
+                        @Html.Raw("<br>")
+                    }
+                </div>
+                <div class="col-md-6">
+                    @Html.Partial("_CreateBudget", new Budget { HouseholdId = ViewBag.HouseholdId })
+                </div>
     </div>
 </div>
-        <div class="row">
-            <div class="col-md-4 col-md-offset-1">
-                @foreach (var item in Model)
-            {
-                    @Html.ActionLink(item.Name, "Details", "Budgets", new { id = item.Id }, null)
-                    @Html.Raw("<br>")
-                }
-            </div>
-            <div class="col-md-6">
-                @Html.Partial("_CreateBudget", new Budget { HouseholdId = ViewBag.HouseholdId })
-            </div>
-        </div>
-
-        @section Scripts{
-            <script src="~/JQuery-UI/jquery-ui.min.js"></script>
-            <!--found this code on StackOverflow-->
-            <script>
-                $(function () {
-                    //var d = new Date();
-                    //var month = d.getMonth();
-                    //var min = "-" + month + "m";
-                    $('#datepicker').datepicker({
-                        changeMonth: true,
-                        changeYear: true,
-                        showButtonPanel: true,
-                        dateFormat: 'MM yy',
-                        constrainInput: true,
-                        minDate: "-1m",
-                        maxDate: "+1y",
-                        onClose: function (dateText, inst) {
-                            function isDonePressed() {
-                                return ($('#ui-datepicker-div').html().indexOf('ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover') > -1);
+            @section Scripts{
+                <script src="~/JQuery-UI/jquery-ui.min.js"></script>
+                <!--found this code on StackOverflow-->
+                <script>
+                    $(function () {
+                        //var d = new Date();
+                        //var month = d.getMonth();
+                        //var min = "-" + month + "m";
+                        $('#datepicker').datepicker({
+                            changeMonth: true,
+                            changeYear: true,
+                            showButtonPanel: true,
+                            dateFormat: 'MM yy',
+                            constrainInput: true,
+                            minDate: "-1m",
+                            maxDate: "+1y",
+                            onClose: function (dateText, inst) {
+                                function isDonePressed() {
+                                    return ($('#ui-datepicker-div').html().indexOf('ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover') > -1);
+                                }
+                                if (isDonePressed()) {
+                                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                                    $(this).datepicker('setDate', new Date(year, month, 1));
+                                    console.log('Done is pressed')
+                                }
                             }
-                            if (isDonePressed()) {
-                                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                                $(this).datepicker('setDate', new Date(year, month, 1));
-                                console.log('Done is pressed')
-                            }
-                        }
+                        });
                     });
-                });
-            </script>
-        }
+                </script>
+            }
