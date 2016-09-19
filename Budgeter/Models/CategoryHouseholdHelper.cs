@@ -70,13 +70,17 @@ namespace Budgeter.Models
         }
         public List<Category> GetIncomeCategories(int id)
         {
-            //var categoryEntries = db.CategoryHouseholds.Where(x => x.HouseholdId == id).ToList();
+            var categoryEntries = db.CategoryHouseholds.Where(x => x.HouseholdId == id);
             //var categories = new List<Category>();
             //foreach(var c in categoryEntries)
             //{
             //    db.Categories.Find(c.CategoryId);
             //}
+            //var incomeCategories = from h in db.CategoryHouseholds where h.HouseholdId == id
+            //                       join c in db.Categories on h.CategoryId equals c.Id where c.Type == "Income"
+            //                       select c;
             var incomeCategories = db.Categories.Where(x => x.CategoryHouseholds.Any(y => y.HouseholdId == id)).Where(x => x.Type == "Income").ToList();
+            //db.Categories.Where(x => x.CategoryHouseholds.Any(y => y.HouseholdId == id)).SelectMany(x => x.Categories.Type == "Income").ToList();
             return incomeCategories;
         }
         public List<Category> GetExpenseCategories(int id)

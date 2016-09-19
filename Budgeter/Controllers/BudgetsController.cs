@@ -384,7 +384,7 @@ namespace Budgeter.Controllers
             //if empty string, refresh the page
             if (string.IsNullOrEmpty(model.CategoryName))
             {
-                return RedirectToAction("EditCategories", "Budget", new { id = model.HouseholdId });
+                return RedirectToAction("EditCategories", "Budgets", new { id = model.HouseholdId });
             }
             //call helper method to add the category
             var helper = new CategoryHouseholdHelper();
