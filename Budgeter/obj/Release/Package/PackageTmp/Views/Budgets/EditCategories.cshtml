@@ -1,0 +1,75 @@
+﻿@model Budgeter.Models.EditCategoriesViewModel
+@using Budgeter.Models
+
+<link rel="stylesheet" href="~/Content/form-style.css">
+<link rel="stylesheet" href="~/Content/transaction-form-style.css">
+
+@{
+    ViewBag.Title = "Edit Categories";
+}
+
+<h2>Edit Categories</h2>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.HouseholdId)
+
+            <div class="form-horizontal">
+
+
+                @*using a checkbox list to set budget categories*@
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IncomeCategoriesToSelect, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @for (int i = 0; i < Model.IncomeCategoriesToSelect.Length; i++)
+                {
+                            <p>
+                                @Html.CheckBoxFor(m => Model.IncomeCategoriesToSelect[i].Checked)
+                                @Html.HiddenFor(m => Model.IncomeCategoriesToSelect[i].CategoryName)
+                                @Html.HiddenFor(m => Model.IncomeCategoriesToSelect[i].CategoryId)
+                                @Html.DisplayFor(m => Model.IncomeCategoriesToSelect[i].CategoryName)
+                            </p>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ExpenseCategoriesToSelect, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @for (int i = 0; i < Model.ExpenseCategoriesToSelect.Length; i++)
+                {
+                            <p>
+                                @Html.CheckBoxFor(m => Model.ExpenseCategoriesToSelect[i].Checked)
+                                @Html.HiddenFor(m => Model.ExpenseCategoriesToSelect[i].CategoryName)
+                                @Html.HiddenFor(m => Model.ExpenseCategoriesToSelect[i].CategoryId)
+                                @Html.DisplayFor(m => Model.ExpenseCategoriesToSelect[i].CategoryName)
+                            </p>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-md-6">
+    @{ 
+        var incomeModel = new AddCategoryViewModel { HouseholdId = Model.HouseholdId, Type = "Income" };
+        var expenseModel = new AddCategoryViewModel { HouseholdId = Model.HouseholdId, Type = "Expense" };
+     }
+        
+            @Html.Partial("_AddIncomeCategory", incomeModel)
+            <br />
+            <br />
+            <br />
+            @Html.Partial("_AddExpenseCategory", expenseModel)                    
+  </div>
+</div>

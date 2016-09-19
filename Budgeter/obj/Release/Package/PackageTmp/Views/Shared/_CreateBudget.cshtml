@@ -1,0 +1,23 @@
+﻿@model Budgeter.Models.Budget
+
+<div>
+    <h4>Create New</h4>
+    @using (Html.BeginForm("Create", "Budgets", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.HouseholdId)
+        <div class="form-group">
+            <div class="row">
+                @Html.Label("Select month", htmlAttributes: new { @class = "control-label col-md-7" })
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-1">
+                    <input class="text-box single-line" data-val="true" data-val-required="Name is required" id="datepicker" name="Name" type="text" value="" />       
+                </div>
+            </div>
+            <div class="form-actions no-color">
+                <input type="submit" value="Create Budget" class="btn btn-default" />
+            </div>     
+        </div>
+    }
+</div>

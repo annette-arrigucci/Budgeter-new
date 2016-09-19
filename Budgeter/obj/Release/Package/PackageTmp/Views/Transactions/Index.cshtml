@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<Budgeter.Models.TransactionsIndexViewModel>
 @using Budgeter.Models
 
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
 <link href="~/Content/transaction-form-style.css" rel="stylesheet">
+
 
 @{
     ViewBag.Title = "Index";
@@ -9,7 +11,16 @@
 <h2>@ViewBag.AccountName</h2>
 <div class="container"></div>
 <div class="row">
-    <div class="col-lg-4 col-lg-offset-8">   
+    <div class="col-lg-4">
+        <h4>
+            @*@Html.ActionLink("Create New", "Create")*@
+            @if (ViewBag.Balance < 0)
+            {
+                <span class="overdrawn">Warning: Your account is overdrawn</span>
+            }
+        </h4>
+    </div>
+    <div class="col-lg-4 col-lg-offset-4">   
         <h4>
             @*@Html.ActionLink("Create New", "Create")*@
             Balance: @ViewBag.Balance
@@ -19,103 +30,173 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-3">
        @{ 
            var createModel = new TransactionCreateViewModel();
            createModel = ViewBag.CreateModel;
        }
-        @Html.Partial("_CreateTransaction", createModel)
+        <div id="create-view-placeholder">         
+                @Html.Partial("_CreateTransaction", createModel)           
+        </div>
+        <div id="edit-transaction-placeholder">
+
+        </div>
     </div>
 
-    <div class="col-lg-8">
-    <table class="table">
-        <tr>
-            <th></th>
-            @*<th>
+    <div class="col-lg-9">
+        <br />
+        <p>
+            <a href="#" class="create" id="@ViewBag.AccountId">Create Transaction</a>
+        </p>
+        <br />
+    <table id="transactions-table" class="table">
+        <thead>
+            <tr>
+                <th></th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.AccountId)
                 </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.DateSpent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            @*<th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateSpent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.DateEntered)
                 </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReconciledAmount)
-            </th>
-            @*<th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReconciledAmount)
+                </th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.Type)
                 </th>*@
-
-            <th>
-                @Html.DisplayNameFor(model => model.EnteredBy)
-            </th>
-            @*<th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnteredBy)
+                </th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.SpentById)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.IsReconciled)
                 </th>*@
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-                @*<td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                        @Html.ActionLink("Void", "Void", new { id = item.Id })*@
+                        @*<button class="edit btn btn-default" data-val=@item.Id>Edit</button>
+                        <button class="delete btn btn-default" data-val=@item.Id>Delete</button>
+                        <button class="void btn btn-default" data-val=@item.Id>Void</button>*@
+                        <a href="#" id="@item.Id" class="edit icon-space" title="Edit"><i class="fa fa-pencil"></i></a>
+                        <a href="#" id="@item.Id" class="void icon-space" title="Void"><i class="fa fa-times"></i></a>
+                        <a href="#" id="@item.Id" class="delete icon-space" title="Delete"><i class="fa fa-trash"></i></a>
+                    </td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.AccountId)
                     </td>*@
-                <td>
-                    @item.DateSpent.ToString("M/d/yyyy")
-                </td>
-                @*<td>
+                    <td>
+                        @item.DateSpent.ToString("M/d/yyyy")
+                    </td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.DateEntered)
                     </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Amount)
-                </td>
-                @*<td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Description)*@
+                        @*@Html.ActionLink(item.Description, "Details", new { id = item.Id, @class= "details" })*@
+                        <a href="#" id="@item.Id" class="details">@item.Description</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.Type)
                     </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReconciledAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EnteredBy)
-                </td>
-                @*<td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReconciledAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EnteredBy)
+                    </td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.SpentById)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.IsReconciled)
                     </td>*@
-            </tr>
-        }
-        
+                </tr>
+            }
+        </tbody>
     </table>
     <div class="row">
         <div class="col-lg-4">
             Starting balance: @ViewBag.StartingBalance
         </div>
     </div>
+        <div class="row">
+            <div class="col-lg-4">
+                @Html.ActionLink("Voided Transactions","VoidedTransactions", new { id = ViewBag.AccountId } )
+            </div>
+        </div>
     </div>
 </div>
+@section scripts{
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#transactions-table').DataTable();
+
+        $(".edit").click(function () {
+            $("#create-view-placeholder").hide();
+            $("#edit-transaction-placeholder").empty();
+            var myId = $(this).attr('id');
+            $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_EditTransaction" });
+        });
+
+        $(".details").click(function () {
+            $("#create-view-placeholder").hide();
+            $("#edit-transaction-placeholder").empty();
+            var myId = $(this).attr('id');
+            $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_TransactionDetails" });
+        });
+
+        $(".delete").click(function () {
+            $("#create-view-placeholder").hide();
+            $("#edit-transaction-placeholder").empty();
+            var myId = $(this).attr('id');
+            $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_DeleteTransaction" });
+        });
+
+        $(".void").click(function () {
+            $("#create-view-placeholder").hide();
+            $("#edit-transaction-placeholder").empty();
+            var myId = $(this).attr('id');
+            $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_VoidTransaction" });
+        });
+
+        $(".create").click(function () {
+            $("#create-view-placeholder").show();
+            $("#create-view-placeholder").empty();
+            $("#edit-transaction-placeholder").empty();
+            var myId = $(this).attr('id');
+            $("#create-view-placeholder").load("/Transactions/GetCreateView", { accountId: myId });
+        });
+
+});
+</script>
+}

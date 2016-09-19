@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Budgeter.Models
 {
-    public class BudgetItemCreateViewModel
+    public class BudgetItemViewModel
     {
         public int Id { get; set; }
         [Display(Name = "Budget")]

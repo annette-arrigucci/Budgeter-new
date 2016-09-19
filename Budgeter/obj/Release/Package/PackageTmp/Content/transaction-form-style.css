@@ -1,3 +1,20 @@
 ﻿.form-label {
     text-align: left !important;
 }
+.overdrawn, .confirm-delete, .voided {
+    color: #d33724 !important;
+}
+
+.icon-space {
+    margin-left: 10px;
+}
+
+a.icon-space:link, a.icon-space:visited {
+   color: #333 !important;
+}
+
+table.dataTable tbody td {
+    background-color: #f9fafc !important;
+}
+
+.ui-datepicker-calendar { display: none !important; }

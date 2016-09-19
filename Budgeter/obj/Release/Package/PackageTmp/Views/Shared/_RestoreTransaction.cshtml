@@ -1,0 +1,166 @@
+﻿@model Budgeter.Models.TransactionInfoViewModel
+
+<link href="~/Content/transaction-form-style.css" rel="stylesheet">
+
+<h4>Restore Transaction</h4>
+
+
+<div class="row">
+    <div class="col-md-10">
+        <p class="confirm-delete">Are you sure you want to restore this voided transaction? It will be included in the total for the account.</p>
+    </div>
+</div>
+
+@*<div class="form-group">
+        @Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.AccountId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+@*@if (Model.IsActive == false)
+{
+    <div class="form-group">
+        <div class="row">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "voided control-label col-md-4 col-md-offset-1 form-label" })
+        </div>
+        <div class="row">
+            <div class="col-md-7 col-md-offset-1 voided">
+                Voided
+            </div>
+        </div>
+    </div>
+}*@
+
+<div class="form-group">
+    <div class="row">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-1">
+            @Html.DisplayFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="row">
+        @Html.LabelFor(model => model.DateSpent, htmlAttributes: new { @class = "control-label col-md-7 col-md-offset-1 form-label" })
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-1">
+            @*@Html.DisplayFor(model => model.DateSpent.ToString("M/d/yyyy"), new { htmlAttributes = new { @class = "form-control" } })*@
+            @Model.DateSpent.ToString("M/d/yyyy")
+            @*<input class="form-control text-box single-line" data-val="true" data-val-date="The field DateSpent must be a date." data-val-required="The DateSpent field is required." id="DateSpent" name="DateSpent" value="@Model.DateSpent" type="date" min="2016-01-01" max="2016-12-31" />*@
+        </div>
+    </div>
+</div>
+
+@*<div class="form-group">
+        @Html.LabelFor(model => model.DateSpent, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DateSpent, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DateSpent, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+<div class="form-group">
+    <div class="row">
+        @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-1">
+            @Html.DisplayFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.Raw("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+            @Html.DisplayFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        @*</div>
+            <div class="form-group">*@
+        @*@Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })*@
+
+        @*<div class="col-md-3 not-editable">
+                @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
+                @Model.Type
+            </div>*@
+    </div>
+</div>
+
+
+
+<div class="form-group">
+    <div class="row">
+        @Html.LabelFor(model => model.ReconciledAmount, htmlAttributes: new { @class = "control-label col-md-7 col-md-offset-1 form-label" })
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-1">
+            @Html.DisplayFor(model => model.ReconciledAmount, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="row">
+        @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-1">
+            @Html.DisplayFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <div class="row">
+        @Html.LabelFor(model => model.SpentByName, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-1">
+            @Html.DisplayFor(model => model.SpentByName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+</div>
+
+@*<div class="form-group">
+        @Html.LabelFor(model => model.IsReconciled, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.IsReconciled)
+                @Html.ValidationMessageFor(model => model.IsReconciled, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>*@
+
+<div class="form-group">
+    <div class="row">
+        @Html.LabelFor(model => model.EnteredByName, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-1 not-editable">
+            @Html.DisplayFor(model => model.EnteredByName, new { htmlAttributes = new { @class = "form-control" } })            @*@Html.EditorFor(model => model.EnteredByName, new { htmlAttributes = new { @class = "form-control" } })*@
+            @*@Html.ValidationMessageFor(model => model.EnteredBy, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="row">
+        @Html.LabelFor(model => model.DateEntered, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-1 not-editable">
+            @Model.DateEntered.ToString("M/d/yyyy")
+            @*@Html.EditorFor(model => model.DateEntered, new { htmlAttributes = new { @class = "form-control" } })*@
+            @*@Html.ValidationMessageFor(model => model.DateEntered, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("RestoreConfirmed", "Transactions", new { id = Model.Id }, FormMethod.Post, null))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Confirm Restore" class="btn btn-default" />
+    </div>
+}

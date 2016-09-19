@@ -7,7 +7,7 @@ namespace Budgeter.Models
 {
     public class BudgetItemsIndexViewModel
     {
-        public List<BudgetItem> ExpenseItems { get; set; }
-        public List<BudgetItem> IncomeItems { get; set; }
+        public List<BudgetItemViewModel> ExpenseItems { get; set; }
+        public List<BudgetItemViewModel> IncomeItems { get; set; }
     }
 }

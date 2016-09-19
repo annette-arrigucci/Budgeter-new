@@ -48,8 +48,8 @@ namespace Budgeter.Controllers
             //send the model to the view - create lists of the income and expense items
             var indexModel = new BudgetItemsIndexViewModel();
             var budgetItems = budget.BudgetItems.ToList();
-            var incomeItems = new List<BudgetItem>();
-            var expenseItems = new List<BudgetItem>();
+            var incomeItems = new List<BudgetItemViewModel>();
+            var expenseItems = new List<BudgetItemViewModel>();
 
             foreach (var b in budgetItems)
             {
@@ -57,18 +57,20 @@ namespace Budgeter.Controllers
                 var category = db.Categories.Find(categoryId);
                 if(category.Type  == "Income")
                 {
-                    incomeItems.Add(b);
+                    var incItem = ConvertBudgetItemToDisplay(b);
+                    incomeItems.Add(incItem);
                 }
                 else if(category.Type == "Expense")
                 {
-                    expenseItems.Add(b);
+                    var expItem = ConvertBudgetItemToDisplay(b);
+                    expenseItems.Add(expItem);
                 }
             }
             indexModel.IncomeItems = incomeItems;
             indexModel.ExpenseItems = expenseItems;
 
             //create the model for a new budget item here
-            var createModel = new BudgetItemCreateViewModel();
+            var createModel = new BudgetItemViewModel();
             createModel.BudgetId = (int)id;
             //var helper = new CategoryHouseholdHelper();
             //
@@ -91,8 +93,23 @@ namespace Budgeter.Controllers
             createModel.IsRepeating = false;
             ViewBag.CreateModel = createModel;
             ViewBag.BudgetName = budget.Name;
+            ViewBag.BudgetId = budget.Id;
 
             return View(indexModel);
+        }
+
+        public BudgetItemViewModel ConvertBudgetItemToDisplay(BudgetItem budgetItem)
+        {
+            var bModel = new BudgetItemViewModel();
+            bModel.Id = budgetItem.Id;
+            bModel.BudgetId = budgetItem.BudgetId;
+            bModel.Type = budgetItem.Type;          
+            var category = db.Categories.Find(budgetItem.CategoryId);
+            bModel.CategoryName = category.Name;
+            bModel.Description = budgetItem.Description;
+            bModel.Amount = budgetItem.Amount;
+            bModel.IsRepeating = budgetItem.IsRepeating;
+            return bModel;
         }
 
         //return a JSON objects with this household's expense categories

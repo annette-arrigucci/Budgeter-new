@@ -11,103 +11,50 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8">
-            <br />
-            <p>
-                <a href="#" class="create" id="@ViewBag.BudgetId">Create Budget Item</a>
-            </p>
-            <br />
             <h4>Income</h4>
-            <table class="table">
+            @*<table class="table">
                 <tr>
                     <th></th>
                     <th>
-                        @Html.Label("Description")
+                        @Html.DisplayNameFor(model => modelItem.Description)
                     </th>
                     <th>
-                        @Html.Label("Category")
+                        @Html.DisplayNameFor(model => model.IncomeItems.Category)
                     </th>
                     <th>
-                        @Html.Label("Amount")
+                        @Html.DisplayNameFor(model => model.IncomeItems.Amount)
                     </th>
                     <th>
-                        @Html.Label("Repeats every month")
+                        @Html.DisplayNameFor(model => model.IsRepeating)
                     </th>
                 </tr>
                 @foreach (var item in Model.IncomeItems)
                 {
                     <tr>
-                        <td><a href="#" id="@item.Id" class="delete icon-space" title="Delete"><i class="fa fa-trash"></i></a></td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CategoryName)
+                            @Html.DisplayFor(modelItem => item.Category)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Amount)
                         </td>
                         <td>
-                            @*@Html.DisplayNameFor(model => item.IsRepeating)*@
-                            @if (item.IsRepeating == true)
-                            {
-                                @Html.Raw("Yes")
-                            }
-                            else
-                            {
-                                @Html.Raw("No")
-                            }
+                            @Html.DisplayNameFor(model => item.IsRepeating)
                         </td>
                     </tr>
-                }
+                }*@
             </table>
             <h4>Expenses</h4>
             <table class="table">
-                <tr>
-                    <th></th>
-                    <th>
-                        @Html.Label("Description")
-                    </th>
-                    <th>
-                        @Html.Label("Category")
-                    </th>
-                    <th>
-                        @Html.Label("Amount")
-                    </th>
-                    <th>
-                        @Html.Label("Repeats every month")
-                    </th>
-                </tr>
-                @foreach (var item in Model.ExpenseItems)
-                {
-                    <tr>
-                        <td><a href="#" id="@item.Id" class="delete icon-space" title="Delete"><i class="fa fa-trash"></i></a></td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CategoryName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Amount)
-                        </td>
-                        <td>
-                            @if (item.IsRepeating == true)
-                            {
-                                @Html.Raw("Yes")
-                            }
-                            else
-                            {
-                                @Html.Raw("No")
-                            }
-                        </td>
-                    </tr>
-                }
+
             </table>
         </div>
         <div class="col-lg-4">
             <div id="form-placeholder">
                 @{ 
-                    var createItemModel = new BudgetItemViewModel();
+                    var createItemModel = new BudgetItemCreateViewModel();
                     createItemModel = ViewBag.CreateModel;
                 }
                 @Html.Partial("_CreateBudgetItem", createItemModel)

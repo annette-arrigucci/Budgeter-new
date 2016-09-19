@@ -19,7 +19,7 @@ namespace Budgeter.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BudgetId,Type,CategoryName,Description,Amount,IsRepeating")] BudgetItemCreateViewModel model)
+        public ActionResult Create([Bind(Include = "BudgetId,Type,CategoryName,Description,Amount,IsRepeating")] BudgetItemViewModel model)
         {
             if (ModelState.IsValid)
             {
