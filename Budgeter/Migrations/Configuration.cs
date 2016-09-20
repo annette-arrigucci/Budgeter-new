@@ -42,23 +42,22 @@ namespace Budgeter.Migrations
                 }, "Abc&123!");
             }
             context.Categories.AddOrUpdate(
-                    c => c.Name,
-                    new Category { Name = "Paycheck" },
-                    new Category { Name = "Other income" },
-                    new Category { Name = "House" },
-                    new Category { Name = "Utilities" },
-                    new Category { Name = "Food" },
-                    new Category { Name = "Transportation" },
-                    new Category { Name = "Health" },
-                    new Category { Name = "Child care" },
-                    new Category { Name = "Personal care" },
-                    new Category { Name = "Clothing" },
-                    new Category { Name = "Entertainment" },
-                    new Category { Name = "Financing" },
-                    new Category { Name = "Gifts/donations" },
-                    new Category { Name = "Other expense" }
+                    c => new { c.Name, c.Type, c.IsDefault }, 
+                    new Category { Name = "Paycheck", Type = "Income", IsDefault= true },
+                    new Category { Name = "Other income", Type = "Income", IsDefault = true },
+                    new Category { Name = "House", Type = "Expense", IsDefault = true },
+                    new Category { Name = "Utilities", Type = "Expense", IsDefault = true },
+                    new Category { Name = "Food", Type = "Expense", IsDefault = true },
+                    new Category { Name = "Transportation", Type = "Expense", IsDefault = true },
+                    new Category { Name = "Health", Type = "Expense", IsDefault = true },
+                    new Category { Name = "Child care", Type = "Expense", IsDefault = true },
+                    new Category { Name = "Personal care", Type = "Expense", IsDefault = true },
+                    new Category { Name = "Clothing", Type = "Expense", IsDefault = true },
+                    new Category { Name = "Entertainment", Type = "Expense", IsDefault = true },
+                    new Category { Name = "Financing", Type = "Expense", IsDefault = true },
+                    new Category { Name = "Gifts/donations", Type = "Expense", IsDefault = true },
+                    new Category { Name = "Other expense", Type = "Expense", IsDefault = true }
                   );
-            context.SaveChanges();
         }
     }
 }

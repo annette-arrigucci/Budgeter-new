@@ -26,5 +26,7 @@ namespace Budgeter.Models
         [Required]
         [Display(Name = "Description")]
         public string Description { get; set; }
+        public bool IsOriginal { get; set; }
+        public bool IsCopy { get; set; }
     }
 }

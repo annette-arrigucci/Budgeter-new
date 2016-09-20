@@ -45,11 +45,47 @@ namespace Budgeter.Controllers
                 bItem.Type = model.Type;
                 bItem.Amount = model.Amount;
                 bItem.IsRepeating = model.IsRepeating;
+                bItem.IsOriginal = true;
+                if(bItem.IsRepeating == true)
+                {
+                    AddItemToFutureBudgets(bItem);
+                }
                 db.BudgetItems.Add(bItem);
                 db.SaveChanges();
                 return RedirectToAction("Details", "Budgets", new { id = model.BudgetId });
             }
             return RedirectToAction("Index", "Errors", new { errorMessage = "Error in creating budget item" });
+        }
+
+        public void AddItemToFutureBudgets(BudgetItem budgetItem)
+        {
+            var budget = db.Budgets.Find(budgetItem.BudgetId);
+            var month = budget.Month;
+            var year = budget.Year;
+            var householdId = User.Identity.GetHouseholdId();
+            //add a copy of this item to all my future household budgets for the current year
+            var futureBudgetsThisYear = db.Budgets.Where(x => x.HouseholdId == householdId).Where(x => x.Year == year).Where(x => x.Month > month).ToList();
+            if(futureBudgetsThisYear.Count > 0)
+            {
+                foreach (var b in futureBudgetsThisYear)
+                {
+                    var newItem = new BudgetItem { CategoryId = budgetItem.CategoryId, BudgetId = b.Id, Amount = budgetItem.Amount, IsRepeating = budgetItem.IsRepeating, Type = budgetItem.Type, Description = budgetItem.Description };
+                    db.BudgetItems.Add(newItem);
+                    db.SaveChanges();
+                }
+            }
+            
+            //add a copy of this item to all my future household budgets for the following year
+            var futureBudgetsNextYear = db.Budgets.Where(x => x.HouseholdId == householdId).Where(x => x.Year > year).ToList();
+            if (futureBudgetsNextYear.Count > 0)
+            {
+                foreach (var c in futureBudgetsNextYear)
+                {
+                    var newItem = new BudgetItem { CategoryId = budgetItem.CategoryId, BudgetId = c.Id, Amount = budgetItem.Amount, IsRepeating = budgetItem.IsRepeating, Type = budgetItem.Type, Description = budgetItem.Description };
+                    db.BudgetItems.Add(newItem);
+                    db.SaveChanges();
+                }
+            }
         }
 
         //not using this anymore, instead refreshing page to get Create form to appear
