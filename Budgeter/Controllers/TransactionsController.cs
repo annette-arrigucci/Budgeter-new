@@ -36,12 +36,16 @@ namespace Budgeter.Controllers
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Not authorized" });
             }
-            
+
+            var catHelper = new CategoryHouseholdHelper();
+            var householdId = User.Identity.GetHouseholdId();
             var createTransactionModel = new TransactionCreateViewModel();
             createTransactionModel.AccountId = account.Id;
             var categories = db.Categories.ToList();
-            createTransactionModel.CategoryList = new SelectList(categories,"Id","Name");
-            var householdId = User.Identity.GetHouseholdId();
+            var incomeCategories = catHelper.GetIncomeCategories((int)householdId);
+            var expenseCategories = catHelper.GetExpenseCategories((int)householdId);
+            createTransactionModel.IncomeCategoryList = new SelectList(incomeCategories,"Id","Name");
+            createTransactionModel.ExpenseCategoryList = new SelectList(expenseCategories, "Id", "Name");
             var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
             createTransactionModel.HouseholdUsersList = new SelectList(householdUsers,"Id","DisplayName");
             //pass a model to create a new transaction through the ViewBag
@@ -192,8 +196,15 @@ namespace Budgeter.Controllers
             var createTransactionModel = new TransactionCreateViewModel();
             createTransactionModel.AccountId = accountId;
             var categories = db.Categories.ToList();
-            createTransactionModel.CategoryList = new SelectList(categories, "Id", "Name");
+
+            var catHelper = new CategoryHouseholdHelper();
             var householdId = User.Identity.GetHouseholdId();
+            
+            var incomeCategories = catHelper.GetIncomeCategories((int)householdId);
+            var expenseCategories = catHelper.GetExpenseCategories((int)householdId);
+            createTransactionModel.IncomeCategoryList = new SelectList(incomeCategories, "Id", "Name");
+            createTransactionModel.ExpenseCategoryList = new SelectList(expenseCategories, "Id", "Name");
+
             var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
             createTransactionModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName");
             return PartialView("_CreateTransaction", createTransactionModel);

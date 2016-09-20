@@ -154,13 +154,28 @@
         </div>
     </div>
 </div>
+
 @section scripts{
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 <script src="~/JQuery-UI/jquery-ui.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
+        //$('#income-dropdown').hide();
+
         $('#transactions-table').DataTable();
+
+        //#income-dropdown is initally hidden in transaction-form-style stylesheet
+        $(document).on('focus', '#create-view-placeholder', function () {
+            if ($('#radio-income').is(':checked')) {
+                $("#expense-dropdown").hide();
+                $("#income-dropdown").show();
+            }
+            if ($('#radio-expense').is(':checked')) {
+                $("#income-dropdown").hide();
+                $("#expense-dropdown").show();
+            }
+        });
 
         $(".edit").click(function () {
             $("#create-view-placeholder").hide();

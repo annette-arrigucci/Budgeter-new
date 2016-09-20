@@ -17,3 +17,6 @@ table.dataTable tbody td {
     background-color: #f9fafc !important;
 }
 
+#income-dropdown {
+    display: none;
+}

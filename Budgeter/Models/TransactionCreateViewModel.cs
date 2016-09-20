@@ -24,8 +24,12 @@ namespace Budgeter.Models
         public Decimal Amount { get; set; }
         [Required]
         public string Type { get; set; }
+        //[Display(Name = "Category")]
+        //public SelectList CategoryList { get; set; }
         [Display(Name = "Category")]
-        public SelectList CategoryList { get; set; }
+        public SelectList IncomeCategoryList { get; set; }
+        [Display(Name = "Category")]
+        public SelectList ExpenseCategoryList { get; set; }
         [Required(ErrorMessage = "No type selected")]
         [Display(Name = "Category")]
         public int SelectedCategory { get; set; }

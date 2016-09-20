@@ -67,9 +67,9 @@
                     @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-3" })*@
                 <div class="col-md-6">
                     @*@Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })*@
-                    @Html.RadioButtonFor(model => model.Type, "Expense")Expense
+                    @Html.RadioButtonFor(model => model.Type, "Expense", new { @checked = "checked", @id = "radio-expense" })Expense
                     @Html.Raw("<br>")
-                    @Html.RadioButtonFor(model => model.Type, "Income")Income
+                    @Html.RadioButtonFor(model => model.Type, "Income", new { @id = "radio-income" })Income
                     @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -86,18 +86,34 @@
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="row">
-                @Html.LabelFor(model => model.SelectedCategory, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
-            </div>
-            <div class="row">
-                <div class="col-md-8 col-md-offset-1">
-                    @Html.DropDownListFor(model => model.SelectedCategory, Model.CategoryList, "-Select Category-", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.SelectedCategory, "", new { @class = "text-danger" })
+        <!---#expense-dropdown is displayed by default, can be hidden depending on value of radio button-->
+        <div id="expense-dropdown">
+            <div class="form-group">
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedCategory, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-1">
+                        @Html.DropDownListFor(model => model.SelectedCategory, Model.ExpenseCategoryList, "-Select Category-", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SelectedCategory, "", new { @class = "text-danger" })
+                    </div>
                 </div>
             </div>
-      </div>
+        </div>
+        <!---#income-dropdown is initally hidden in transaction-form-style stylesheet-->
+        <div id="income-dropdown">
+            <div class="form-group">
+                <div class="row">
+                    @Html.LabelFor(model => model.SelectedCategory, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-1">
+                        @Html.DropDownListFor(model => model.SelectedCategory, Model.IncomeCategoryList, "-Select Category-", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SelectedCategory, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
 
         @*<div class="form-group">
             @Html.LabelFor(model => model.EnteredById, htmlAttributes: new { @class = "control-label col-md-2" })
