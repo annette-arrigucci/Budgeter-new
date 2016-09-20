@@ -136,8 +136,9 @@
     </div>
 </div>
 @section scripts{
-    <script src="~/JQuery-UI/jquery-ui.min.js"></script>
+    <script src="~/JQuery-UI/jquery-ui.min.js"></script>   
     <script type="text/javascript">
+        //hide/show dropdown depending on which radio button is selected
         $(document).on('focus', '#form-placeholder', function () {
             if ($('#budget-radio-income').is(':checked')) {
                 $("#budget-expense-dropdown").hide();
