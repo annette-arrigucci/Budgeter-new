@@ -69,19 +69,18 @@ namespace Budgeter.Controllers
             {
                 foreach (var b in futureBudgetsThisYear)
                 {
-                    var newItem = new BudgetItem { CategoryId = budgetItem.CategoryId, BudgetId = b.Id, Amount = budgetItem.Amount, IsRepeating = budgetItem.IsRepeating, Type = budgetItem.Type, Description = budgetItem.Description };
+                    var newItem = new BudgetItem { CategoryId = budgetItem.CategoryId, BudgetId = b.Id, Amount = budgetItem.Amount, IsRepeating = budgetItem.IsRepeating, Type = budgetItem.Type, Description = budgetItem.Description, IsOriginal = false };
                     db.BudgetItems.Add(newItem);
                     db.SaveChanges();
                 }
-            }
-            
+            }           
             //add a copy of this item to all my future household budgets for the following year
             var futureBudgetsNextYear = db.Budgets.Where(x => x.HouseholdId == householdId).Where(x => x.Year > year).ToList();
             if (futureBudgetsNextYear.Count > 0)
             {
                 foreach (var c in futureBudgetsNextYear)
                 {
-                    var newItem = new BudgetItem { CategoryId = budgetItem.CategoryId, BudgetId = c.Id, Amount = budgetItem.Amount, IsRepeating = budgetItem.IsRepeating, Type = budgetItem.Type, Description = budgetItem.Description };
+                    var newItem = new BudgetItem { CategoryId = budgetItem.CategoryId, BudgetId = c.Id, Amount = budgetItem.Amount, IsRepeating = budgetItem.IsRepeating, Type = budgetItem.Type, Description = budgetItem.Description, IsOriginal = false };
                     db.BudgetItems.Add(newItem);
                     db.SaveChanges();
                 }

@@ -216,10 +216,21 @@ namespace Budgeter.Controllers
             {
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Budget already exists for month" });
             }
-              
+   
             db.Budgets.Add(budget);
             db.SaveChanges();
 
+            //add any recurring budget items to this month's budget
+            var recurringItems = db.BudgetItems.Where(x => db.Budgets.Any(m => m.HouseholdId == budget.HouseholdId)).Where(x => x.IsRepeating).Where(x => x.IsOriginal).ToList();
+            if (recurringItems.Count > 0)
+            {
+                foreach (var r in recurringItems)
+                {
+                    var rItem = new BudgetItem { CategoryId = r.CategoryId, BudgetId = budget.Id, Amount = r.Amount, IsRepeating = r.IsRepeating, Type = r.Type, Description = r.Description, IsOriginal = false };
+                    db.BudgetItems.Add(rItem);
+                    db.SaveChanges();
+                }
+            }
             return RedirectToAction("Index","Budgets");
         }
         
