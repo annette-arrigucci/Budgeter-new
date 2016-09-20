@@ -231,12 +231,25 @@ namespace Budgeter.Controllers
                 tModel.DateSpent = transaction.DateSpent;
                 tModel.Amount = transaction.Amount;
                 tModel.Type = transaction.Type;
-                var categories = db.Categories.ToList();
-                tModel.SelectedCategory = transaction.CategoryId;
-                tModel.CategoryList = new SelectList(categories, "Id", "Name", tModel.SelectedCategory);              
+                         
                 var householdId = User.Identity.GetHouseholdId();
                 var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
                 tModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName", transaction.SpentById);
+
+                //send categories to dropdown depending on whether transaction is of type income or expense
+                var categories = new List<Category>();
+                var catHelper = new CategoryHouseholdHelper();
+                if(tModel.Type == "Income")
+                {
+                    categories = catHelper.GetIncomeCategories((int)householdId);
+                }
+                if (tModel.Type == "Expense")
+                {
+                    categories = catHelper.GetExpenseCategories((int)householdId);
+                }
+                tModel.SelectedCategory = transaction.CategoryId;
+                tModel.CategoryList = new SelectList(categories, "Id", "Name", tModel.SelectedCategory);
+
                 tModel.ReconciledAmount = transaction.ReconciledAmount;
                 tModel.EnteredById = transaction.EnteredById;
                 var user = db.Users.Find(transaction.EnteredById);
