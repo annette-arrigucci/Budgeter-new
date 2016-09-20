@@ -1,4 +1,5 @@
 ﻿@model Budgeter.Models.TransactionCreateViewModel
+@using Budgeter.Models
 
 @using (Html.BeginForm("Create", "Transactions", FormMethod.Post))
 {
@@ -96,6 +97,7 @@
                     <div class="col-md-8 col-md-offset-1">
                         @Html.DropDownListFor(model => model.SelectedCategory, Model.ExpenseCategoryList, "-Select Category-", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.SelectedCategory, "", new { @class = "text-danger" })
+                        @Html.ActionLink("Edit Categories", "EditCategories", "Budgets", new { @id = User.Identity.GetHouseholdId() }, null)
                     </div>
                 </div>
             </div>
@@ -110,6 +112,7 @@
                     <div class="col-md-8 col-md-offset-1">
                         @Html.DropDownListFor(model => model.SelectedCategory, Model.IncomeCategoryList, "-Select Category-", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.SelectedCategory, "", new { @class = "text-danger" })
+                        @Html.ActionLink("Edit Categories", "EditCategories", "Budgets", new { @id = User.Identity.GetHouseholdId() }, null)
                     </div>
                 </div>
             </div>

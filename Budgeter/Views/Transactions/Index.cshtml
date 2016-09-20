@@ -46,7 +46,8 @@
     <div class="col-lg-9">
         <br />
         <p>
-            <a href="#" class="create" id="@ViewBag.AccountId">Create Transaction</a>
+            @*<a href="#" class="create" id="@ViewBag.AccountId">Create Transaction</a>*@
+            @Html.ActionLink("Create Transaction", "Index", "Transactions", new { @id = @ViewBag.AccountId }, null)
         </p>
         <br />
     <table id="transactions-table" class="table">

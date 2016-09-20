@@ -77,6 +77,14 @@ namespace Budgeter.Controllers
             var createModel = new BudgetItemViewModel();
             createModel.BudgetId = (int)id;
             createModel.IsRepeating = false;
+            var catHelper = new CategoryHouseholdHelper();
+            var householdId = User.Identity.GetHouseholdId();
+
+            var incomeCategories = catHelper.GetIncomeCategories((int)householdId);
+            var expenseCategories = catHelper.GetExpenseCategories((int)householdId);
+            createModel.IncomeCategoryList = new SelectList(incomeCategories, "Id", "Name");
+            createModel.ExpenseCategoryList = new SelectList(expenseCategories, "Id", "Name");
+
             ViewBag.CreateModel = createModel;
             ViewBag.BudgetName = budget.Name;
             ViewBag.BudgetId = budget.Id;

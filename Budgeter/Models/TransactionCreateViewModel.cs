@@ -15,7 +15,7 @@ namespace Budgeter.Models
         [Required]
         [StringLength(300, MinimumLength = 3)]
         public string Description { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Transaction date required")]
         [DataType(DataType.Date)]
         [Display(Name = "Transaction date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -24,8 +24,6 @@ namespace Budgeter.Models
         public Decimal Amount { get; set; }
         [Required]
         public string Type { get; set; }
-        //[Display(Name = "Category")]
-        //public SelectList CategoryList { get; set; }
         [Display(Name = "Category")]
         public SelectList IncomeCategoryList { get; set; }
         [Display(Name = "Category")]

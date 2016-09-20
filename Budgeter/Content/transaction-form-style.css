@@ -20,3 +20,7 @@ table.dataTable tbody td {
 #income-dropdown {
     display: none;
 }
+
+#budget-income-dropdown {
+    display: none;
+}

@@ -19,27 +19,28 @@ namespace Budgeter.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BudgetId,Type,CategoryName,Description,Amount,IsRepeating")] BudgetItemViewModel model)
+        public ActionResult Create([Bind(Include = "BudgetId,Type,SelectedCategory,Description,Amount,IsRepeating")] BudgetItemViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var bItem = new BudgetItem();
                 var householdId = User.Identity.GetHouseholdId();
                 bItem.BudgetId = model.BudgetId;
+                bItem.CategoryId = model.SelectedCategory;
                 //check if the category exists
-                if (db.Categories.Any(x => x.Name == model.CategoryName)){                   
-                    var category = db.Categories.First(x => x.Name == model.CategoryName);
-                    //check if this is one of the household's budget categories
-                    var assignment = db.CategoryHouseholds.Where(x => x.CategoryId == category.Id).Where(x => x.HouseholdId == householdId).ToList();
-                    if(assignment.Count > 0)
-                    {
-                        bItem.CategoryId = category.Id;
-                    }        
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Errors", new { errorMessage = "Category not found" });
-                }
+                //if (db.Categories.Any(x => x.Name == model.CategoryName)){                   
+                //    var category = db.Categories.First(x => x.Name == model.CategoryName);
+                //    //check if this is one of the household's budget categories
+                //    var assignment = db.CategoryHouseholds.Where(x => x.CategoryId == category.Id).Where(x => x.HouseholdId == householdId).ToList();
+                //    if(assignment.Count > 0)
+                //    {
+                //        bItem.CategoryId = category.Id;
+                //    }        
+                //}
+                //else
+                //{
+                //    return RedirectToAction("Index", "Errors", new { errorMessage = "Category not found" });
+                //}
                 bItem.Description = model.Description;
                 bItem.Type = model.Type;
                 bItem.Amount = model.Amount;
@@ -48,9 +49,10 @@ namespace Budgeter.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Details", "Budgets", new { id = model.BudgetId });
             }
-            return RedirectToAction("Details", "Budgets", new { id = model.BudgetId });
-          }
+            return RedirectToAction("Index", "Errors", new { errorMessage = "Error in creating budget item" });
+        }
 
+        //not using this anymore, instead refreshing page to get Create form to appear
         public ActionResult GetCreateView(int budgetId)
         {
             if (budgetId == null)
