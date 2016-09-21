@@ -19,14 +19,31 @@ namespace Budgeter.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BudgetId,Type,SelectedCategory,Description,Amount,IsRepeating")] BudgetItemViewModel model)
+        public ActionResult Create([Bind(Include = "BudgetId,Type,SelectedIncomeCategory,SelectedExpenseCategory,Description,Amount,IsRepeating")] BudgetItemViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var bItem = new BudgetItem();
                 var householdId = User.Identity.GetHouseholdId();
                 bItem.BudgetId = model.BudgetId;
-                bItem.CategoryId = model.SelectedCategory;
+                //If income was selected, make sure the selected income property is not null
+                if (model.Type == "Income")
+                {
+                    if (model.SelectedIncomeCategory == null)
+                    {
+                        return RedirectToAction("Index", "Errors", new { errorMessage = "Error in transaction category" });
+                    }
+                    bItem.CategoryId = (int)model.SelectedIncomeCategory;
+                }
+                //If expense was selected, make sure the selected income property is not null
+                if (model.Type == "Expense")
+                {
+                    if (model.SelectedExpenseCategory == null)
+                    {
+                        return RedirectToAction("Index", "Errors", new { errorMessage = "Error in transaction category" });
+                    }
+                    bItem.CategoryId = (int)model.SelectedExpenseCategory;
+                }
                 //check if the category exists
                 //if (db.Categories.Any(x => x.Name == model.CategoryName)){                   
                 //    var category = db.Categories.First(x => x.Name == model.CategoryName);

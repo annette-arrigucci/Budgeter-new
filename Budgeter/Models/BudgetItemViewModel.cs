@@ -21,9 +21,13 @@ namespace Budgeter.Models
         public SelectList IncomeCategoryList { get; set; }
         [Display(Name = "Category")]
         public SelectList ExpenseCategoryList { get; set; }
-        [Required(ErrorMessage = "No type selected")]
+        //[Required(ErrorMessage = "No type selected")]
+        //[Display(Name = "Category")]
+        //public int SelectedCategory { get; set; }
         [Display(Name = "Category")]
-        public int SelectedCategory { get; set; }
+        public int? SelectedIncomeCategory { get; set; }
+        [Display(Name = "Category")]
+        public int? SelectedExpenseCategory { get; set; }
         [Required]
         [Display(Name = "Description")]
         public string Description { get; set; }

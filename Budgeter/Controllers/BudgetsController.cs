@@ -221,7 +221,19 @@ namespace Budgeter.Controllers
             db.SaveChanges();
 
             //add any recurring budget items to this month's budget
-            var recurringItems = db.BudgetItems.Where(x => db.Budgets.Any(m => m.HouseholdId == budget.HouseholdId)).Where(x => x.IsRepeating).Where(x => x.IsOriginal).ToList();
+            //var recurringItems = db.BudgetItems.Where(x => db.Budgets.Any(m => m.HouseholdId == budget.HouseholdId)).Where(x => x.IsRepeating).Where(x => x.IsOriginal).ToList();
+
+            var recurringItems = new List<BudgetItem>();
+            //get the list of all budgets for this household
+            var householdBudgets = db.Budgets.Where(x => x.HouseholdId == budget.HouseholdId).ToList();
+            //for each budget that is in the household, get all the budget items with that budget Id that 
+            //should be repeated every month - are recurring and original
+            foreach(var h in householdBudgets)
+            {
+                var rItems = db.BudgetItems.Where(x => x.BudgetId == h.Id).Where(x => x.IsRepeating).Where(x => x.IsOriginal).ToList();
+                recurringItems.AddRange(rItems);
+            }
+
             if (recurringItems.Count > 0)
             {
                 foreach (var r in recurringItems)
