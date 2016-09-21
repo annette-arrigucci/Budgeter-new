@@ -142,7 +142,7 @@ namespace Budgeter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AccountId,Description,DateSpent,Amount,Type,SelectedCategory,SelectedUser,ReconciledAmount")] TransactionCreateViewModel model)
+        public ActionResult Create([Bind(Include = "AccountId,Description,DateSpent,Amount,Type,SelectedIncomeCategory,SelectedExpenseCategory,SelectedUser,ReconciledAmount")] TransactionCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -161,7 +161,25 @@ namespace Budgeter.Controllers
                 }              
                 transaction.Amount = model.Amount;
                 transaction.Type = model.Type;
-                transaction.CategoryId = model.SelectedCategory;
+                //transaction.CategoryId = model.SelectedCategory;
+                //If income was selected, make sure the selected income property is not null
+                if(model.Type == "Income")
+                {
+                    if (model.SelectedIncomeCategory == null)
+                    {
+                        return RedirectToAction("Index", "Errors", new { errorMessage = "Error in transaction category" });
+                    }
+                    transaction.CategoryId = (int)model.SelectedIncomeCategory;
+                }
+                //If expense was selected, make sure the selected income property is not null
+                if (model.Type == "Expense")
+                {
+                    if(model.SelectedExpenseCategory == null)
+                    {
+                        return RedirectToAction("Index", "Errors", new { errorMessage = "Error in transaction category" });
+                    }
+                    transaction.CategoryId = (int)model.SelectedExpenseCategory;
+                }
                 transaction.EnteredById = User.Identity.GetUserId();
                 transaction.SpentById = model.SelectedUser;
                 transaction.IsActive = true;
