@@ -229,7 +229,30 @@ namespace Budgeter.Controllers
                             db.BudgetItems.Remove(budgetItem);
                             db.SaveChanges();
                         }
-                    }
+                        //if the item is not the original one, find the original repeating item and set it to not active
+                        if(budgetItem.IsOriginal == false)
+                        {
+                            //TODO: Need to figure this out
+                            var householdBudgets = db.Budgets.Where(x => x.HouseholdId == User.Identity.GetHouseholdId()).ToList();
+                            foreach(var h in householdBudgets)
+                            {
+                                var toRemove = h.BudgetItems.Where(x => x.CategoryId == budgetItem.CategoryId).Where(x => x.Description == budgetItem.Description).Where(x => x.Amount == budgetItem.Amount).Where(x => x.IsRepeating == true).Where(x => x.IsOriginal == true).Where(x => x.RepeatActive == true).ToList();
+                            }
+                            //    var rItems = db.BudgetItems.Where(x => x.CategoryId == budgetItem.CategoryId).Where(x => x.Description == budgetItem.Description).Where(x => x.Amount == budgetItem.Amount).Where(x => x.IsRepeating == true).Where(x => x.IsOriginal == true).Where(x => x.RepeatActive == true).ToList();
+                            //    if(rItems.Count > 0)
+                            //    {
+                            //        foreach(var r in rItems)
+                            //        {
+                            //            var bud = db.Budgets.Find(r.BudgetId);
+                            //            if(bud.HouseholdId == User.Identity.GetHouseholdId())
+                            //            {
+                            //                //LINQ has a statement for foreach loops
+
+                            //            }
+                            //        }
+                            //    }
+                            //}
+                        }
                 }
                 db.BudgetItems.Remove(budgetItem);
                 db.SaveChanges();
