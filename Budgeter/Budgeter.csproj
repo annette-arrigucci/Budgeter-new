@@ -204,6 +204,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Budget.cs" />
     <Compile Include="Models\BudgetItem.cs" />
+    <Compile Include="Models\BudgetItemDeleteViewModel.cs" />
     <Compile Include="Models\BudgetItemViewModel.cs" />
     <Compile Include="Models\BudgetItemsIndexViewModel.cs" />
     <Compile Include="Models\Category.cs" />

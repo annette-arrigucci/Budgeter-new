@@ -230,7 +230,7 @@ namespace Budgeter.Controllers
             //should be repeated every month - are recurring and original
             foreach(var h in householdBudgets)
             {
-                var rItems = db.BudgetItems.Where(x => x.BudgetId == h.Id).Where(x => x.IsRepeating).Where(x => x.IsOriginal).ToList();
+                var rItems = db.BudgetItems.Where(x => x.BudgetId == h.Id).Where(x => x.IsRepeating == true).Where(x => x.IsOriginal == false).Where(x => x.RepeatActive == true).ToList();
                 recurringItems.AddRange(rItems);
             }
 
@@ -238,7 +238,7 @@ namespace Budgeter.Controllers
             {
                 foreach (var r in recurringItems)
                 {
-                    var rItem = new BudgetItem { CategoryId = r.CategoryId, BudgetId = budget.Id, Amount = r.Amount, IsRepeating = r.IsRepeating, Type = r.Type, Description = r.Description, IsOriginal = false };
+                    var rItem = new BudgetItem { CategoryId = r.CategoryId, BudgetId = budget.Id, Amount = r.Amount, IsRepeating = r.IsRepeating, Type = r.Type, Description = r.Description, IsOriginal = false, RepeatActive = false };
                     db.BudgetItems.Add(rItem);
                     db.SaveChanges();
                 }

@@ -65,7 +65,12 @@ namespace Budgeter.Controllers
                 bItem.IsOriginal = true;
                 if(bItem.IsRepeating == true)
                 {
+                    bItem.RepeatActive = true;
                     AddItemToFutureBudgets(bItem);
+                }
+                else if (bItem.IsRepeating == false)
+                {
+                    bItem.RepeatActive = false;
                 }
                 db.BudgetItems.Add(bItem);
                 db.SaveChanges();
@@ -86,7 +91,7 @@ namespace Budgeter.Controllers
             {
                 foreach (var b in futureBudgetsThisYear)
                 {
-                    var newItem = new BudgetItem { CategoryId = budgetItem.CategoryId, BudgetId = b.Id, Amount = budgetItem.Amount, IsRepeating = budgetItem.IsRepeating, Type = budgetItem.Type, Description = budgetItem.Description, IsOriginal = false };
+                    var newItem = new BudgetItem { CategoryId = budgetItem.CategoryId, BudgetId = b.Id, Amount = budgetItem.Amount, IsRepeating = budgetItem.IsRepeating, Type = budgetItem.Type, Description = budgetItem.Description, IsOriginal = false, RepeatActive = false };
                     db.BudgetItems.Add(newItem);
                     db.SaveChanges();
                 }
@@ -97,9 +102,53 @@ namespace Budgeter.Controllers
             {
                 foreach (var c in futureBudgetsNextYear)
                 {
-                    var newItem = new BudgetItem { CategoryId = budgetItem.CategoryId, BudgetId = c.Id, Amount = budgetItem.Amount, IsRepeating = budgetItem.IsRepeating, Type = budgetItem.Type, Description = budgetItem.Description, IsOriginal = false };
+                    var newItem = new BudgetItem { CategoryId = budgetItem.CategoryId, BudgetId = c.Id, Amount = budgetItem.Amount, IsRepeating = budgetItem.IsRepeating, Type = budgetItem.Type, Description = budgetItem.Description, IsOriginal = false, RepeatActive = false };
                     db.BudgetItems.Add(newItem);
                     db.SaveChanges();
+                }
+            }
+        }
+
+        public void RemoveItemFromFutureBudgets(BudgetItem budgetItem)
+        {
+            var budget = db.Budgets.Find(budgetItem.BudgetId);
+            var month = budget.Month;
+            var year = budget.Year;
+            var householdId = User.Identity.GetHouseholdId();
+            //delete copies of this item from all my future household budgets for the current year
+            var futureBudgetsThisYear = db.Budgets.Where(x => x.HouseholdId == householdId).Where(x => x.Year == year).Where(x => x.Month > month).ToList();
+            if (futureBudgetsThisYear.Count > 0)
+            {
+                foreach (var b in futureBudgetsThisYear)
+                {
+                    //find any copies of this budget item in future budgets this year
+                    var toRemove = db.BudgetItems.Where(x => x.BudgetId == b.Id).Where(x => x.CategoryId == budgetItem.CategoryId).Where(x => x.Description == budgetItem.Description).Where(x => x.Amount == budgetItem.Amount).Where(x => x.IsRepeating).Where(x => x.IsOriginal == false).ToList();
+                    if(toRemove.Count > 0)
+                    {
+                        foreach(var t in toRemove)
+                        {
+                            db.BudgetItems.Remove(t);
+                            db.SaveChanges();
+                        }
+                    }             
+                }
+            }
+            //add a copy of this item to all my future household budgets for the following year
+            var futureBudgetsNextYear = db.Budgets.Where(x => x.HouseholdId == householdId).Where(x => x.Year > year).ToList();
+            if (futureBudgetsNextYear.Count > 0)
+            {
+                foreach (var c in futureBudgetsNextYear)
+                {
+                    //find any copies of this budget item in future budgets this year
+                    var toRemoveNextYear = db.BudgetItems.Where(x => x.BudgetId == c.Id).Where(x => x.CategoryId == budgetItem.CategoryId).Where(x => x.Description == budgetItem.Description).Where(x => x.Amount == budgetItem.Amount).Where(x => x.IsRepeating).Where(x => x.IsOriginal == false).ToList();
+                    if (toRemoveNextYear.Count > 0)
+                    {
+                        foreach (var t in toRemoveNextYear)
+                        {
+                            db.BudgetItems.Remove(t);
+                            db.SaveChanges();
+                        }
+                    }
                 }
             }
         }
@@ -150,14 +199,37 @@ namespace Budgeter.Controllers
         // POST: Form posted in partial view
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed([Bind(Include = "Id,RepeatingDeleteOption")]BudgetItemDeleteViewModel model)
         {
             if (ModelState.IsValid)
             {
-                BudgetItem budgetItem = db.BudgetItems.Find(id);
+                BudgetItem budgetItem = db.BudgetItems.Find(model.Id);
                 if (budgetItem == null)
                 {
                     RedirectToAction("Index", "Errors", new { errorMessage = "Budget item not found" });
+                }
+                //budget item doesn't repeat - delete this one item from the database
+                if(budgetItem.IsRepeating == false)
+                {
+                    db.BudgetItems.Remove(budgetItem);
+                    db.SaveChanges();
+                }
+                else if(budgetItem.IsRepeating == true)
+                {
+                    if (model.RepeatingDeleteOption == "This month only")
+                    {
+                        db.BudgetItems.Remove(budgetItem);
+                        db.SaveChanges();
+                    }
+                    else if(model.RepeatingDeleteOption == "This month and all future budgets")
+                    {
+                        if(budgetItem.IsOriginal == true)
+                        {
+                            RemoveItemFromFutureBudgets(budgetItem);
+                            db.BudgetItems.Remove(budgetItem);
+                            db.SaveChanges();
+                        }
+                    }
                 }
                 db.BudgetItems.Remove(budgetItem);
                 db.SaveChanges();

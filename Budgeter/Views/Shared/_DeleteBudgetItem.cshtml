@@ -1,4 +1,5 @@
-﻿@model Budgeter.Models.BudgetItemViewModel
+﻿@model Budgeter.Models.BudgetItemDeleteViewModel
+@using Budgeter.Models
 
 <link href="~/Content/transaction-form-style.css" rel="stylesheet">
 
@@ -68,9 +69,26 @@
         </div>
     </div>
 
-@using (Html.BeginForm("DeleteConfirmed", "BudgetItems", new { id = Model.Id }, FormMethod.Post, null))
+@using (Html.BeginForm("DeleteConfirmed", "BudgetItems", new { Id = Model.Id, RepeatingDeleteOption = Model.RepeatingDeleteOption }, FormMethod.Post, null))
 {
     @Html.AntiForgeryToken()
+
+    @if (Model.IsRepeating == true)
+    {
+        <div class="form-group">
+            <div class="row">
+                <div class="row">
+                    @Html.LabelFor(model => model.RepeatingDeleteOption, htmlAttributes: new { @class = "control-label col-md-4 col-md-offset-1 form-label" })
+                </div>
+                <div class="col-md-6 col-md-offset-1">
+                    @Html.RadioButtonFor(model => model.RepeatingDeleteOption, "This month only", new { @checked = "checked" })This month only
+                    @Html.Raw("<br>")
+                    @Html.RadioButtonFor(model => model.RepeatingDeleteOption, "This month and all future budgets", new { @id = "budget-radio-income" })This month and all future budgets
+                    @Html.ValidationMessageFor(model => model.RepeatingDeleteOption, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    }
 
     <div class="form-actions no-color">
         <input type="submit" value="Confirm Delete" class="btn btn-default" />
