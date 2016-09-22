@@ -89,6 +89,10 @@
             </div>
         </div>
     }
+    else
+    {
+        @Html.HiddenFor(model => model.RepeatingDeleteOption)
+    }
 
     <div class="form-actions no-color">
         <input type="submit" value="Confirm Delete" class="btn btn-default" />

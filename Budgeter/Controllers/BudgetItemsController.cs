@@ -1,6 +1,7 @@
 ﻿using Budgeter.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -44,20 +45,7 @@ namespace Budgeter.Controllers
                     }
                     bItem.CategoryId = (int)model.SelectedExpenseCategory;
                 }
-                //check if the category exists
-                //if (db.Categories.Any(x => x.Name == model.CategoryName)){                   
-                //    var category = db.Categories.First(x => x.Name == model.CategoryName);
-                //    //check if this is one of the household's budget categories
-                //    var assignment = db.CategoryHouseholds.Where(x => x.CategoryId == category.Id).Where(x => x.HouseholdId == householdId).ToList();
-                //    if(assignment.Count > 0)
-                //    {
-                //        bItem.CategoryId = category.Id;
-                //    }        
-                //}
-                //else
-                //{
-                //    return RedirectToAction("Index", "Errors", new { errorMessage = "Category not found" });
-                //}
+              
                 bItem.Description = model.Description;
                 bItem.Type = model.Type;
                 bItem.Amount = model.Amount;
@@ -111,12 +99,16 @@ namespace Budgeter.Controllers
 
         public void RemoveItemFromFutureBudgets(BudgetItem budgetItem)
         {
+            //remove an item from future budgets - starting with the current month - we will not remove from any budgets for past months
             var budget = db.Budgets.Find(budgetItem.BudgetId);
-            var month = budget.Month;
-            var year = budget.Year;
+
+            var currentDate = DateTime.Now;
+            var currentMonth = currentDate.Month;
+            var currentYear = currentDate.Year;
+
             var householdId = User.Identity.GetHouseholdId();
             //delete copies of this item from all my future household budgets for the current year
-            var futureBudgetsThisYear = db.Budgets.Where(x => x.HouseholdId == householdId).Where(x => x.Year == year).Where(x => x.Month > month).ToList();
+            var futureBudgetsThisYear = db.Budgets.Where(x => x.HouseholdId == householdId).Where(x => x.Year == currentYear).Where(x => x.Month > currentMonth).ToList();
             if (futureBudgetsThisYear.Count > 0)
             {
                 foreach (var b in futureBudgetsThisYear)
@@ -134,7 +126,7 @@ namespace Budgeter.Controllers
                 }
             }
             //add a copy of this item to all my future household budgets for the following year
-            var futureBudgetsNextYear = db.Budgets.Where(x => x.HouseholdId == householdId).Where(x => x.Year > year).ToList();
+            var futureBudgetsNextYear = db.Budgets.Where(x => x.HouseholdId == householdId).Where(x => x.Year > currentYear).ToList();
             if (futureBudgetsNextYear.Count > 0)
             {
                 foreach (var c in futureBudgetsNextYear)
@@ -182,7 +174,7 @@ namespace Budgeter.Controllers
                 {
                     RedirectToAction("Index", "Errors", new { errorMessage = "Budget item not found" });
                 }
-                var bModel = new BudgetItemViewModel();
+                var bModel = new BudgetItemDeleteViewModel();
                 bModel.Id = budgetItem.Id;
                 bModel.BudgetId = budgetItem.BudgetId;
                 bModel.Type = budgetItem.Type;
@@ -191,6 +183,7 @@ namespace Budgeter.Controllers
                 bModel.Description = budgetItem.Description;
                 bModel.Amount = budgetItem.Amount;
                 bModel.IsRepeating = budgetItem.IsRepeating;
+                bModel.RepeatingDeleteOption = "";
                 model = bModel;
             }
             return PartialView(viewName, model);
@@ -201,63 +194,90 @@ namespace Budgeter.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed([Bind(Include = "Id,RepeatingDeleteOption")]BudgetItemDeleteViewModel model)
         {
+            //TODO: Add delete confirmed page
             if (ModelState.IsValid)
             {
                 BudgetItem budgetItem = db.BudgetItems.Find(model.Id);
                 if (budgetItem == null)
                 {
-                    RedirectToAction("Index", "Errors", new { errorMessage = "Budget item not found" });
+                    return RedirectToAction("Index", "Errors", new { errorMessage = "Budget item not found" });
                 }
                 //budget item doesn't repeat - delete this one item from the database
-                if(budgetItem.IsRepeating == false)
+                if (budgetItem.IsRepeating == false)
                 {
                     db.BudgetItems.Remove(budgetItem);
                     db.SaveChanges();
+                    ViewBag.Message = "Item deleted from budget";
+                    ViewBag.Id = budgetItem.BudgetId;
+                    return View("DeleteItemConfirmed");
                 }
-                else if(budgetItem.IsRepeating == true)
+                else if (budgetItem.IsRepeating == true)
                 {
                     if (model.RepeatingDeleteOption == "This month only")
                     {
                         db.BudgetItems.Remove(budgetItem);
                         db.SaveChanges();
+                        ViewBag.Message = "Item deleted from budget";
+                        ViewBag.Id = budgetItem.BudgetId;
+                        return View("DeleteItemConfirmed");
                     }
-                    else if(model.RepeatingDeleteOption == "This month and all future budgets")
+                    else if (model.RepeatingDeleteOption == "This month and all future budgets")
                     {
-                        if(budgetItem.IsOriginal == true)
+                        if (budgetItem.IsOriginal == true)
                         {
                             RemoveItemFromFutureBudgets(budgetItem);
                             db.BudgetItems.Remove(budgetItem);
                             db.SaveChanges();
+                            ViewBag.Message = "Item removed from this budget and from budgets after current month";
+                            ViewBag.Id = budgetItem.BudgetId;
+                            return View("DeleteItemConfirmed");
                         }
                         //if the item is not the original one, find the original repeating item and set it to not active
-                        if(budgetItem.IsOriginal == false)
+                        if (budgetItem.IsOriginal == false)
                         {
                             //TODO: Need to figure this out
+                            //first search each budget to get a list of all original recurring items
                             var householdBudgets = db.Budgets.Where(x => x.HouseholdId == User.Identity.GetHouseholdId()).ToList();
-                            foreach(var h in householdBudgets)
+                            var repeatingItems = new List<BudgetItem>();
+                            foreach (var h in householdBudgets)
                             {
-                                var toRemove = h.BudgetItems.Where(x => x.CategoryId == budgetItem.CategoryId).Where(x => x.Description == budgetItem.Description).Where(x => x.Amount == budgetItem.Amount).Where(x => x.IsRepeating == true).Where(x => x.IsOriginal == true).Where(x => x.RepeatActive == true).ToList();
+                                var budgetRepeatItems = h.BudgetItems.Where(x => x.BudgetId == h.Id).Where(x => x.IsRepeating).Where(x => x.IsOriginal).ToList();
+                                repeatingItems.AddRange(budgetRepeatItems);
                             }
-                            //    var rItems = db.BudgetItems.Where(x => x.CategoryId == budgetItem.CategoryId).Where(x => x.Description == budgetItem.Description).Where(x => x.Amount == budgetItem.Amount).Where(x => x.IsRepeating == true).Where(x => x.IsOriginal == true).Where(x => x.RepeatActive == true).ToList();
-                            //    if(rItems.Count > 0)
-                            //    {
-                            //        foreach(var r in rItems)
-                            //        {
-                            //            var bud = db.Budgets.Find(r.BudgetId);
-                            //            if(bud.HouseholdId == User.Identity.GetHouseholdId())
-                            //            {
-                            //                //LINQ has a statement for foreach loops
+                            //now find the first item that matches the one the user wants to delete
+                            var toDeactivate = repeatingItems.Where(x => x.CategoryId == budgetItem.CategoryId).Where(x => x.Description == budgetItem.Description).Where(x => x.Amount == budgetItem.Amount).First();
+                            if (toDeactivate == null)
+                            {
+                                RedirectToAction("Index", "Errors", new { errorMessage = "Can't find original item" });
+                            }
+                            else
+                            {
+                                if (toDeactivate.RepeatActive == true)
+                                {
+                                    //deactivate the original item
+                                    toDeactivate.RepeatActive = false;
+                                    db.Entry(toDeactivate).State = EntityState.Modified;
+                                    db.SaveChanges();
 
-                            //            }
-                            //        }
-                            //    }
-                            //}
+                                    //now delete from future budgets
+                                    RemoveItemFromFutureBudgets(budgetItem);
+
+                                    //finally remove the item from the current month
+                                    db.BudgetItems.Remove(budgetItem);
+                                    db.SaveChanges();
+
+                                    ViewBag.Message = "Item removed from this budget and budgets after current month. Item still exists in past budgets but will not be added to future budgets.";
+                                    ViewBag.Id = budgetItem.BudgetId;
+                                    return View("DeleteItemConfirmed");
+                                }
+                                else
+                                {
+                                    RedirectToAction("Index", "Errors", new { errorMessage = "Failed to delete repeating item" });
+                                }
+                            }
                         }
+                    }
                 }
-                db.BudgetItems.Remove(budgetItem);
-                db.SaveChanges();
-
-                return RedirectToAction("Details", "Budgets", new { id = budgetItem.BudgetId });
             }
             return RedirectToAction("Index", "Errors", new { errorMessage = "Error in deleting budget item" });
         }

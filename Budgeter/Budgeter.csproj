@@ -343,6 +343,7 @@
     <Content Include="Views\Budgets\Details.cshtml" />
     <Content Include="Views\Shared\_CreateBudgetItem.cshtml" />
     <Content Include="Views\Shared\_DeleteBudgetItem.cshtml" />
+    <Content Include="Views\Budgets\DeleteItemConfirmed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
