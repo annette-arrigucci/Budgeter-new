@@ -439,5 +439,12 @@ namespace Budgeter.Controllers
             }
             return RedirectToAction("EditCategories", "Budgets", new { id = model.HouseholdId });
         }
+
+        public ActionResult DeleteItemConfirmed(int id, string message)
+        {
+            ViewBag.Id = id;
+            ViewBag.Message = message;
+            return View();
+        }
     }
 }

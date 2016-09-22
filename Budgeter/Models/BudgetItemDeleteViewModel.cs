@@ -25,6 +25,7 @@ namespace Budgeter.Models
         public Decimal Amount { get; set; }
         [Display(Name = "Repeats every month")]
         public bool IsRepeating { get; set; }
-        public string RepeatingDeleteOption { get; set; }
+        [Display(Name = "Delete for:")]
+        public bool RepeatingDeleteOption { get; set; }
     }
 }

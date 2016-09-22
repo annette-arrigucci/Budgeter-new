@@ -73,16 +73,16 @@ C:\Users\Me\projects\Budgeter\Budgeter\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\Me\projects\Budgeter\Budgeter\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Me\projects\Budgeter\Budgeter\obj\Debug\Budgeter.pdb
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\csc.exe
-C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\VBCSCompiler.exe
+C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\Microsoft.CSharp.Core.targets
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\Microsoft.VisualBasic.Core.targets
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\System.Collections.Immutable.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\System.Reflection.Metadata.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\vbc.exe
-C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\VBCSCompiler.exe
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\roslyn\VBCSCompiler.exe.config
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Budgeter.dll.config
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Budgeter.dll
@@ -145,4 +145,3 @@ C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.Owin.Security.Twitter.x
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\obj\Debug\Budgeter.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\obj\Debug\Budgeter.pdb
-C:\Users\Me\projects\Budgeter-new\Budgeter\obj\Debug\Budgeter.csprojResolveAssemblyReference.cache

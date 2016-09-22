@@ -183,7 +183,6 @@ namespace Budgeter.Controllers
                 bModel.Description = budgetItem.Description;
                 bModel.Amount = budgetItem.Amount;
                 bModel.IsRepeating = budgetItem.IsRepeating;
-                bModel.RepeatingDeleteOption = "";
                 model = bModel;
             }
             return PartialView(viewName, model);
@@ -192,12 +191,12 @@ namespace Budgeter.Controllers
         // POST: Form posted in partial view
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed([Bind(Include = "Id,RepeatingDeleteOption")]BudgetItemDeleteViewModel model)
+        public ActionResult DeleteConfirmed(int id, string repeatingDeleteOption)
         {
             //TODO: Add delete confirmed page
             if (ModelState.IsValid)
             {
-                BudgetItem budgetItem = db.BudgetItems.Find(model.Id);
+                BudgetItem budgetItem = db.BudgetItems.Find(id);
                 if (budgetItem == null)
                 {
                     return RedirectToAction("Index", "Errors", new { errorMessage = "Budget item not found" });
@@ -207,30 +206,27 @@ namespace Budgeter.Controllers
                 {
                     db.BudgetItems.Remove(budgetItem);
                     db.SaveChanges();
-                    ViewBag.Message = "Item deleted from budget";
-                    ViewBag.Id = budgetItem.BudgetId;
-                    return View("DeleteItemConfirmed");
+                    //ViewBag.Message = "Item deleted from budget";
+                    //ViewBag.Id = budgetItem.BudgetId;
+                    return RedirectToAction("DeleteItemConfirmed", "Budgets", new { id = budgetItem.BudgetId, message = "Item deleted from budget" });
                 }
                 else if (budgetItem.IsRepeating == true)
                 {
-                    if (model.RepeatingDeleteOption == "This month only")
+                    if (repeatingDeleteOption == "This month only")
                     {
                         db.BudgetItems.Remove(budgetItem);
                         db.SaveChanges();
-                        ViewBag.Message = "Item deleted from budget";
-                        ViewBag.Id = budgetItem.BudgetId;
-                        return View("DeleteItemConfirmed");
+                        return RedirectToAction("DeleteItemConfirmed", "Budgets", new { id = budgetItem.BudgetId, message = "Item deleted from budget" });
                     }
-                    else if (model.RepeatingDeleteOption == "This month and all future budgets")
+                    else if (repeatingDeleteOption == "This month and all future budgets")
                     {
                         if (budgetItem.IsOriginal == true)
                         {
                             RemoveItemFromFutureBudgets(budgetItem);
                             db.BudgetItems.Remove(budgetItem);
                             db.SaveChanges();
-                            ViewBag.Message = "Item removed from this budget and from budgets after current month";
-                            ViewBag.Id = budgetItem.BudgetId;
-                            return View("DeleteItemConfirmed");
+
+                            return RedirectToAction("DeleteItemConfirmed", "Budgets", new { id = budgetItem.BudgetId, message = "Item removed from this budget and from budgets after current month" });
                         }
                         //if the item is not the original one, find the original repeating item and set it to not active
                         if (budgetItem.IsOriginal == false)
@@ -248,7 +244,7 @@ namespace Budgeter.Controllers
                             var toDeactivate = repeatingItems.Where(x => x.CategoryId == budgetItem.CategoryId).Where(x => x.Description == budgetItem.Description).Where(x => x.Amount == budgetItem.Amount).First();
                             if (toDeactivate == null)
                             {
-                                RedirectToAction("Index", "Errors", new { errorMessage = "Can't find original item" });
+                                return RedirectToAction("Index", "Errors", new { errorMessage = "Can't find original item" });
                             }
                             else
                             {
@@ -266,9 +262,7 @@ namespace Budgeter.Controllers
                                     db.BudgetItems.Remove(budgetItem);
                                     db.SaveChanges();
 
-                                    ViewBag.Message = "Item removed from this budget and budgets after current month. Item still exists in past budgets but will not be added to future budgets.";
-                                    ViewBag.Id = budgetItem.BudgetId;
-                                    return View("DeleteItemConfirmed");
+                                    return RedirectToAction("DeleteItemConfirmed", "Budgets", new { id = budgetItem.BudgetId, message = "Item removed from this budget and budgets after current month. Item still exists in past budgets but will not be added to future budgets." });
                                 }
                                 else
                                 {
