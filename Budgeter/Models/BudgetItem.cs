@@ -30,5 +30,7 @@ namespace Budgeter.Models
         public bool IsOriginal { get; set; }
         //this is to designate whether the original repeating item is active or will not be repeated on future budgets
         public bool RepeatActive { get; set; }
+        //if this item is a copy, store the ID of the BudgetItem
+        public int? IsCopyOf { get; set; }
     }
 }

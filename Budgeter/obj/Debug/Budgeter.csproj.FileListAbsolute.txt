@@ -145,3 +145,4 @@ C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.Owin.Security.Twitter.x
 C:\Users\Me\projects\Budgeter-new\Budgeter\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Me\projects\Budgeter-new\Budgeter\obj\Debug\Budgeter.dll
 C:\Users\Me\projects\Budgeter-new\Budgeter\obj\Debug\Budgeter.pdb
+C:\Users\Me\projects\Budgeter-new\Budgeter\obj\Debug\Budgeter.csprojResolveAssemblyReference.cache
