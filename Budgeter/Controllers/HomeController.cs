@@ -50,12 +50,16 @@ namespace Budgeter.Controllers
                     masterCategoriesList.AddRange(transactionCategories);
                     masterCategoriesList = masterCategoriesList.Distinct().ToList();
                     ViewBag.CategoriesList = masterCategoriesList;
+
+                    var spendingCategoriesList = new List<SpendingCategory>();
                     foreach(var c in masterCategoriesList)
                     {
                         var category = db.Categories.Find(c);
-                        var categoryName = category.Name;
-                        var budgetCategoryTotal = currentBudget.BudgetItems.Where(x => x.CategoryId == c);
-                        var transactionCategoryTotal = monthTransactions.Where(x => x.CategoryId == c);
+                        var categoryName = category.Name; 
+                        var budgetCategoryTotal = currentBudget.BudgetItems.Where(x => x.CategoryId == c).Select(x => x.Amount).Sum();
+                        var transactionCategoryTotal = monthTransactions.Where(x => x.CategoryId == c).Select(x => x.Amount).Sum();
+                        var spendItem = new SpendingCategory { CategoryName = categoryName, BudgetTotal = budgetCategoryTotal, TransactionTotal = transactionCategoryTotal };
+                        spendingCategoriesList.Add(spendItem);
                     }
 
                 }
