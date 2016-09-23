@@ -29,6 +29,10 @@
         </div>
         <div class="col-md-4">
             <div id="expense-categories-pie">Expense Transactions</div>
+            @foreach(var e in ViewBag.CategoriesList)
+            {
+                <p>Item: @e</p>
+            }
         </div>
         <div class="col-md-4">
             <div id="income-categories-pie">Income Transactions</div>
