@@ -85,7 +85,7 @@ namespace Budgeter.Controllers
                 var s = new Object[spendingData.Length];
                 for(int i = 0; i < spendingData.Length; i++)
                 {
-                    s[i] = new { y = spendingData[i].CategoryName, a = spendingData[i].BudgetTotal, b = spendingData[i].TransactionTotal };
+                    s[i] = new { y = spendingData[i].CategoryName, a = spendingData[i].TransactionTotal, b = spendingData[i].BudgetTotal };
                 }
                 return Content(JsonConvert.SerializeObject(s), "application/json");
             }
@@ -133,8 +133,8 @@ namespace Budgeter.Controllers
                         var category = db.Categories.Find(c);
                         spendingCategoriesList[i] = new SpendingCategory();
                         spendingCategoriesList[i].CategoryName = category.Name;
-                        spendingCategoriesList[i].BudgetTotal = currentBudget.BudgetItems.Where(x => x.CategoryId == c).Select(x => x.Amount).Sum();
                         spendingCategoriesList[i].TransactionTotal = monthTransactions.Where(x => x.CategoryId == c).Select(x => x.Amount).Sum();
+                        spendingCategoriesList[i].BudgetTotal = currentBudget.BudgetItems.Where(x => x.CategoryId == c).Select(x => x.Amount).Sum();
                         i++;
                     }
                     return spendingCategoriesList;
