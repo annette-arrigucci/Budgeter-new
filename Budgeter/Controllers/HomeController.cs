@@ -149,6 +149,55 @@ namespace Budgeter.Controllers
                 return spendingCategoriesList;
             }
         }
+
+        public ActionResult GetIncomeExpenseChart()
+        {
+            var data = GetIncomeExpenseData();
+            if (data != null)
+            {
+                var s = new[]
+                {
+                    new { label = data[0].Type, value = data[0].Total },
+                    new { label = data[1].Type, value = data[1].Total }
+                };
+                return Content(JsonConvert.SerializeObject(s), "application/json");
+            }
+            return RedirectToAction("Index", "Errors", new { errorMessage = "Error in retrieving income/expense data" });
+        }
+
+        public TotalByType[] GetIncomeExpenseData()
+        {
+            DateTime currentDate = DateTime.Now;
+            var incomeExpenseDataList = new TotalByType[2];
+            if (User.Identity.IsInHousehold())
+            {
+                //get the household for this user
+                var householdId = User.Identity.GetHouseholdId();
+                var household = db.Households.Find(householdId);
+
+                //get the accounts for this household
+                var householdAccounts = household.Accounts.ToList();
+
+                //TO DO: what do we do if user has no accounts set up?
+
+                //get the transactions for this month
+                var monthTransactions = new List<Transaction>();
+                foreach (var a in householdAccounts)
+                {
+                    var transList = a.Transactions.Where(x => x.DateSpent.Year == currentDate.Year).Where(x => x.DateSpent.Month == currentDate.Month);
+                    monthTransactions.AddRange(transList);
+                }
+
+                var incomeTotal = monthTransactions.Where(x => x.Type == "Income").Select(x => x.Amount).Sum();
+                var expenseTotal = monthTransactions.Where(x => x.Type == "Expense").Select(x => x.Amount).Sum();
+
+                incomeExpenseDataList[0] = new TotalByType { Type = "Income", Total = incomeTotal };
+                incomeExpenseDataList[1] = new TotalByType { Type = "Expense", Total = expenseTotal };
+                return incomeExpenseDataList;
+            }
+            return incomeExpenseDataList;
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
