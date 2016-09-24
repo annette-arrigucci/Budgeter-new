@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Budgeter.Models
 {
-    public class SpendingCategory
+    public class TotalsByCategory
     {
         public string CategoryName { get; set; }
         public Decimal BudgetTotal { get; set; }

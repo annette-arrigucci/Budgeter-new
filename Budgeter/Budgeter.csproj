@@ -220,7 +220,8 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\AddCategoryViewModel.cs" />
     <Compile Include="Models\RegexUtilities.cs" />
-    <Compile Include="Models\SpendingCategory.cs" />
+    <Compile Include="Models\TotalByCategory.cs" />
+    <Compile Include="Models\TotalsByCategory.cs" />
     <Compile Include="Models\TotalByType.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\TransactionCreateViewModel.cs" />

@@ -27,12 +27,12 @@
         <div class="col-md-4">
             <div id="income-spending-bar" style="height: 250px;">Income vs. spending</div>
         </div>
-        @*<div class="col-md-4">
-            <div id="expense-categories-pie">Expense Transactions</div>          
+        <div class="col-md-4">
+            <div id="expense-categories-pie" style="height: 250px;">Expense Transactions</div>          
         </div>
         <div class="col-md-4">
             <div id="income-categories-pie">Income Transactions</div>
-        </div>*@      
+        </div>      
     </div>
 </div>
 @section scripts{
@@ -40,7 +40,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
     <script>
         $(function () {
-            $.post('@Url.Action("GetSpendingCategoryChart","Home")').then(function (response) {
+            $.post('@Url.Action("GetCategoriesChart", "Home")').then(function (response) {
                 new Morris.Bar({
                     element: 'categories-spending-bar',
                     data: response,
@@ -55,6 +55,13 @@
                     element: 'income-spending-bar',
                     data: response,
                     resize: true                 
+                })
+            });
+            $.post('@Url.Action("GetExpenseChart","Home")').then(function (response) {
+                new Morris.Donut({
+                    element: 'expense-categories-pie',
+                    data: response,
+                    resize: true
                 })
             });
         });
