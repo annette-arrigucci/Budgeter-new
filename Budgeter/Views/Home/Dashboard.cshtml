@@ -28,11 +28,7 @@
             <div id="income-spending-bar">Income vs. spending</div>
         </div>
         <div class="col-md-4">
-            <div id="expense-categories-pie">Expense Transactions</div>
-            @foreach(var e in ViewBag.CategoriesList)
-            {
-                <p>Item: @e</p>
-            }
+            <div id="expense-categories-pie">Expense Transactions</div>          
         </div>
         <div class="col-md-4">
             <div id="income-categories-pie">Income Transactions</div>
@@ -43,27 +39,39 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
     <script>
-        Morris.Bar({
-            element: 'categories-spending-bar',
-            data: [
-              { y: '2006', a: 100, b: 90 },
-              { y: '2007', a: 75,  b: 65 },
-              { y: '2008', a: 50,  b: 40 },
-              { y: '2009', a: 75,  b: 65 },
-              { y: '2010', a: 50,  b: 40 },
-              { y: '2011', a: 75,  b: 65 },
-              { y: '2012', a: 100, b: 90 },
-              { y: '2013', a: 100, b: 90 },
-              { y: '2014', a: 75,  b: 65 },
-              { y: '2015', a: 50,  b: 40 },
-              { y: '2016', a: 75,  b: 65 },
-              { y: '2017', a: 50,  b: 40 },
-              { y: '2018', a: 75,  b: 65 },
-              { y: '2019', a: 100, b: 90 }
-            ],
-            xkey: 'y',
-            ykeys: ['a', 'b'],
-            labels: ['Spending', 'Budget']
+        $(function () {
+            $.post('@Url.Action("GetSpendingCategoryChart","Home")').then(function (response){
+                new Morris.Bar({
+                    element: 'categories-spending-bar',
+                    data: response,
+                    xkey: 'y',
+                    ykeys: ['a', 'b'],
+                    labels: ['Spending', 'Budget'],
+                    resize: true
+                })
+            })
         });
+        //Morris.Bar({
+        //    element: 'categories-spending-bar',
+        //    data: [
+        //      { y: '2006', a: 100, b: 90 },
+        //      { y: '2007', a: 75,  b: 65 },
+        //      { y: '2008', a: 50,  b: 40 },
+        //      { y: '2009', a: 75,  b: 65 },
+        //      { y: '2010', a: 50,  b: 40 },
+        //      { y: '2011', a: 75,  b: 65 },
+        //      { y: '2012', a: 100, b: 90 },
+        //      { y: '2013', a: 100, b: 90 },
+        //      { y: '2014', a: 75,  b: 65 },
+        //      { y: '2015', a: 50,  b: 40 },
+        //      { y: '2016', a: 75,  b: 65 },
+        //      { y: '2017', a: 50,  b: 40 },
+        //      { y: '2018', a: 75,  b: 65 },
+        //      { y: '2019', a: 100, b: 90 }
+        //    ],
+        //    xkey: 'y',
+        //    ykeys: ['a', 'b'],
+        //    labels: ['Spending', 'Budget']
+        //});
     </script>
 }
