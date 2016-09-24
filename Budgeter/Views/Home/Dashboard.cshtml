@@ -31,7 +31,7 @@
             <div id="expense-categories-pie" style="height: 250px;">Expense Transactions</div>          
         </div>
         <div class="col-md-4">
-            <div id="income-categories-pie">Income Transactions</div>
+            <div id="income-categories-pie" style="height: 250px;">Income Transactions</div>
         </div>      
     </div>
 </div>
@@ -51,15 +51,25 @@
                 })
             });
             $.post('@Url.Action("GetIncomeExpenseChart","Home")').then(function (response) {
-                new Morris.Donut({
+                new Morris.Bar({
                     element: 'income-spending-bar',
                     data: response,
-                    resize: true                 
+                    xkey: 'y',
+                    ykeys: ['a'],
+                    labels: ['Totals'],
+                    resize: true             
                 })
             });
             $.post('@Url.Action("GetExpenseChart","Home")').then(function (response) {
                 new Morris.Donut({
                     element: 'expense-categories-pie',
+                    data: response,
+                    resize: true
+                })
+            });
+            $.post('@Url.Action("GetIncomeChart","Home")').then(function (response) {
+                new Morris.Donut({
+                    element: 'income-categories-pie',
                     data: response,
                     resize: true
                 })
