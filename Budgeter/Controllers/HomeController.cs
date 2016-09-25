@@ -71,9 +71,45 @@ namespace Budgeter.Controllers
             //    }
 
             //}
-            
-
+            DateTime currentDate = DateTime.Now;
+            var householdId = User.Identity.GetHouseholdId();
+            var household = db.Households.Find(householdId);
+            //find the current budget for this user
+            if (household.Budgets.Where(x => x.Month == currentDate.Month).Where(x => x.Year == currentDate.Year).Any())
+            {
+                var currentBudget = household.Budgets.Where(x => x.Month == currentDate.Month).Where(x => x.Year == currentDate.Year).First();
+                ViewBag.BudgetName = currentBudget.Name;
+            }
+            else
+            {
+                ViewBag.HasBudget = false;
+            }
+            ViewBag.RecentTransactions = GetRecentTransactions((int)householdId);
             return View();
+        }
+
+        public List<Transaction> GetRecentTransactions(int householdId)
+        {
+            DateTime currentDate = DateTime.Now;
+            var household = db.Households.Find(householdId);
+            var householdAccounts = household.Accounts.ToList();
+            //get the transactions for this month
+            var monthTransactions = new List<Transaction>();
+            foreach (var a in householdAccounts)
+            {
+                var transList = a.Transactions.Where(x => x.DateSpent.Year == currentDate.Year).Where(x => x.DateSpent.Month == currentDate.Month);
+                monthTransactions.AddRange(transList);
+            }
+            var recentTransactions = monthTransactions.OrderBy(x => x.DateSpent).ToList();
+            if(recentTransactions.Count < 4)
+            {
+                return recentTransactions;
+            }
+            else
+            {
+                return recentTransactions.GetRange(0, 3);
+            }
+
         }
 
         public ActionResult GetCategoriesChart()
