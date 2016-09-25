@@ -348,6 +348,7 @@
     <Content Include="Views\Shared\_DeleteBudgetItem.cshtml" />
     <Content Include="Views\Budgets\DeleteItemConfirmed.cshtml" />
     <Content Include="Views\Shared\_RecentTransactions.cshtml" />
+    <Content Include="Views\Shared\_AccountBalances.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

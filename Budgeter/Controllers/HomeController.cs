@@ -85,10 +85,17 @@ namespace Budgeter.Controllers
                 ViewBag.HasBudget = false;
             }
             ViewBag.RecentTransactions = GetRecentTransactions((int)householdId);
+            var householdAccounts = household.Accounts.ToList();
+            foreach(var h in householdAccounts)
+            {
+                h.UpdateAccountBalance();
+                h.UpdateReconciledAccountBalance();
+            }
+            ViewBag.Accounts = householdAccounts;
             return View();
         }
 
-        public List<Transaction> GetRecentTransactions(int householdId)
+        public List<TransactionsIndexViewModel> GetRecentTransactions(int householdId)
         {
             DateTime currentDate = DateTime.Now;
             var household = db.Households.Find(householdId);
@@ -100,16 +107,19 @@ namespace Budgeter.Controllers
                 var transList = a.Transactions.Where(x => x.DateSpent.Year == currentDate.Year).Where(x => x.DateSpent.Month == currentDate.Month);
                 monthTransactions.AddRange(transList);
             }
-            var recentTransactions = monthTransactions.OrderBy(x => x.DateSpent).ToList();
-            if(recentTransactions.Count < 4)
-            {
-                return recentTransactions;
-            }
-            else
-            {
-                return recentTransactions.GetRange(0, 3);
-            }
+            var recentTransactions = monthTransactions.OrderByDescending(x => x.DateSpent).ToList();
 
+            if (recentTransactions.Count > 4)
+            {
+                recentTransactions = recentTransactions.GetRange(0, 3);
+            }
+            var recentList = new List<TransactionsIndexViewModel>();
+            foreach (var r in recentTransactions)
+            {
+                var recent = new TransactionsIndexViewModel(r);
+                recentList.Add(recent);
+            }
+            return recentList;
         }
 
         public ActionResult GetCategoriesChart()

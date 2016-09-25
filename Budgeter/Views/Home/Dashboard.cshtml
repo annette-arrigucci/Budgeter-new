@@ -17,12 +17,28 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <div>Accounts/Balances</div>
+        
+        <div class="col-md-3">
+            <h3>Accounts/Balances</h3>
+            @{
+                var accounts = new List<Account>();
+                accounts = ViewBag.Accounts;
+            }
+            @Html.Partial("_AccountBalances", accounts)
         </div>
-        <div class="col-md-6">
-            <div>Recent Transactions</div>
+        <div class="col-md-3">
+            <h3>Recent Transactions</h3>
+            @{ 
+                var recentTrans = new List<TransactionsIndexViewModel>();
+                recentTrans = ViewBag.RecentTransactions;
+            }
+            @Html.Partial("_RecentTransactions", recentTrans)
         </div>
+        <div class="col-md-4 col-md-offset-1">
+            <h3>Total Budget vs. Spending</h3>
+            <div id="budget-spending-bar" style="height: 250px;"></div>
+        </div>
+        
     </div>
     <div class="row">    
         <div class="col-md-4">

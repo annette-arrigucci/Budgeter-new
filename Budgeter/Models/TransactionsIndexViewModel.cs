@@ -20,6 +20,8 @@ namespace Budgeter.Models
         public string Category { get; set; }
         [Display(Name = "Entered by")]
         public string EnteredBy { get; set; }
+        [Display(Name = "Spent by")]
+        public string SpentBy { get; set; }
         [Display(Name = "Reconciled")]
         public bool IsReconciled { get; set; }
         [Display(Name = "Reconciled")]
@@ -45,6 +47,8 @@ namespace Budgeter.Models
             this.EnteredBy = enteredBy.FirstName + " " + enteredBy.LastName;
             this.IsReconciled = trans.IsReconciled;
             this.ReconciledAmount = trans.ReconciledAmount;
+            var spentBy = db.Users.Find(trans.SpentById);
+            this.SpentBy = spentBy.DisplayName;
         }
     }
 }
