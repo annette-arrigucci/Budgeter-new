@@ -35,23 +35,23 @@
             @Html.Partial("_RecentTransactions", recentTrans)
         </div>
         <div class="col-md-4 col-md-offset-1">
-            <h3>Total Budget vs. Spending</h3>
+            <h3>Total Spending vs. Budget</h3>
             <div id="budget-spending-bar" style="height: 250px;"></div>
         </div>
         
     </div>
     <div class="row">    
+        <div class="col-md-3">
+            <h3>Income Transactions</h3>
+            <div id="income-categories-pie" style="height: 250px;"></div>
+        </div>
         <div class="col-md-4">
             <h3>Income vs. Spending</h3>
             <div id="income-spending-bar" style="height: 250px;"></div>
-        </div>
-        <div class="col-md-4">
+        </div>   
+        <div class="col-md-3">
             <h3>Expense Transactions</h3>
-            <div id="expense-categories-pie" style="height: 250px;"></div>          
-        </div>
-        <div class="col-md-4">
-            <h3>Income Transactions</h3>
-            <div id="income-categories-pie" style="height: 250px;"></div>
+            <div id="expense-categories-pie" style="height: 250px;"></div>
         </div>      
     </div>
 </div>
@@ -67,6 +67,16 @@
                     xkey: 'y',
                     ykeys: ['a', 'b'],
                     labels: ['Spending', 'Budget'],
+                    resize: true
+                })
+            });
+            $.post('@Url.Action("GetBudgetSpendingChart","Home")').then(function (response) {
+                new Morris.Bar({
+                    element: 'budget-spending-bar',
+                    data: response,
+                    xkey: 'y',
+                    ykeys: ['a'],
+                    labels: ['Totals'],
                     resize: true
                 })
             });

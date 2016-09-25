@@ -196,6 +196,61 @@ namespace Budgeter.Controllers
             }
         }
 
+        public ActionResult GetBudgetSpendingChart()
+        {
+            var data = GetBudgetSpendingData();
+            if (data != null)
+            {
+                var s = new[]
+                {
+                    new { y = data[0].Type, a = data[0].Total },
+                    new { y = data[1].Type, a = data[1].Total }
+                };
+                return Content(JsonConvert.SerializeObject(s), "application/json");
+            }
+            return RedirectToAction("Index", "Errors", new { errorMessage = "Error in retrieving income/expense data" });
+        }
+
+        public TotalByType[] GetBudgetSpendingData()
+        {
+            DateTime currentDate = DateTime.Now;
+            var budgetSpendingDataList = new TotalByType[2];
+            if (User.Identity.IsInHousehold())
+            {
+                //get the household for this user
+                var householdId = User.Identity.GetHouseholdId();
+                var household = db.Households.Find(householdId);
+
+                //get the accounts for this household
+                var householdAccounts = household.Accounts.ToList();
+
+                //TO DO: what do we do if user has no accounts set up?
+
+                //get the transactions for this month
+                var monthExpenses = new List<Transaction>();
+                foreach (var a in householdAccounts)
+                {
+                    var transList = a.Transactions.Where(x => x.DateSpent.Year == currentDate.Year).Where(x => x.DateSpent.Month == currentDate.Month).Where(x => x.Type == "Expense");
+                    monthExpenses.AddRange(transList);
+                }
+
+                var spendingTotal = monthExpenses.Select(x => x.Amount).Sum();
+
+                var budgetTotal = 0M;
+
+                if (household.Budgets.Where(x => x.Month == currentDate.Month).Where(x => x.Year == currentDate.Year).Any())
+                {
+                    var currentBudget = household.Budgets.Where(x => x.Month == currentDate.Month).Where(x => x.Year == currentDate.Year).First();
+                    budgetTotal = currentBudget.BudgetItems.Where(x => x.Type == "Expense").Select(x => x.Amount).Sum();
+                }
+
+                budgetSpendingDataList[0] = new TotalByType { Type = "Spending", Total = spendingTotal };
+                budgetSpendingDataList[1] = new TotalByType { Type = "Budgeted", Total = budgetTotal };
+                return budgetSpendingDataList;
+            }
+            return budgetSpendingDataList;
+        }
+
         public ActionResult GetIncomeExpenseChart()
         {
             var data = GetIncomeExpenseData();
@@ -210,6 +265,8 @@ namespace Budgeter.Controllers
             }
             return RedirectToAction("Index", "Errors", new { errorMessage = "Error in retrieving income/expense data" });
         }
+
+        
 
         public TotalByType[] GetIncomeExpenseData()
         {
