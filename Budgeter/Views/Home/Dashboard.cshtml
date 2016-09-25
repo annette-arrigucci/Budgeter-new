@@ -7,52 +7,83 @@
 
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 
-<h2>@ViewBag.BudgetName</h2>
+<h2>@ViewBag.DashboardName</h2>
 
 <div class="container">
     <div class="row">
         <div class="col-md-11">
             <h3>Spending vs. Budget by Category</h3>
-            <div id="categories-spending-bar" style="height: 250px;"></div>
+            @if (ViewBag.HasBudget == true)
+            {
+                <div id="categories-spending-bar" style="height: 250px;"></div>
+            }
+            else
+            {
+                <div>No budget found for household this month</div>
+            }
         </div>
     </div>
     <div class="row">
         
         <div class="col-md-3">
             <h3>Accounts/Balances</h3>
-            @{
+            @if (ViewBag.HasAccounts == true)
+            {
                 var accounts = new List<Account>();
                 accounts = ViewBag.Accounts;
+                @Html.Partial("_AccountBalances", accounts)
             }
-            @Html.Partial("_AccountBalances", accounts)
+            else
+            {
+                @Html.Raw("No accounts found for this household");
+            }
         </div>
         <div class="col-md-3">
             <h3>Recent Transactions</h3>
-            @{ 
+            @if(ViewBag.HasTransactions == true)
+            {
                 var recentTrans = new List<TransactionsIndexViewModel>();
                 recentTrans = ViewBag.RecentTransactions;
+                @Html.Partial("_RecentTransactions", recentTrans);
             }
-            @Html.Partial("_RecentTransactions", recentTrans)
+            else
+            {
+                @Html.Raw("No transactions found this month for this household");
+            }
         </div>
         <div class="col-md-4 col-md-offset-1">
             <h3>Total Spending vs. Budget</h3>
-            <div id="budget-spending-bar" style="height: 250px;"></div>
+            @if (ViewBag.HasBudget == true)
+            {
+                <div id="budget-spending-bar" style="height: 250px;"></div>
+            }
+            else
+            {
+                <div>No budget found for household this month</div>
+            }
         </div>
         
     </div>
-    <div class="row">    
-        <div class="col-md-3">
-            <h3>Income Transactions</h3>
-            <div id="income-categories-pie" style="height: 250px;"></div>
-        </div>
-        <div class="col-md-4">
-            <h3>Income vs. Spending</h3>
-            <div id="income-spending-bar" style="height: 250px;"></div>
-        </div>   
-        <div class="col-md-3">
-            <h3>Expense Transactions</h3>
-            <div id="expense-categories-pie" style="height: 250px;"></div>
-        </div>      
+    <div class="row">   
+        @if (ViewBag.HasTransactions == true)
+        {
+            <div class="col-md-3">
+                <h3>Income Transactions</h3>
+                <div id="income-categories-pie" style="height: 250px;"></div>
+            </div>
+            <div class="col-md-4">
+                <h3>Income vs. Spending</h3>
+                <div id="income-spending-bar" style="height: 250px;"></div>
+            </div>
+            <div class="col-md-3">
+                <h3>Expense Transactions</h3>
+                <div id="expense-categories-pie" style="height: 250px;"></div>
+            </div>
+        }
+        else
+        {
+            <div></div>
+        }
     </div>
 </div>
 @section scripts{

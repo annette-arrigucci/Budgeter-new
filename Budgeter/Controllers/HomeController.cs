@@ -22,55 +22,6 @@ namespace Budgeter.Controllers
         [AuthorizeHouseholdRequired]
         public ActionResult Dashboard()
         {
-            //DateTime currentDate = DateTime.Now;
-            //if (User.Identity.IsInHousehold())
-            //{
-            //    //get the household for this user
-            //    var householdId = User.Identity.GetHouseholdId();
-            //    var household = db.Households.Find(householdId);
-            //    //find the current budget for this user
-            //    if (household.Budgets.Where(x => x.Month == currentDate.Month).Where(x => x.Year == currentDate.Year).Any())
-            //    {
-            //        var currentBudget = household.Budgets.Where(x => x.Month == currentDate.Month).Where(x => x.Year == currentDate.Year).First();
-            //        //get all the expense categories for the current budget
-            //        var budgetCategories = currentBudget.BudgetItems.Where(x => x.Type == "Expense").GroupBy(x => x.CategoryId)
-            //                               .Select(grp => grp.First()).Select(x => x.CategoryId).ToList();
-            //        //get the accounts for this household
-            //        var householdAccounts = household.Accounts.ToList();
-            //        //get the transactions for this month
-            //        var monthTransactions = new List<Transaction>();
-            //        foreach(var a in householdAccounts)
-            //        {
-            //            var transList = a.Transactions.Where(x => x.DateSpent.Year == currentDate.Year).Where(x => x.DateSpent.Month == currentDate.Month);
-            //            monthTransactions.AddRange(transList);
-            //        }
-            //        //get the expense transaction categories
-            //        var transactionCategories = monthTransactions.Where(x => x.Type == "Expense").GroupBy(x => x.CategoryId)
-            //                                    .Select(grp => grp.First()).Select(x => x.CategoryId).ToList();
-            //        //now we have a list of categories for budget and transactions, merge them into one master list
-            //        var masterCategoriesList = budgetCategories;
-            //        masterCategoriesList.AddRange(transactionCategories);
-            //        masterCategoriesList = masterCategoriesList.Distinct().ToList();
-            //        ViewBag.CategoriesList = masterCategoriesList;
-
-            //        var spendingCategoriesList = new List<SpendingCategory>();
-            //        foreach(var c in masterCategoriesList)
-            //        {
-            //            var category = db.Categories.Find(c);
-            //            var categoryName = category.Name; 
-            //            var budgetCategoryTotal = currentBudget.BudgetItems.Where(x => x.CategoryId == c).Select(x => x.Amount).Sum();
-            //            var transactionCategoryTotal = monthTransactions.Where(x => x.CategoryId == c).Select(x => x.Amount).Sum();
-            //            var spendItem = new SpendingCategory { CategoryName = categoryName, BudgetTotal = budgetCategoryTotal, TransactionTotal = transactionCategoryTotal };
-            //            spendingCategoriesList.Add(spendItem);
-            //        }
-
-            //    }
-            //    else
-            //    {
-            //        ViewBag.Message = "No budget exists for this month";
-            //    }
-
-            //}
             DateTime currentDate = DateTime.Now;
             var householdId = User.Identity.GetHouseholdId();
             var household = db.Households.Find(householdId);
@@ -78,20 +29,44 @@ namespace Budgeter.Controllers
             if (household.Budgets.Where(x => x.Month == currentDate.Month).Where(x => x.Year == currentDate.Year).Any())
             {
                 var currentBudget = household.Budgets.Where(x => x.Month == currentDate.Month).Where(x => x.Year == currentDate.Year).First();
-                ViewBag.BudgetName = currentBudget.Name;
+                ViewBag.HasBudget = true;
             }
             else
             {
                 ViewBag.HasBudget = false;
             }
-            ViewBag.RecentTransactions = GetRecentTransactions((int)householdId);
-            var householdAccounts = household.Accounts.ToList();
-            foreach(var h in householdAccounts)
+            if(household.Accounts.Count > 0)
             {
-                h.UpdateAccountBalance();
-                h.UpdateReconciledAccountBalance();
+                ViewBag.HasAccounts = true;
+                var recentTransactions = GetRecentTransactions((int)householdId);
+                if (recentTransactions != null && recentTransactions.Count > 0)
+                {
+                    ViewBag.RecentTransactions = recentTransactions;
+                    ViewBag.HasTransactions = true;
+                }
+                else
+                {
+                    ViewBag.HasTransactions = false;
+                }    
+                
+                var householdAccounts = household.Accounts.ToList();
+                if (householdAccounts.Count > 0)
+                {
+                    foreach (var h in householdAccounts)
+                    {
+                        h.UpdateAccountBalance();
+                        h.UpdateReconciledAccountBalance();
+                    }
+                }
+                ViewBag.Accounts = householdAccounts;
             }
-            ViewBag.Accounts = householdAccounts;
+            else
+            {
+                ViewBag.HasAccounts = false;
+            }
+                    
+            string currentMonthName = String.Format("{0:MMMM}", DateTime.Now);
+            ViewBag.DashboardName = currentMonthName + " " + currentDate.Year.ToString();
             return View();
         }
 
@@ -107,17 +82,21 @@ namespace Budgeter.Controllers
                 var transList = a.Transactions.Where(x => x.DateSpent.Year == currentDate.Year).Where(x => x.DateSpent.Month == currentDate.Month);
                 monthTransactions.AddRange(transList);
             }
-            var recentTransactions = monthTransactions.OrderByDescending(x => x.DateSpent).ToList();
-
-            if (recentTransactions.Count > 4)
-            {
-                recentTransactions = recentTransactions.GetRange(0, 3);
-            }
             var recentList = new List<TransactionsIndexViewModel>();
-            foreach (var r in recentTransactions)
+            //if there are any transactions, return them in a view model - otherwise return an empty list
+            if (monthTransactions.Count > 0)
             {
-                var recent = new TransactionsIndexViewModel(r);
-                recentList.Add(recent);
+                var recentTransactions = monthTransactions.OrderByDescending(x => x.DateSpent).ToList();
+
+                if (recentTransactions.Count > 4)
+                {
+                    recentTransactions = recentTransactions.GetRange(0, 3);
+                }                
+                foreach (var r in recentTransactions)
+                {
+                    var recent = new TransactionsIndexViewModel(r);
+                    recentList.Add(recent);
+                }                
             }
             return recentList;
         }
