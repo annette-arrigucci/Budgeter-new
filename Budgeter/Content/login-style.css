@@ -1,0 +1,11 @@
+﻿.wrapper:after {
+    background-color: #f9fafc;
+}
+
+.content {
+    min-height: 1000px;
+}
+
+h2 {
+    margin-top: 50px;
+}
