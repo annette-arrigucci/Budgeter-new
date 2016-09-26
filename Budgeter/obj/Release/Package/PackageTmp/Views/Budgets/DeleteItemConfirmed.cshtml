@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Delete Item Confirmed";
+}
+<h2>Item deleted</h2>
+<div>
+    <p>
+        @ViewBag.Message
+    </p>
+</div>
+@Html.ActionLink("Back to Budget Details", "Details", "Budgets", new { id = ViewBag.Id }, null)
+
+
+
+

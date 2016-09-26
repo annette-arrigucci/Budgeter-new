@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="~/JQuery-UI/jquery-ui.min.css">
 <link href="~/Content/transaction-form-style.css" rel="stylesheet">
 
+
 <h2>@ViewBag.BudgetName</h2>
 <div class="container">
     <div class="row">   
@@ -135,14 +136,26 @@
     </div>
 </div>
 @section scripts{
-    <script src="~/JQuery-UI/jquery-ui.min.js"></script>
+    <script src="~/JQuery-UI/jquery-ui.min.js"></script>   
     <script type="text/javascript">
+        //hide/show dropdown depending on which radio button is selected
+        $(document).on('focus', '#form-placeholder', function () {
+            if ($('#budget-radio-income').is(':checked')) {
+                $("#budget-expense-dropdown").hide();
+                $("#budget-income-dropdown").show();
+            }
+            if ($('#budget-radio-expense').is(':checked')) {
+                $("#budget-income-dropdown").hide();
+                $("#budget-expense-dropdown").show();
+            }
+        });
+
         @*$("#categoryselect").autocomplete({
             source:
                 '@Url.Action("ExpenseSearch")'
         });*@
 
-        $('#categoryselect').click(function() {
+        @*$('#categoryselect').click(function() {
             if ($('#radio-income').is(':checked'))
             {
                 $("#categoryselect").autocomplete({
@@ -157,7 +170,7 @@
                     source: '@Url.Action("ExpenseSearch")'
                 });
             }
-        });
+        });*@
 
         $(".delete").click(function () {
             $("#form-placeholder").empty();

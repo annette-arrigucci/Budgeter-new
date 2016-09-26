@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Budgeter.Models.TransactionsIndexViewModel>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+                @foreach (var item in Model)
+                {
+                    @item.DateSpent.ToString("M/d/yyyy")
+                    @Html.Raw(" - ")
+                    @item.Account
+                    @Html.Raw("<br>")
+                    @item.SpentBy
+                    @Html.Raw(" - ")
+                    @Html.Raw("$")@item.Amount
+                    @Html.Raw(" ")
+                    @item.Type
+                    @Html.Raw("<br>")
+                    @item.Description
+                    @Html.Raw("<br><br>")
+                }
+        </div>
+    </div>
+</div>

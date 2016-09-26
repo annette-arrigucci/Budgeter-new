@@ -17,4 +17,11 @@ table.dataTable tbody td {
     background-color: #f9fafc !important;
 }
 
-.ui-datepicker-calendar { display: none !important; }
+/*Income category dropdowns for creating budget items and transactions are initially hidden*/
+#income-dropdown {
+    display: none;
+}
+
+#budget-income-dropdown {
+    display: none;
+}

@@ -2,8 +2,8 @@
 @using Budgeter.Models
 
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+<link rel="stylesheet" href="~/JQuery-UI/jquery-ui.min.css">
 <link href="~/Content/transaction-form-style.css" rel="stylesheet">
-
 
 @{
     ViewBag.Title = "Index";
@@ -46,7 +46,8 @@
     <div class="col-lg-9">
         <br />
         <p>
-            <a href="#" class="create" id="@ViewBag.AccountId">Create Transaction</a>
+            @*<a href="#" class="create" id="@ViewBag.AccountId">Create Transaction</a>*@
+            @Html.ActionLink("Create Transaction", "Index", "Transactions", new { @id = @ViewBag.AccountId }, null)
         </p>
         <br />
     <table id="transactions-table" class="table">
@@ -154,12 +155,28 @@
         </div>
     </div>
 </div>
+
 @section scripts{
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+<script src="~/JQuery-UI/jquery-ui.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
+        //$('#income-dropdown').hide();
+
         $('#transactions-table').DataTable();
+
+        //#income-dropdown is initally hidden in transaction-form-style stylesheet
+        $(document).on('focus', '#create-view-placeholder', function () {
+            if ($('#radio-income').is(':checked')) {
+                $("#expense-dropdown").hide();
+                $("#income-dropdown").show();
+            }
+            if ($('#radio-expense').is(':checked')) {
+                $("#income-dropdown").hide();
+                $("#expense-dropdown").show();
+            }
+        });
 
         $(".edit").click(function () {
             $("#create-view-placeholder").hide();
@@ -197,6 +214,55 @@
             $("#create-view-placeholder").load("/Transactions/GetCreateView", { accountId: myId });
         });
 
+        //limit date of transaction to one year past and three months in the future
+        //$("#transaction-datepicker").datepicker({
+        //    dateFormat: "yy-mm-dd",
+        //    changeYear: true,
+        //    changeMonth: true,
+        //    minDate: "-1y",
+        //    maxDate: "+3m"
+        //});
+
+        //$("#transaction-edit-datepicker").datepicker({
+        //    dateFormat: "yy-mm-dd",
+        //    changeYear: true,
+        //    changeMonth: true,
+        //    minDate: "-1y",
+        //    maxDate: "+3m"
+        //});
+
+        //$(document).ajaxStop(function () {
+        //    // debugger;
+        //    $("#transaction-datepicker").datepicker(
+        //        {
+        //            dateFormat: "yy-mm-dd",
+        //            changeYear: true,
+        //            changeMonth: true,
+        //            minDate: "-1y",
+        //            maxDate: "+3m"
+        //        });
+        //});
+
+        //calling datepicker function this way allows it to load with partial views
+            $(document).on('focus', '#transaction-datepicker', function () {
+                $(this).datepicker({
+                    dateFormat: "yy-mm-dd",
+                    changeYear: true,
+                    changeMonth: true,
+                    minDate: "-1y",
+                    maxDate: "+3m"
+                });
+            });
+
+            $(document).on('focus', '#transaction-edit-datepicker', function () {
+                $(this).datepicker({
+                    dateFormat: "yy-mm-dd",
+                    changeYear: true,
+                    changeMonth: true,
+                    minDate: "-1y",
+                    maxDate: "+3m"
+                });
+            });
 });
 </script>
 }
