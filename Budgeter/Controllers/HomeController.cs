@@ -260,8 +260,6 @@ namespace Budgeter.Controllers
                 //get the accounts for this household
                 var householdAccounts = household.Accounts.ToList();
 
-                //TO DO: what do we do if user has no accounts set up?
-
                 //get the transactions for this month
                 var monthTransactions = new List<Transaction>();
                 foreach (var a in householdAccounts)
@@ -321,32 +319,27 @@ namespace Budgeter.Controllers
                 //get the household for this user
                 var householdId = User.Identity.GetHouseholdId();
                 var household = db.Households.Find(householdId);
-                //find the current budget for this user
-                if (household.Budgets.Where(x => x.Month == currentDate.Month).Where(x => x.Year == currentDate.Year).Any())
+                //get the accounts for this household
+                var householdAccounts = household.Accounts.ToList();
+                //get the transactions for this month
+                var monthTransactions = new List<Transaction>();
+                foreach (var a in householdAccounts)
                 {
-                    //get the accounts for this household
-                    var householdAccounts = household.Accounts.ToList();
-                    //get the transactions for this month
-                    var monthTransactions = new List<Transaction>();
-                    foreach (var a in householdAccounts)
-                    {
-                        var transList = a.Transactions.Where(x => x.DateSpent.Year == currentDate.Year).Where(x => x.DateSpent.Month == currentDate.Month);
-                        monthTransactions.AddRange(transList);
-                    }
-                    //get the expense transaction categories
-                    var transactionCategories = monthTransactions.Where(x => x.Type == type).GroupBy(x => x.CategoryId)
-                                                .Select(grp => grp.First()).Select(x => x.CategoryId).ToList();
-                    categoryTotalsList = new TotalByCategory[transactionCategories.Count];
-                    int i = 0;
-                    foreach (var c in transactionCategories)
-                    {
-                        var category = db.Categories.Find(c);
-                        categoryTotalsList[i] = new TotalByCategory();
-                        categoryTotalsList[i].CategoryName = category.Name;
-                        categoryTotalsList[i].Total = monthTransactions.Where(x => x.CategoryId == c).Select(x => x.Amount).Sum();
-                        i++;
-                    }
-                    return categoryTotalsList;
+                    var transList = a.Transactions.Where(x => x.DateSpent.Year == currentDate.Year).Where(x => x.DateSpent.Month == currentDate.Month);
+                    monthTransactions.AddRange(transList);
+                }
+                //get the expense transaction categories
+                var transactionCategories = monthTransactions.Where(x => x.Type == type).GroupBy(x => x.CategoryId)
+                                            .Select(grp => grp.First()).Select(x => x.CategoryId).ToList();
+                categoryTotalsList = new TotalByCategory[transactionCategories.Count];
+                int i = 0;
+                foreach (var c in transactionCategories)
+                {
+                    var category = db.Categories.Find(c);
+                    categoryTotalsList[i] = new TotalByCategory();
+                    categoryTotalsList[i].CategoryName = category.Name;
+                    categoryTotalsList[i].Total = monthTransactions.Where(x => x.CategoryId == c).Select(x => x.Amount).Sum();
+                    i++;        
                 }
                 return categoryTotalsList;
             }
