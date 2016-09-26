@@ -15,14 +15,6 @@
             @Html.HiddenFor(model => model.Id)
             @Html.HiddenFor(model => model.Type)
     
-            @*<div class="form-group">
-                @Html.LabelFor(model => model.HouseholdId, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.HouseholdId, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.HouseholdId, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-    
             <div class="form-group">
                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -37,25 +29,8 @@
                     <p class="not-editable">
                         @Html.DisplayFor(model => model.Type)
                     </p>
-                        @*@Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })*@
                 </div>
             </div>
-    
-            @*<div class="form-group">
-                @Html.LabelFor(model => model.Balance, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Balance, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Balance, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.ReconciledBalance, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ReconciledBalance, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ReconciledBalance, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
     
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">

@@ -33,14 +33,11 @@
             </td>
             <td>
                 $@item.Balance
-                @*@Html.DisplayFor(modelItem => item.Balance)*@
             </td>
             <td>
                 $@item.ReconciledBalance
-                @*@Html.DisplayFor(modelItem => item.ReconciledBalance)*@
             </td>
             <td>
-                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Restore", "Restore", new { id = item.Id })
             </td>

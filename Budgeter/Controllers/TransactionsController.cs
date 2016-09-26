@@ -116,26 +116,6 @@ namespace Budgeter.Controllers
             return View(transactionsToShow);
         }
 
-        // GET: Transactions/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Transaction transaction = db.Transactions.Find(id);
-        //    if (transaction == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(transaction);
-        //}
-
-        // GET: Transactions/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
 
         // POST: Transactions/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -304,52 +284,9 @@ namespace Budgeter.Controllers
                 infoModel.DateEntered = transaction.DateEntered;
                 infoModel.IsActive = transaction.IsActive;
                 model = infoModel;
-            }
-            //if (viewName == "OrderDetails")
-            //{
-            //    using (NorthwindEntities db = new NorthwindEntities())
-            //    {
-            //        model = db.Orders.Where(o => o.CustomerID == customerID)
-            //                  .OrderBy(o => o.OrderID).ToList();
-            //    }
-            
+            }          
             return PartialView(viewName, model);
         }
-
-        //// GET: Transactions/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
-        //    }
-        //    Transaction transaction = db.Transactions.Find(id);
-        //    if (transaction == null)
-        //    {
-        //        RedirectToAction("Index", "Errors", new { errorMessage = "Account not found" });
-        //    }
-        //    var tModel = new TransactionEditViewModel();
-        //    tModel.Id = transaction.Id;
-        //    tModel.AccountId = transaction.AccountId;
-        //    tModel.Description = transaction.Description;
-        //    tModel.DateSpent = transaction.DateSpent;
-        //    tModel.Amount = transaction.Amount;
-        //    tModel.Type = transaction.Type;
-        //    var categories = db.Categories.ToList();
-        //    tModel.SelectedCategory = transaction.CategoryId;
-        //    tModel.CategoryList = new SelectList(categories, "Id", "Name", new { SelectedCategory = tModel.SelectedCategory });
-        //    var householdId = User.Identity.GetHouseholdId();
-        //    var householdUsers = db.Users.Where(x => x.HouseholdId == (int)householdId).ToList();
-        //    tModel.SelectedUser = transaction.SpentById;
-        //    tModel.HouseholdUsersList = new SelectList(householdUsers, "Id", "DisplayName", tModel.SelectedUser);
-        //    tModel.ReconciledAmount = transaction.ReconciledAmount;
-        //    tModel.EnteredById = transaction.EnteredById;
-        //    var user = db.Users.Find(transaction.EnteredById);
-        //    tModel.EnteredByName = user.DisplayName;
-        //    tModel.DateEntered = transaction.DateEntered;
-            
-        //    return PartialView("_EditTransaction", new { model = tModel });
-        //}
 
         // POST: Form posted in partial view
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -407,21 +344,6 @@ namespace Budgeter.Controllers
             }
             return RedirectToAction("Index", "Errors", new { errorMessage = "Error in editing transaction" });
         }
-
-        // GET: Transactions/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Transaction transaction = db.Transactions.Find(id);
-        //    if (transaction == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(transaction);
-        //}
 
         // POST: Form posted in partial view
         [HttpPost]

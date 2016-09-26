@@ -209,19 +209,19 @@ namespace Budgeter.Controllers
         }
 
         //not using this anymore, instead refreshing page to get Create form to appear
-        public ActionResult GetCreateView(int budgetId)
-        {
-            if (budgetId == null)
-            {
-                RedirectToAction("Index", "Errors", new { errorMessage = "Budget not found" });
-            }
+        //public ActionResult GetCreateView(int budgetId)
+        //{
+        //    if (budgetId == null)
+        //    {
+        //        RedirectToAction("Index", "Errors", new { errorMessage = "Budget not found" });
+        //    }
             //var createModel = new BudgetItemViewModel();
             //createModel.BudgetId = budgetId;
             //createModel.IsRepeating = false;
 
             //return PartialView("_CreateBudgetItem", createModel);
-            return View("Details", "Budgets", new { id = budgetId });
-        }
+        //    return View("Details", "Budgets", new { id = budgetId });
+        //}
 
         public ActionResult GetView(int id, string viewName)
         {

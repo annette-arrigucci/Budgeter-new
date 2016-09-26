@@ -108,47 +108,46 @@ namespace Budgeter.Controllers
             return bModel;
         }
 
-        //return a JSON objects with this household's expense categories
-        public ActionResult ExpenseSearch(string term)
-        {
-            // Get tags from database
-            var helper = new CategoryHouseholdHelper();
+        //not using these methods anymore - these were used for AutoComplete JQuery UI widget
 
-            var expCategories = helper.GetExpenseCategories((int)User.Identity.GetHouseholdId());
-            var tags = new string[expCategories.Count];
-            int i = 0;
-            foreach (var exp in expCategories)
-            {
-                tags[i] = exp.Name;
-                i++;
-            }
-            //string[] tags = { "ASP.NET", "WebForms",
-            //    "MVC", "jQuery", "ActionResult",
-            //    "MangoDB", "Java", "Windows" };
-            return this.Json(tags.Where(t => t.StartsWith(term)),
-                           JsonRequestBehavior.AllowGet);
-        }
+        //return a JSON objects with this household's expense categories
+        //public ActionResult ExpenseSearch(string term)
+        //{
+        //    // Get tags from database
+        //    var helper = new CategoryHouseholdHelper();
+
+        //    var expCategories = helper.GetExpenseCategories((int)User.Identity.GetHouseholdId());
+        //    var tags = new string[expCategories.Count];
+        //    int i = 0;
+        //    foreach (var exp in expCategories)
+        //    {
+        //        tags[i] = exp.Name;
+        //        i++;
+        //    }
+        //    return this.Json(tags.Where(t => t.StartsWith(term)),
+        //                   JsonRequestBehavior.AllowGet);
+        //}
 
         //return a JSON objects with this household's income categories
-        public ActionResult IncomeSearch(string term)
-        {
-            // Get tags from database
-            var helper = new CategoryHouseholdHelper();
+        //public ActionResult IncomeSearch(string term)
+        //{
+        //    // Get tags from database
+        //    var helper = new CategoryHouseholdHelper();
 
-            var incCategories = helper.GetIncomeCategories((int)User.Identity.GetHouseholdId());
-            var tags = new string[incCategories.Count];
-            int i = 0;
-            foreach (var inc in incCategories)
-            {
-                tags[i] = inc.Name;
-                i++;
-            }
+        //    var incCategories = helper.GetIncomeCategories((int)User.Identity.GetHouseholdId());
+        //    var tags = new string[incCategories.Count];
+        //    int i = 0;
+        //    foreach (var inc in incCategories)
+        //    {
+        //        tags[i] = inc.Name;
+        //        i++;
+        //    }
             //string[] tags = { "ASP.NET", "WebForms",
             //    "MVC", "jQuery", "ActionResult",
             //    "MangoDB", "Java", "Windows" };
-            return this.Json(tags.Where(t => t.StartsWith(term)),
-                           JsonRequestBehavior.AllowGet);
-        }
+        //    return this.Json(tags.Where(t => t.StartsWith(term)),
+        //                   JsonRequestBehavior.AllowGet);
+        //}
 
         // POST: Budget
         [HttpPost]
@@ -206,11 +205,6 @@ namespace Budgeter.Controllers
                 return RedirectToAction("Index", "Errors", new { errorMessage = "Error in entering budget year" });
             }
                   
-            //Regex rgx = new Regex(@"^((0[1-9])|(1[0 - 2]))\/(\d{4})$");
-            //if (!rgx.IsMatch(model.Name))
-            //{
-            //    return RedirectToAction("Index", "Errors", new { errorMessage = "Budget name must be month and year" });
-            //}
             //if budget already exists for this month, don't create it again
             if(db.Budgets.Where(x => x.HouseholdId == budget.HouseholdId).Where(x => x.Month == budget.Month).Where(x => x.Year == budget.Year).Any())
             {
@@ -221,8 +215,6 @@ namespace Budgeter.Controllers
             db.SaveChanges();
 
             //add any recurring budget items to this month's budget
-            //var recurringItems = db.BudgetItems.Where(x => db.Budgets.Any(m => m.HouseholdId == budget.HouseholdId)).Where(x => x.IsRepeating).Where(x => x.IsOriginal).ToList();
-
             var recurringItems = new List<BudgetItem>();
             //get the list of all budgets for this household
             var householdBudgets = db.Budgets.Where(x => x.HouseholdId == budget.HouseholdId).ToList();
