@@ -32,10 +32,12 @@
                 @Html.ActionLink("View Transactions", "Index", "Transactions", new { id = item.Id }, null)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Balance)
+                $@item.Balance
+                @*@Html.DisplayFor(modelItem => item.Balance)*@
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ReconciledBalance)
+                $@item.ReconciledBalance
+                @*@Html.DisplayFor(modelItem => item.ReconciledBalance)*@
             </td>
             <td>
                 @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@

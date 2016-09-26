@@ -14,9 +14,9 @@
         <div class="col-lg-5">
             <h4>
                 @*@Html.ActionLink("Create New", "Create")*@
-                Budget totals: Income @ViewBag.IncomesTotal            
+                Budget totals: Income $@ViewBag.IncomesTotal            
                 @Html.Raw(" | ")
-                Expenses @ViewBag.ExpensesTotal
+                Expenses $@ViewBag.ExpensesTotal
             </h4>
         </div>
         <div class="col-lg-7">
@@ -64,7 +64,8 @@
                             @Html.DisplayFor(modelItem => item.CategoryName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Amount)
+                            $@item.Amount
+                            @*@Html.DisplayFor(modelItem => item.Amount)*@
                         </td>
                         <td>
                             @*@Html.DisplayNameFor(model => item.IsRepeating)*@
@@ -108,7 +109,8 @@
                             @Html.DisplayFor(modelItem => item.CategoryName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Amount)
+                            $@item.Amount
+                            @*@Html.DisplayFor(modelItem => item.Amount)*@
                         </td>
                         <td>
                             @if (item.IsRepeating == true)

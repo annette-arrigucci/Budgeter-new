@@ -23,9 +23,30 @@
     <div class="col-lg-4 col-lg-offset-4">   
         <h4>
             @*@Html.ActionLink("Create New", "Create")*@
-            Balance: @ViewBag.Balance
-            @Html.Raw(" | ")
-            Reconciled: @ViewBag.Reconciled
+            Balance: 
+            @if (ViewBag.Balance >= 0)
+            {
+                @Html.Raw(" $");
+                @Html.Raw(ViewBag.Balance);
+            }
+            else
+            {
+                var display = Math.Abs(ViewBag.Balance);
+                @Html.Raw("-$");
+                @Html.Raw(ViewBag.Balance);
+            }
+            @Html.Raw(" | Reconciled: ")        
+            @if (ViewBag.Reconciled >= 0)
+            {
+                @Html.Raw(" $");
+                @Html.Raw(ViewBag.Reconciled);
+            }
+            else
+            {
+                var display = Math.Abs(ViewBag.Reconciled);
+                @Html.Raw("-$");
+                @Html.Raw(ViewBag.Reconciled);
+            }
         </h4>
     </div>
 </div>
@@ -122,13 +143,15 @@
                         @Html.DisplayFor(modelItem => item.Category)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Amount)
+                        $@item.Amount
+                        @*@Html.DisplayFor(modelItem => item.Amount)*@
                     </td>
                     @*<td>
                         @Html.DisplayFor(modelItem => item.Type)
                     </td>*@
                     <td>
-                        @Html.DisplayFor(modelItem => item.ReconciledAmount)
+                       $@item.ReconciledAmount
+                        @*@Html.DisplayFor(modelItem => item.ReconciledAmount)*@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.EnteredBy)
@@ -145,7 +168,7 @@
     </table>
     <div class="row">
         <div class="col-lg-4">
-            Starting balance: @ViewBag.StartingBalance
+            Starting balance: $@ViewBag.StartingBalance
         </div>
     </div>
         <div class="row">

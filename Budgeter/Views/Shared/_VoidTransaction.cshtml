@@ -50,7 +50,8 @@
     </div>
     <div class="row">
         <div class="col-md-7 col-md-offset-1">
-            @Html.DisplayFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            $@Model.Amount
+            @*@Html.DisplayFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })*@
             @Html.Raw("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
             @Html.DisplayFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
         </div>
@@ -73,7 +74,8 @@
     </div>
     <div class="row">
         <div class="col-md-7 col-md-offset-1">
-            @Html.DisplayFor(model => model.ReconciledAmount, new { htmlAttributes = new { @class = "form-control" } })
+            $@Model.ReconciledAmount
+            @*@Html.DisplayFor(model => model.ReconciledAmount, new { htmlAttributes = new { @class = "form-control" } })*@
         </div>
     </div>
 </div>
