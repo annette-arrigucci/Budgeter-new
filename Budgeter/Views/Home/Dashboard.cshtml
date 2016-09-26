@@ -6,26 +6,30 @@
 }
 
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+<link rel="stylesheet" href="~/Content/dashboard-style.css">
 
 <h2>@ViewBag.DashboardName</h2>
 
 <div class="container">
     <div class="row">
         <div class="col-md-11">
-            <h3>Spending vs. Budget by Category</h3>
-            @if (ViewBag.HasBudget == true)
-            {
-                <div id="categories-spending-bar" style="height: 250px;"></div>
-            }
-            else
-            {
-                <div>No budget found for household this month</div>
-            }
+            <div class="budget-chart">
+                <h3>Spending vs. Budget by Category</h3>
+
+                @if (ViewBag.HasBudget == true)
+                {
+                    <div id="categories-spending-bar" style="height: 250px;"></div>
+                }
+                else
+                {
+                    <div>No budget found for household this month</div>
+                }
+            </div>
+          </div>
         </div>
-    </div>
     <div class="row">
         <div class="col-md-7">
-            <div class="info-box">
+            <div class="budget-chart">
                <div class="row">
                 <div class="col-md-6">
                     <div class="box-body">
@@ -110,7 +114,7 @@
 
 
             <div class="col-md-4">
-                <h3>Total Spending vs. Budget</h3>
+                <h3 class="budget-chart-title">Total Spending vs. Budget</h3>
                 @if (ViewBag.HasBudget == true)
             {
                     <div id="budget-spending-bar" style="height: 250px;"></div>
@@ -122,26 +126,29 @@
             </div>
 
         </div>
-    <div class="row">   
-        @if (ViewBag.HasTransactions == true)
-        {
-            <div class="col-md-3">
-                <h3>Income Transactions</h3>
-                <div id="income-categories-pie" style="height: 250px;"></div>
-            </div>
-            <div class="col-md-4">
-                <h3>Income vs. Spending</h3>
-                <div id="income-spending-bar" style="height: 250px;"></div>
-            </div>
-            <div class="col-md-3">
-                <h3>Expense Transactions</h3>
-                <div id="expense-categories-pie" style="height: 250px;"></div>
-            </div>
-        }
-        else
-        {
-            <div></div>
-        }
+    <div class="row">
+        
+            @if (ViewBag.HasTransactions == true)
+            {
+                <div class="col-md-3">
+                    <h3 class="budget-chart-title">Income Transactions</h3>
+                        <div id="income-categories-pie" style="height: 250px;"></div>
+                    </div>
+                <div class="col-md-4">
+                    <div class="budget-chart">
+                        <h3>Income vs. Spending</h3>
+                        <div id="income-spending-bar" style="height: 250px;"></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h3 class="budget-chart-title">Expense Transactions</h3>
+                        <div id="expense-categories-pie" style="height: 250px;"></div>
+                    </div>
+            }
+            else
+            {
+                <div></div>
+            }
     </div>
 </div>
 @section scripts{
