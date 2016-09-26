@@ -6,7 +6,7 @@
             {
                @Html.ActionLink(item.Name, "Index", "Transactions", new { id = item.Id }, null)
                @Html.Raw("<br>")
-                if (item.Balance > 0)
+                if (item.Balance >= 0)
                 {
                     @Html.Raw("$");
                     @Html.Raw(item.Balance);

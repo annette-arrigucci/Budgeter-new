@@ -162,7 +162,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        //$('#income-dropdown').hide();
 
         $('#transactions-table').DataTable();
 
@@ -178,41 +177,70 @@
             }
         });
 
-        $(".edit").click(function () {
+        //had to change these to responding to focus event when clicked - items past 10 in DataTables wouldn't load to edit, void or delete
+        $(document).on('focus', '.edit', function () {
             $("#create-view-placeholder").hide();
             $("#edit-transaction-placeholder").empty();
             var myId = $(this).attr('id');
             $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_EditTransaction" });
         });
 
-        $(".details").click(function () {
+        $(document).on('focus', '.details', function () {
             $("#create-view-placeholder").hide();
             $("#edit-transaction-placeholder").empty();
             var myId = $(this).attr('id');
             $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_TransactionDetails" });
         });
 
-        $(".delete").click(function () {
+        $(document).on('focus', '.delete', function () {
             $("#create-view-placeholder").hide();
             $("#edit-transaction-placeholder").empty();
             var myId = $(this).attr('id');
             $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_DeleteTransaction" });
         });
 
-        $(".void").click(function () {
+        $(document).on('focus', '.void', function () {
             $("#create-view-placeholder").hide();
             $("#edit-transaction-placeholder").empty();
             var myId = $(this).attr('id');
             $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_VoidTransaction" });
         });
 
-        $(".create").click(function () {
-            $("#create-view-placeholder").show();
-            $("#create-view-placeholder").empty();
-            $("#edit-transaction-placeholder").empty();
-            var myId = $(this).attr('id');
-            $("#create-view-placeholder").load("/Transactions/GetCreateView", { accountId: myId });
-        });
+        //$(".edit").click(function () {
+        //    $("#create-view-placeholder").hide();
+        //    $("#edit-transaction-placeholder").empty();
+        //    var myId = $(this).attr('id');
+        //    $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_EditTransaction" });
+        //});
+
+        //$(".details").click(function () {
+        //    $("#create-view-placeholder").hide();
+        //    $("#edit-transaction-placeholder").empty();
+        //    var myId = $(this).attr('id');
+        //    $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_TransactionDetails" });
+        //});
+
+        //$(".delete").click(function () {
+        //    $("#create-view-placeholder").hide();
+        //    $("#edit-transaction-placeholder").empty();
+        //    var myId = $(this).attr('id');
+        //    $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_DeleteTransaction" });
+        //});
+
+        //$(".void").click(function () {
+        //    $("#create-view-placeholder").hide();
+        //    $("#edit-transaction-placeholder").empty();
+        //    var myId = $(this).attr('id');
+        //    $("#edit-transaction-placeholder").load("/Transactions/GetView", { transactionId: myId, viewName: "_VoidTransaction" });
+        //});
+
+        //$(".create").click(function () {
+        //    $("#create-view-placeholder").show();
+        //    $("#create-view-placeholder").empty();
+        //    $("#edit-transaction-placeholder").empty();
+        //    var myId = $(this).attr('id');
+        //    $("#create-view-placeholder").load("/Transactions/GetCreateView", { accountId: myId });
+        //});
 
         //limit date of transaction to one year past and three months in the future
         //$("#transaction-datepicker").datepicker({
