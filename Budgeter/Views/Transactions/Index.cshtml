@@ -186,7 +186,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $('#transactions-table').DataTable();
+        $('#transactions-table').DataTable({
+            "order": [[1, 'desc']]});
 
         //#income-dropdown is initally hidden in transaction-form-style stylesheet
         $(document).on('focus', '#create-view-placeholder', function () {
