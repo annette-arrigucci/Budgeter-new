@@ -1,6 +1,6 @@
 ﻿@using Budgeter.Models
 @{
-    ViewBag.Title = "Sign in";
+    ViewBag.Title = "Budgeter";
     Layout = null;
 }
 
@@ -78,9 +78,9 @@
                        <div class="row">
                            <div class="col-md-offset-5 col-md-1">
                                <div class="budget-links">
-                                   @Html.ActionLink("Sign In", "Login")
+                                   @Html.ActionLink("Sign In", "Login", "Account")
                                    @Html.Raw("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or<br> ")
-                                   @Html.ActionLink("Register", "Register")
+                                   @Html.ActionLink("Register", "Register","Account")
                                </div>
                            </div>
                        </div>
@@ -94,7 +94,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-2 col-md-offset-5">
-                                    <h3 class="portfolio"><a href="" target="_blank" >View portfolio</a></h3>
+                                    <h3 class="portfolio"><a href="https://aarrigucci.azurewebsites.net" target="_blank" >View portfolio</a></h3>
                                 </div>
                             </div>
                     </div>   
