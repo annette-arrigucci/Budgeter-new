@@ -57,7 +57,11 @@ namespace Budgeter.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            //if user is authenticated - send them to the Dashboard
+
             ViewBag.ReturnUrl = returnUrl;
+
+            //maybe we can redirect the user to return to the dashboard if returnUrl is null or empty - instead of hard coding it into the View
             return View();
         }
 
@@ -164,7 +168,8 @@ namespace Budgeter.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Dashboard", "Home");
                 }
                 AddErrors(result);
             }

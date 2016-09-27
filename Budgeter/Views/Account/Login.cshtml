@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Sign in";
     Layout = null;
+    ViewBag.ReturnUrl = "~/Home/Dashboard";
+    //this is good for getting a user to the dashboard, not good for getting someone to the Join Household page
 }
 <!DOCTYPE html>
 <html>
@@ -38,7 +40,7 @@
         <!-- Main Header -->
         <header class="main-header">
             <!-- Logo -->
-            <a href="index2.html" class="logo">
+            <a href="~/Home/Dashboard" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini">B</span>
                 <!-- logo for regular state and mobile devices -->
@@ -46,11 +48,7 @@
             </a>
             <!-- Header Navbar -->
             <nav class="navbar navbar-static-top" role="navigation">
-               
-
-                        @Html.Partial("_LoginPartial")
-
-                      
+                        @Html.Partial("_LoginPartial")                   
             </nav>
         </header>
         <!-- Content Wrapper. Contains page content -->
