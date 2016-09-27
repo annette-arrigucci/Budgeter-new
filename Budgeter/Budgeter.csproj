@@ -235,7 +235,13 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\cover-page-style.css" />
     <Content Include="Content\dashboard-style.css" />
+    <Content Include="Content\dollar-light-background.jpg" />
+    <Content Include="Content\dollar_background.jpg" />
+    <Content Include="Content\dollar_background_dark.jpg" />
+    <Content Include="Content\dollar_background_darker.jpg" />
+    <Content Include="Content\dollar_lighter_background.jpg" />
     <Content Include="Content\form-style.css" />
     <Content Include="Content\hide-calendar.css" />
     <Content Include="Content\login-style.css" />
@@ -277,7 +283,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="starter.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

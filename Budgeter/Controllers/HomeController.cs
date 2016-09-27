@@ -15,7 +15,7 @@ namespace Budgeter.Controllers
 
         public ActionResult Index()
         {
-            return RedirectToAction("Dashboard", "Home");
+            return View();
         }
 
         [Authorize]
