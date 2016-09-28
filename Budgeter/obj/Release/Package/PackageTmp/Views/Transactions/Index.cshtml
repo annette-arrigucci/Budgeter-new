@@ -13,7 +13,6 @@
 <div class="row">
     <div class="col-lg-4">
         <h4>
-            @*@Html.ActionLink("Create New", "Create")*@
             @if (ViewBag.Balance < 0)
             {
                 <span class="overdrawn">Warning: Your account is overdrawn</span>
@@ -22,10 +21,30 @@
     </div>
     <div class="col-lg-4 col-lg-offset-4">   
         <h4>
-            @*@Html.ActionLink("Create New", "Create")*@
-            Balance: @ViewBag.Balance
-            @Html.Raw(" | ")
-            Reconciled: @ViewBag.Reconciled
+            Balance: 
+            @if (ViewBag.Balance >= 0)
+            {
+                @Html.Raw(" $");
+                @Html.Raw(ViewBag.Balance);
+            }
+            else
+            {
+                var display = Math.Abs(ViewBag.Balance);
+                @Html.Raw("-$");
+                @Html.Raw(ViewBag.Balance);
+            }
+            @Html.Raw(" | Reconciled: ")        
+            @if (ViewBag.Reconciled >= 0)
+            {
+                @Html.Raw(" $");
+                @Html.Raw(ViewBag.Reconciled);
+            }
+            else
+            {
+                var display = Math.Abs(ViewBag.Reconciled);
+                @Html.Raw("-$");
+                @Html.Raw(ViewBag.Reconciled);
+            }
         </h4>
     </div>
 </div>
@@ -46,7 +65,6 @@
     <div class="col-lg-9">
         <br />
         <p>
-            @*<a href="#" class="create" id="@ViewBag.AccountId">Create Transaction</a>*@
             @Html.ActionLink("Create Transaction", "Index", "Transactions", new { @id = @ViewBag.AccountId }, null)
         </p>
         <br />
@@ -54,9 +72,6 @@
         <thead>
             <tr>
                 <th></th>
-                @*<th>
-                    @Html.DisplayNameFor(model => model.AccountId)
-                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.DateSpent)
                 </th>
@@ -66,27 +81,15 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Category)
                 </th>
-                @*<th>
-                    @Html.DisplayNameFor(model => model.DateEntered)
-                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.Amount)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ReconciledAmount)
                 </th>
-                @*<th>
-                    @Html.DisplayNameFor(model => model.Type)
-                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.EnteredBy)
                 </th>
-                @*<th>
-                    @Html.DisplayNameFor(model => model.SpentById)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IsReconciled)
-                </th>*@
             </tr>
         </thead>
         <tbody>
@@ -94,58 +97,35 @@
             {
                 <tr>
                     <td>
-                        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
-                        @Html.ActionLink("Void", "Void", new { id = item.Id })*@
-                        @*<button class="edit btn btn-default" data-val=@item.Id>Edit</button>
-                        <button class="delete btn btn-default" data-val=@item.Id>Delete</button>
-                        <button class="void btn btn-default" data-val=@item.Id>Void</button>*@
                         <a href="#" id="@item.Id" class="edit icon-space" title="Edit"><i class="fa fa-pencil"></i></a>
                         <a href="#" id="@item.Id" class="void icon-space" title="Void"><i class="fa fa-times"></i></a>
                         <a href="#" id="@item.Id" class="delete icon-space" title="Delete"><i class="fa fa-trash"></i></a>
                     </td>
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.AccountId)
-                    </td>*@
                     <td>
                         @item.DateSpent.ToString("M/d/yyyy")
                     </td>
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.DateEntered)
-                    </td>*@
                     <td>
-                        @*@Html.DisplayFor(modelItem => item.Description)*@
-                        @*@Html.ActionLink(item.Description, "Details", new { id = item.Id, @class= "details" })*@
                         <a href="#" id="@item.Id" class="details">@item.Description</a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Category)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Amount)
+                        $@item.Amount
                     </td>
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.Type)
-                    </td>*@
                     <td>
-                        @Html.DisplayFor(modelItem => item.ReconciledAmount)
+                       $@item.ReconciledAmount
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.EnteredBy)
                     </td>
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.SpentById)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsReconciled)
-                    </td>*@
                 </tr>
             }
         </tbody>
     </table>
     <div class="row">
         <div class="col-lg-4">
-            Starting balance: @ViewBag.StartingBalance
+            Starting balance: $@ViewBag.StartingBalance
         </div>
     </div>
         <div class="row">
@@ -163,7 +143,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $('#transactions-table').DataTable();
+        $('#transactions-table').DataTable({
+            "order": [[1, 'desc']]});
 
         //#income-dropdown is initally hidden in transaction-form-style stylesheet
         $(document).on('focus', '#create-view-placeholder', function () {

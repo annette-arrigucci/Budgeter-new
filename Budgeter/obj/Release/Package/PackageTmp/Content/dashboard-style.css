@@ -1,0 +1,12 @@
+﻿.budget-chart {
+    background-color: #f9fafc;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+.budget-chart-title {
+    padding-top: 30px;
+}

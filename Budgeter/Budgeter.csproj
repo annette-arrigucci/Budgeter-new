@@ -237,10 +237,6 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\cover-page-style.css" />
     <Content Include="Content\dashboard-style.css" />
-    <Content Include="Content\dollar-light-background.jpg" />
-    <Content Include="Content\dollar_background.jpg" />
-    <Content Include="Content\dollar_background_dark.jpg" />
-    <Content Include="Content\dollar_background_darker.jpg" />
     <Content Include="Content\dollar_lighter_background.jpg" />
     <Content Include="Content\form-style.css" />
     <Content Include="Content\hide-calendar.css" />
