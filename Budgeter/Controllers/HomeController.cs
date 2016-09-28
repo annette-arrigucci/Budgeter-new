@@ -15,7 +15,16 @@ namespace Budgeter.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            //this is the cover page view - if the user is already logged in, redirect them to the Login page
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Dashboard");
+            }
+            else
+            {
+                ViewBag.ReturnUrl = "~/Home/Dashboard";
+                return View();
+            }        
         }
 
         [Authorize]

@@ -58,7 +58,10 @@ namespace Budgeter.Controllers
         public ActionResult Login(string returnUrl)
         {
             //if user is authenticated - send them to the Dashboard
-
+            //if (Request.IsAuthenticated)
+            //{
+            //    ViewBag.ReturnUrl = "~/Home/Dashboard";
+            //}
             ViewBag.ReturnUrl = returnUrl;
 
             //maybe we can redirect the user to return to the dashboard if returnUrl is null or empty - instead of hard coding it into the View
