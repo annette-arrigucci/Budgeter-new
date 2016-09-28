@@ -72,7 +72,14 @@
                    <div class="form-group">
                        <div class="row">
                            <div class="col-md-offset-5 col-md-2">
-                               <button class="btn btn-default" id="demo-button">Live Demo</button>
+                               @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, null))
+                               {
+                                   @Html.AntiForgeryToken()
+
+                                   <input class="form-control" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-required="The Email field is required." id="Email" name="Email" type="hidden" value="johntom@mailinator.com" />
+                                   <input class="form-control" data-val="true" data-val-required="The Password field is required." id="Password" name="Password" type="hidden" value="Abc&123!" />
+                                   <input type="submit" value="Live Demo" id="demo-button" class="btn btn-default btn-demo" />
+                               }
                            </div>
                        </div>
                        <div class="row">
